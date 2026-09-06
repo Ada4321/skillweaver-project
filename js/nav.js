@@ -1,6 +1,46 @@
 // Progressive enhancement only — every section is reachable, every trajectory
 // figure is present, and the BibTeX is selectable without any of this running.
 (function () {
+  /* ---------- Title sequence ----------
+     Dismissed by whichever comes first: the video ending, a click, Esc, or the
+     video failing to start. Autoplay is still refusable (data saver, some mobile
+     settings), and a refused play() must not leave the page behind a black
+     rectangle — so the rejection dismisses too. */
+  (function () {
+    const root = document.documentElement;
+    if (!root.classList.contains('has-intro')) return;
+    const wrap = document.getElementById('intro');
+    const video = document.getElementById('intro-video');
+    if (!wrap || !video) {
+      root.classList.remove('has-intro');
+      return;
+    }
+
+    let closed = false;
+    const dismiss = () => {
+      if (closed) return;
+      closed = true;
+      wrap.classList.add('is-out');
+      try { video.pause(); } catch (_) { /* already gone */ }
+      // Let the fade finish before the overlay stops existing, so the page is
+      // not revealed by a jump cut.
+      setTimeout(() => {
+        root.classList.remove('has-intro');
+        wrap.remove();
+      }, 900);
+    };
+
+    video.addEventListener('ended', dismiss);
+    video.addEventListener('error', dismiss);
+    wrap.addEventListener('click', dismiss);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') dismiss();
+    });
+
+    const started = video.play();
+    if (started && started.catch) started.catch(dismiss);
+  })();
+
   /* ---------- Side navigation ---------- */
   const sidenav = document.querySelector('.sidenav');
   const hero = document.querySelector('.hero');

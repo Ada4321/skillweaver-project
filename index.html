@@ -36,11 +36,33 @@
     if ('IntersectionObserver' in window) {
       document.documentElement.classList.add('has-reveal');
     }
+    // The title sequence is armed here, before first paint, so the page never
+    // shows through underneath it for a frame. Skipped outright for anyone who
+    // asked for less motion — it is 25 seconds of it.
+    if (!(window.matchMedia
+          && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      document.documentElement.classList.add('has-intro');
+      // Backstop. The controller lives in js/nav.js; if that never loads, the
+      // overlay must still come down rather than sealing the page off.
+      setTimeout(function () {
+        document.documentElement.classList.remove('has-intro');
+      }, 34000);
+    }
   </script>
   <link href="css/style.css" rel="stylesheet" />
 </head>
 
 <body>
+  <!-- ===================== Title sequence ===================== -->
+  <!-- Hidden by default in CSS and shown only under .has-intro, which script
+       sets — so with scripting off the page is simply itself, never a black
+       rectangle waiting for a listener that will not run. -->
+  <div class="intro" id="intro">
+    <video class="intro__video" id="intro-video" autoplay muted playsinline
+      preload="auto" src="assets/videos/intro.mp4"></video>
+    <button class="intro__skip" id="intro-skip" type="button">Skip &rarr;</button>
+  </div>
+
   <!-- ===================== Side navigation ===================== -->
   <nav class="sidenav" aria-label="Section navigation">
     <ul>
