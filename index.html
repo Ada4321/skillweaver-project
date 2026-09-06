@@ -21,7 +21,7 @@
     content="A VLM planner searches over closed-loop RL interaction skills in simulation; a hierarchical verifier decides what becomes training data." />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg?v=51b7db909d" />
   <link href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,10 +46,10 @@
       // overlay must still come down rather than sealing the page off.
       setTimeout(function () {
         document.documentElement.classList.remove('has-intro');
-      }, 34000);
+      }, 30000);
     }
   </script>
-  <link href="css/style.css" rel="stylesheet" />
+  <link href="css/style.css?v=f94545d2f4" rel="stylesheet" />
 </head>
 
 <body>
@@ -59,7 +59,7 @@
        rectangle waiting for a listener that will not run. -->
   <div class="intro" id="intro">
     <video class="intro__video" id="intro-video" autoplay muted playsinline
-      preload="auto" src="assets/videos/intro.mp4"></video>
+      preload="auto" src="assets/videos/intro.mp4?v=52112f586c"></video>
     <button class="intro__skip" id="intro-skip" type="button">Skip &rarr;</button>
   </div>
 
@@ -273,10 +273,10 @@
 
       <div class="media media--video">
         <video controls preload="metadata" playsinline
-          poster="assets/images/video-poster.jpg" width="1108" height="720">
-          <source src="assets/videos/skillweaver-demo.mp4" type="video/mp4" />
+          poster="assets/images/video-poster.jpg?v=fe4f88b921" width="1108" height="720">
+          <source src="assets/videos/skillweaver-demo.mp4?v=a02bc2bc93" type="video/mp4" />
           <p>Your browser cannot play this video.
-            <a href="assets/videos/skillweaver-demo.mp4">Download it</a> instead.</p>
+            <a href="assets/videos/skillweaver-demo.mp4?v=a02bc2bc93">Download it</a> instead.</p>
         </video>
       </div>
     </div>
@@ -307,7 +307,7 @@
         </div>
       </div>
       <div class="figure media">
-        <img loading="lazy" decoding="async" src="assets/images/teaser.jpg" width="1920" height="1080"
+        <img loading="lazy" decoding="async" src="assets/images/teaser.jpg?v=097e2f5206" width="1920" height="1080"
           alt="A grid of simulated kitchen, living-room and tabletop scenes with a Franka arm manipulating everyday objects, beside per-step point tracks, depth and RGB for two pick-and-place demonstrations." />
       </div>
       <p class="caption"><b>SkillWeaver</b> generates large-scale manipulation demonstrations in simulation by combining
@@ -348,7 +348,7 @@
       <h2 class="section-title">Method</h2>
 
       <div class="figure media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/pipeline.jpg" width="1900" height="1060"
+        <img loading="lazy" decoding="async" src="assets/images/pipeline.jpg?v=4e414f7dba" width="1900" height="1060"
           alt="SkillWeaver pipeline: RL pick and place skills, an MCTS search tree with failed and successful branches feeding memory and distillation, a VLM planner producing a structured skill proposal with axis alignment, skill execution frames, and a VLM verifier scoring subgoal completion and branch progress." />
       </div>
       <p class="caption"><b>Overview of SkillWeaver.</b> A VLM planner proposes interaction skills, which are executed
@@ -402,7 +402,7 @@
 
       <h3 class="sub-title">Environment generation</h3>
       <div class="figure media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/real2sim.jpg" width="1777" height="885"
+        <img loading="lazy" decoding="async" src="assets/images/real2sim.jpg?v=3e9d80543b" width="1777" height="885"
           alt="Nine-stage loop: real data, 3D vision tools, scene and asset abstraction, IsaacLab simulation, augmentation engine, MCTS trajectory generation, training data, policy training, and evaluation feeding back to real data." />
       </div>
       <p class="caption"><b>The seeded loop.</b> A single view is reconstructed into meshes, 6-DoF poses and a scene
@@ -410,14 +410,14 @@
         searched for successful trajectories that train a policy evaluated back in the real world.</p>
 
       <div class="media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/assets.jpg" width="1800" height="665"
+        <img loading="lazy" decoding="async" src="assets/images/assets.jpg?v=c9baeff154" width="1800" height="665"
           alt="Left: Gemini prompted for manipulated objects and containers per room, yielding four variants each of timer, saucepan, bottle and mug. Right: a rendered spread of dozens of reconstructed household assets." />
       </div>
       <p class="caption"><b>Asset database.</b> Category proposal and image synthesis with Gemini, reconstruction with
         SAM3D-Objects, collision geometry with CoACD, and per-asset semantic and physical metadata.</p>
 
       <div class="media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/env_aug.jpg" width="1700" height="957"
+        <img loading="lazy" decoding="async" src="assets/images/env_aug.jpg?v=3922bc8349" width="1700" height="957"
           alt="One seed scene of a table with groceries and a basket, expanded into six augmented variants differing in table texture, background, lighting, camera viewpoint and object identity." />
       </div>
       <p class="caption"><b>Appearance and layout randomisation.</b> Perturbing lighting, textures, backgrounds and
@@ -426,7 +426,7 @@
 
       <h3 class="sub-title">Why not a grasp proposer and a motion planner?</h3>
       <div class="figure media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/grasp_failure.png" width="1164" height="812"
+        <img loading="lazy" decoding="async" src="assets/images/grasp_failure.png?v=1398c6b635" width="1164" height="812"
           alt="Four point clouds — two boxes and two mugs — each surrounded by dense magenta grasp proposals, many of which pass through the supporting table or approach from below." />
       </div>
       <p class="caption"><b>Common failure modes of grasp proposers.</b> For certain geometries and poses every proposal
@@ -435,7 +435,7 @@
 
       <h3 class="sub-title">What memory buys the planner</h3>
       <div class="figure media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/memory.jpg" width="1486" height="786"
+        <img loading="lazy" decoding="async" src="assets/images/memory.jpg?v=7a974679fd" width="1486" height="786"
           alt="Instruction 'place the chocolate to the right of the plate': without memory the robot puts the chocolate on the plate; retrieved guidance explains that beside means the vacant supporting surface, and the robot then places it correctly." />
       </div>
       <p class="caption"><b>Semantic memory.</b> Successful and failed trajectories are distilled into a scenario
@@ -489,7 +489,7 @@
 
       <div class="panel" id="panel-pick" role="tabpanel" aria-labelledby="tab-pick">
         <div class="media">
-          <img loading="lazy" decoding="async" src="assets/images/traj_pick.jpg" width="1500" height="997"
+          <img loading="lazy" decoding="async" src="assets/images/traj_pick.jpg?v=02e8478b72" width="1500" height="997"
             alt="Four rows of six frames each, showing a Franka arm approaching, grasping and lifting different household objects from tables in varied simulated rooms." />
         </div>
         <p class="caption"><b>Pick.</b> The RL skill adapts its approach and closure to each object's geometry and
@@ -498,7 +498,7 @@
 
       <div class="panel" id="panel-place" role="tabpanel" aria-labelledby="tab-place" hidden>
         <div class="media">
-          <img loading="lazy" decoding="async" src="assets/images/traj_place.jpg" width="1500" height="997"
+          <img loading="lazy" decoding="async" src="assets/images/traj_place.jpg?v=f104746cac" width="1500" height="997"
             alt="Four rows of six frames each, showing a Franka arm transporting objects and releasing them onto plates, into bowls and onto table surfaces." />
         </div>
         <p class="caption"><b>Place.</b> Target position comes from the planner; the skill closes the loop on contact
@@ -507,7 +507,7 @@
 
       <div class="panel" id="panel-orient" role="tabpanel" aria-labelledby="tab-orient" hidden>
         <div class="media">
-          <img loading="lazy" decoding="async" src="assets/images/traj_orientation.jpg" width="1500" height="997"
+          <img loading="lazy" decoding="async" src="assets/images/traj_orientation.jpg?v=1836f0b235" width="1500" height="997"
             alt="Four rows of six frames each, showing a Franka arm picking up cups and bottles lying on their sides and setting them down upright." />
         </div>
         <p class="caption"><b>Orientation-aware.</b> Axis-alignment prediction turns "stand the cup upright" into an
@@ -516,7 +516,7 @@
 
       <div class="panel" id="panel-long" role="tabpanel" aria-labelledby="tab-long" hidden>
         <div class="media">
-          <img loading="lazy" decoding="async" src="assets/images/traj_long.jpg" width="1500" height="997"
+          <img loading="lazy" decoding="async" src="assets/images/traj_long.jpg?v=af684f73b9" width="1500" height="997"
             alt="Four rows of six frames each, showing multi-step tasks: moving several mugs onto plates, and inserting a toothbrush into a cup that first has to be stood upright." />
         </div>
         <p class="caption"><b>Long-horizon.</b> Multi-step tasks the planner reaches by composing skills across search
@@ -638,7 +638,7 @@
 
       <h3 class="sub-title">The gain scales with the data</h3>
       <div class="figure media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/scaling.jpg" width="1300" height="975"
+        <img loading="lazy" decoding="async" src="assets/images/scaling.jpg?v=f329941e1e" width="1300" height="975"
           alt="Line plot of OOD success rate against percentage of generated data mixed in. Single perturbation rises from 47.6 percent at zero to 78.1 percent at 100 percent; pairwise perturbation rises from 21.0 to 65.7 percent." />
       </div>
       <p class="caption"><b>Data scaling.</b> OOD success rate climbs steadily as more SkillWeaver demonstrations are
@@ -848,7 +848,7 @@
       </div>
 
       <div class="figure media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/real_world.jpg" width="1300" height="975"
+        <img loading="lazy" decoding="async" src="assets/images/real_world.jpg?v=33264231ea" width="1300" height="975"
           alt="Two real Franka images for the instruction 'pick up the fruit on the left': LST+PT grasps the apple on the left, while PT only grasps the banana on the right." />
       </div>
       <p class="caption"><b>OOD spatial grounding.</b> With simulation pre-training the policy resolves "the fruit on
@@ -1025,7 +1025,7 @@
     </div>
   </footer>
 
-  <script src="js/nav.js"></script>
+  <script src="js/nav.js?v=93340c0946"></script>
 </body>
 
 </html>

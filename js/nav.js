@@ -37,6 +37,29 @@
       if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') dismiss();
     });
 
+    // 'ended' is the event for this and it did not fire, so it is not the only
+    // thing the fade may hang on. Two independent finishers:
+    //   - the clock: timeupdate lands several times a second, and the last
+    //     quarter-second of a 25s clip is close enough to over;
+    //   - a wall timer armed once the duration is known, which also covers the
+    //     clip stalling near the end, where timeupdate stops arriving too.
+    const nearEnd = () => {
+      const d = video.duration;
+      if (d && isFinite(d) && video.currentTime >= d - 0.25) dismiss();
+    };
+    video.addEventListener('timeupdate', nearEnd);
+
+    let armed = false;
+    const armWallClock = () => {
+      const d = video.duration;
+      if (armed || !d || !isFinite(d)) return;
+      armed = true;
+      setTimeout(dismiss, (d - video.currentTime) * 1000 + 600);
+    };
+    video.addEventListener('loadedmetadata', armWallClock);
+    video.addEventListener('playing', armWallClock);
+    armWallClock();
+
     const started = video.play();
     if (started && started.catch) started.catch(dismiss);
   })();
