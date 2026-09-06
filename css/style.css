@@ -1717,6 +1717,13 @@ td b {
   text-underline-offset: 3px;
 }
 
+/* Sits under the page's own line and a step quieter: it credits the design,
+   it is not part of what the page is about. */
+.footer__credit {
+  margin-top: 8px;
+  opacity: 0.75;
+}
+
 /* ============================================================
    Responsive
    ============================================================ */
