@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="title" content="SkillWeaver" />
+  <meta name="description"
+    content="SkillWeaver is an autonomous robot data engine: a VLM planner searches over closed-loop RL interaction skills in simulation, and a hierarchical verifier decides what becomes training data. 11K scenes, 31K demonstrations, 8.7M frames, no teleoperation." />
+  <meta name="keywords" content="Robot Learning, Data Collection, Simulation, Manipulation, VLA" />
+  <meta name="robots" content="index, follow" />
+  <title>SkillWeaver &mdash; Scaling up Robot Data in Simulation through VLM-guided Search over Learned Skills</title>
+
+  <!-- TODO(link preview): drop a 2278x1193 card.png in assets/images/ and point
+       og:image at its ABSOLUTE url once the page has a domain. Scrapers resolve
+       nothing relative, cache by url forever (so a changed image needs a NEW
+       filename), and crop to 1.91:1. Until then the tags below are inert. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SkillWeaver — Scaling up Robot Data in Simulation through VLM-guided Search over Learned Skills" />
+  <meta property="og:description"
+    content="A VLM planner searches over closed-loop RL interaction skills in simulation; a hierarchical verifier decides what becomes training data." />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+  <link href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <!-- Sets the flag before first paint so revealed sections never flash in
+       and then hide. Gated on IntersectionObserver: without it the reveal
+       never runs, and the content must not start out invisible. -->
+  <script>
+    if ('IntersectionObserver' in window) {
+      document.documentElement.classList.add('has-reveal');
+    }
+  </script>
+  <link href="css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- ===================== Side navigation ===================== -->
+  <nav class="sidenav" aria-label="Section navigation">
+    <ul>
+      <li><a href="#video"><span class="sidenav__mark"></span><span class="sidenav__label">Video</span></a></li>
+      <li><a href="#what"><span class="sidenav__mark"></span><span class="sidenav__label">What it does</span></a></li>
+      <li><a href="#method"><span class="sidenav__mark"></span><span class="sidenav__label">Method</span></a></li>
+      <li><a href="#tree"><span class="sidenav__mark"></span><span class="sidenav__label">Tree Search</span></a></li>
+      <li><a href="#data"><span class="sidenav__mark"></span><span class="sidenav__label">Collected Data</span></a></li>
+      <li><a href="#sim"><span class="sidenav__mark"></span><span class="sidenav__label">Sim Results</span></a></li>
+      <li><a href="#real"><span class="sidenav__mark"></span><span class="sidenav__label">Real World</span></a></li>
+      <li><a href="#cite"><span class="sidenav__mark"></span><span class="sidenav__label">Cite</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- ===================== Hero / search space ===================== -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero__inner">
+        <div class="hero__copy">
+          <!-- TODO(venue): swap for the decision once it lands, e.g.
+               "CoRL 2026 <span class="hero__eyebrow-hl">Oral</span>". -->
+          <p class="hero__eyebrow"><span class="dot"></span><span class="hero__eyebrow-hl">CoRL 2026</span></p>
+
+          <h1 class="hero__title">
+            <span class="hero__name">SkillWeaver</span>
+            <span class="hero__plain">Scaling up Robot Data in Simulation</span>
+            <span class="hero__line">by <span class="word">VLM-guided Search</span> over <span class="word">Learned Skills</span></span>
+          </h1>
+
+          <p class="hero__authors">
+            <a href="https://ada4321.github.io/" target="_blank" rel="noopener">He Zhu</a><sup>1</sup>,
+            <a href="https://forestontheland.github.io/cv/" target="_blank" rel="noopener">Lusen Zhao</a><sup>2&dagger;</sup>,
+            <a href="https://github.com/nickzheng20" target="_blank" rel="noopener">Kwan Man Cheng</a><sup>1</sup>,
+            <a href="https://www.cs.cmu.edu/~katef/" target="_blank" rel="noopener">Katerina Fragkiadaki</a><sup>1</sup>
+          </p>
+          <p class="hero__affil">
+            <span class="hero__aff"><sup>1</sup>Carnegie Mellon University</span>
+            <span class="hero__aff"><sup>2</sup>University of Illinois Urbana-Champaign</span>
+          </p>
+          <p class="hero__note"><sup>&dagger;</sup>Work done during an internship at Carnegie Mellon University</p>
+
+          <!-- TODO(links): fill in the hrefs. A button whose target does not
+               exist yet is better removed than left pointing at "#". -->
+          <nav class="links">
+            <a class="btn btn--primary" href="#" target="_blank">
+              <i class="ai ai-arxiv"></i> arXiv
+            </a>
+            <a class="btn" href="#" target="_blank">
+              <i class="fa fa-file-pdf-o"></i> Paper
+            </a>
+            <a class="btn" href="#" target="_blank">
+              <i class="fa fa-github"></i> Code
+            </a>
+            <!-- <a class="btn" href="#" target="_blank">
+              <i class="fa fa-database"></i> Dataset
+            </a> -->
+            <a class="btn" href="#cite">
+              <i class="fa fa-quote-right"></i> BibTeX
+            </a>
+          </nav>
+        </div>
+
+        <!-- Signature: a search tree over interaction skills is pruned down to
+             the one branch the verifier accepts, and that branch's skills are
+             then woven — teal over indigo over amber — into a single verified
+             demonstration that lands in the dataset. -->
+        <div class="hero__figure">
+          <svg class="field" viewBox="0 0 560 470" role="img"
+            aria-label="The SkillWeaver engine: a Monte Carlo tree search grows a tree of interaction skills. Memory feeds a VLM planner, which proposes a skill; a learned robot skill executes it; a VLM verifier scores the result, sending it back up the tree, into the verified-demonstration dataset, and back into memory.">
+            <defs>
+              <linearGradient id="swWin" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="230" y2="0">
+                <stop offset="0" stop-color="#2DD4BF" />
+                <stop offset="0.55" stop-color="#7C83F7" />
+                <stop offset="1" stop-color="#FFB020" />
+              </linearGradient>
+            </defs>
+            <!-- The search tree. Base edges are always present; the two children and
+                 their scores are grown by the animation, one MCTS iteration each. -->
+            <g class="sw-tree">
+              <path class="sw-edge" d="M40,235 L100,178" />
+              <path class="sw-edge" d="M40,235 L100,292" />
+              <path class="sw-edge" d="M100,178 L160,146" />
+              <path class="sw-edge" d="M100,178 L160,208" />
+              <path class="sw-edge" d="M100,292 L160,266" />
+              <path class="sw-edge" d="M100,292 L160,324" />
+              <path class="sw-accept-glow" style="animation-name: sw-acc-glow;" d="M40,235 L100,178 L160,208 L220,214" />
+              <path class="sw-edge sw-edge--new" style="animation-name: sw-edge1; stroke-dasharray: 65.4;" d="M160,146 L220,120" />
+              <path class="sw-edge sw-edge--new sw-edge--win" style="animation-name: sw-edge2; stroke-dasharray: 60.3;" d="M160,208 L220,214" />
+              <path class="sw-token sw-token--down" style="animation-name: sw-sel1; stroke-dasharray: 16 150.8;" d="M40,235 L100,178 L160,146" />
+              <path class="sw-token sw-token--down" style="animation-name: sw-sel2; stroke-dasharray: 16 149.8;" d="M40,235 L100,178 L160,208" />
+              <path class="sw-token sw-token--up" style="animation-name: sw-bk1; stroke-dasharray: 16 216.1;" d="M220,120 L160,146 L100,178 L40,235" />
+              <path class="sw-token sw-token--up" style="animation-name: sw-bk2; stroke-dasharray: 16 210.1;" d="M220,214 L160,208 L100,178 L40,235" />
+              <circle class="sw-node" cx="40" cy="235" r="6.5" />
+              <circle class="sw-node" cx="100" cy="178" r="6.5" />
+              <circle class="sw-node" cx="100" cy="292" r="6.5" />
+              <circle class="sw-node" cx="160" cy="146" r="6.5" />
+              <circle class="sw-node" cx="160" cy="208" r="6.5" />
+              <circle class="sw-node" cx="160" cy="266" r="6.5" />
+              <circle class="sw-node" cx="160" cy="324" r="6.5" />
+              <circle class="sw-node sw-node--dead" style="animation-name: sw-node1;" cx="220" cy="120" r="6" />
+              <circle class="sw-node sw-node--win" style="animation-name: sw-node2;" cx="220" cy="214" r="7" />
+              <g class="sw-badge sw-badge--bad" style="animation-name: sw-badge1;">
+                <path class="sw-cross" d="M215.4,115.4 L224.6,124.6 M224.6,115.4 L215.4,124.6" />
+                <rect class="sw-badge__box" x="240" y="113" width="31" height="15" rx="7.5" />
+                <text class="sw-badge__t" x="255.5" y="120.5" text-anchor="middle" dominant-baseline="central">31</text>
+              </g>
+              <g class="sw-badge sw-badge--good" style="animation-name: sw-badge2;">
+                <path class="sw-check" d="M216.6,214 L219.2,216.8 L223.8,211 " />
+                <rect class="sw-badge__box" x="240" y="207" width="39" height="15" rx="7.5" />
+                <text class="sw-badge__t" x="259.5" y="214.5" text-anchor="middle" dominant-baseline="central">100</text>
+              </g>
+            </g>
+
+            <!-- Names the MCTS phase currently playing, so the loop is readable. -->
+            <text class="sw-cap sw-cap--static" x="140" y="400" text-anchor="middle">mcts</text>
+            <text class="sw-cap" style="animation-name: sw-cap-select;" x="140" y="400" text-anchor="middle">select</text>
+            <text class="sw-cap" style="animation-name: sw-cap-retrieve;" x="140" y="400" text-anchor="middle">retrieve</text>
+            <text class="sw-cap" style="animation-name: sw-cap-expand;" x="140" y="400" text-anchor="middle">expand</text>
+            <text class="sw-cap" style="animation-name: sw-cap-execute;" x="140" y="400" text-anchor="middle">execute</text>
+            <text class="sw-cap" style="animation-name: sw-cap-verify;" x="140" y="400" text-anchor="middle">verify</text>
+            <text class="sw-cap" style="animation-name: sw-cap-backprop;" x="140" y="400" text-anchor="middle">backprop</text>
+            <text class="sw-cap" style="animation-name: sw-cap-accept;" x="140" y="400" text-anchor="middle">accept</text>
+            <text class="sw-cap" style="animation-name: sw-cap-distill;" x="140" y="400" text-anchor="middle">distill</text>
+            <text class="sw-label" x="128" y="96" text-anchor="middle">search tree</text>
+
+            <!-- Who does what. Two VLM roles share the sparkle mark because they are
+                 the same model; the robot carries a parallel-jaw gripper. -->
+            <g class="sw-chip" style="animation-name: sw-chip-memory;">
+              <rect class="sw-chip__glow" x="268" y="44" width="180" height="36" rx="11" />
+              <rect class="sw-chip__box" x="268" y="44" width="180" height="36" rx="11" />
+              <g transform="translate(291,62)"><g class="sw-glyph-s"><ellipse cx="0" cy="-6" rx="7.5" ry="3" /><path d="M-7.5,-6 L-7.5,3 A7.5,3 0 0 0 7.5,3 L7.5,-6" /><path d="M-7.5,-1.5 A7.5,3 0 0 0 7.5,-1.5" /></g></g>
+              <text class="sw-chip__t" x="313" y="62" dominant-baseline="central">MEMORY</text>
+            </g>
+            <g class="sw-chip" style="animation-name: sw-chip-planner;">
+              <rect class="sw-chip__glow" x="268" y="128" width="180" height="36" rx="11" />
+              <rect class="sw-chip__box" x="268" y="128" width="180" height="36" rx="11" />
+              <g transform="translate(291,146)"><path class="sw-glyph-f" d="M0,-7.6 C0.8,-2.4 2.4,-0.8 7.6,0 C2.4,0.8 0.8,2.4 0,7.6 C-0.8,2.4 -2.4,0.8 -7.6,0 C-2.4,-0.8 -0.8,-2.4 0,-7.6 Z" /></g>
+              <text class="sw-chip__t" x="313" y="146" dominant-baseline="central">VLM PLANNER</text>
+            </g>
+            <g class="sw-chip" style="animation-name: sw-chip-robot;">
+              <rect class="sw-chip__glow" x="268" y="212" width="180" height="36" rx="11" />
+              <rect class="sw-chip__box" x="268" y="212" width="180" height="36" rx="11" />
+              <g transform="translate(291,230)"><path class="sw-glyph-s" d="M0,-8 L0,-2.5 M-6.5,-2.5 L6.5,-2.5 M-6.5,-2.5 L-6.5,5 M6.5,-2.5 L6.5,5" /></g>
+              <text class="sw-chip__t" x="313" y="230" dominant-baseline="central">ROBOT SKILL</text>
+            </g>
+            <g class="sw-chip" style="animation-name: sw-chip-verifier;">
+              <rect class="sw-chip__glow" x="268" y="296" width="180" height="36" rx="11" />
+              <rect class="sw-chip__box" x="268" y="296" width="180" height="36" rx="11" />
+              <g transform="translate(291,314)"><path class="sw-glyph-f" d="M0,-7.6 C0.8,-2.4 2.4,-0.8 7.6,0 C2.4,0.8 0.8,2.4 0,7.6 C-0.8,2.4 -2.4,0.8 -7.6,0 C-2.4,-0.8 -0.8,-2.4 0,-7.6 Z" /></g>
+              <text class="sw-chip__t" x="313" y="314" dominant-baseline="central">VLM VERIFIER</text>
+            </g>
+
+            <!-- The engine loop: memory feeds the planner, the planner proposes a
+                 skill, the robot executes it, the verifier scores it, and what passes
+                 goes to the dataset and back into memory. -->
+            <path class="sw-arrow" d="M358.0,84 L358.0,121" />
+            <path class="sw-head" d="M358.0,121.0 L354.1,113.5 L361.9,113.5 Z" />
+            <path class="sw-token sw-token--arrow" style="animation-name: sw-retrieve; stroke-dasharray: 12 37.0;" d="M358.0,84 L358.0,121" />
+            <path class="sw-arrow" d="M358.0,168 L358.0,205" />
+            <path class="sw-head" d="M358.0,205.0 L354.1,197.5 L361.9,197.5 Z" />
+            <path class="sw-token sw-token--arrow" style="animation-name: sw-planrobot; stroke-dasharray: 12 37.0;" d="M358.0,168 L358.0,205" />
+            <path class="sw-arrow" d="M358.0,252 L358.0,289" />
+            <path class="sw-head" d="M358.0,289.0 L354.1,281.5 L361.9,281.5 Z" />
+            <path class="sw-token sw-token--arrow" style="animation-name: sw-robotver; stroke-dasharray: 12 37.0;" d="M358.0,252 L358.0,289" />
+            <path class="sw-arrow" d="M358.0,336 L358.0,367" />
+            <path class="sw-head" d="M358.0,367.0 L354.1,359.5 L361.9,359.5 Z" />
+            <path class="sw-token sw-token--arrow" style="animation-name: sw-accept; stroke-dasharray: 12 31.0;" d="M358.0,336 L358.0,367" />
+            <g class="sw-propose" style="animation-name: sw-prop1-dim;">
+              <path class="sw-arrow sw-arrow--dash" d="M264,142 C234,130 202,138 176,143" />
+              <path class="sw-head" d="M176.0,143.0 L182.6,137.7 L184.1,145.4 Z" />
+            </g>
+            <path class="sw-token sw-token--arrow" style="animation-name: sw-prop1; stroke-dasharray: 14 89.4;" d="M264,142 C234,130 202,138 176,143" />
+            <g class="sw-propose" style="animation-name: sw-prop2-dim;">
+              <path class="sw-arrow sw-arrow--dash" d="M264,156 C232,170 202,194 177,203" />
+              <path class="sw-head" d="M177.0,203.0 L182.6,196.7 L185.4,203.9 Z" />
+            </g>
+            <path class="sw-token sw-token--arrow" style="animation-name: sw-prop2; stroke-dasharray: 14 99.0;" d="M264,156 C232,170 202,194 177,203" />
+            <path class="sw-arrow sw-arrow--dash" d="M448,314 C556,300 556,76 448,62" />
+            <path class="sw-head" d="M448.0,62.0 L456.2,60.0 L454.3,67.6 Z" />
+            <path class="sw-token sw-token--arrow sw-token--fail" style="animation-name: sw-distill-fail; stroke-dasharray: 18 327.0;" d="M448,314 C556,300 556,76 448,62" />
+            <path class="sw-token sw-token--arrow sw-token--ok" style="animation-name: sw-distill-ok; stroke-dasharray: 18 327.0;" d="M448,314 C556,300 556,76 448,62" />
+            <text class="sw-label" x="368" y="102" text-anchor="start">retrieve</text>
+            <text class="sw-label" x="368" y="354" text-anchor="start">accept</text>
+            <text class="sw-label" x="212" y="178" text-anchor="middle">propose</text>
+            <text class="sw-label" x="486" y="176" text-anchor="middle">distill</text>
+            <text class="sw-label sw-label--sub sw-outcome sw-label--fail" style="animation-name: sw-out-fail;" x="486" y="194" text-anchor="middle">lesson</text>
+            <text class="sw-label sw-label--sub sw-outcome sw-label--ok" style="animation-name: sw-out-ok;" x="486" y="194" text-anchor="middle">strategy</text>
+
+            <!-- Verified demonstrations. The deck pulses as each one lands. -->
+            <g class="sw-deck">
+              <rect class="sw-card sw-card--back" x="336" y="382" width="58" height="44" rx="7" />
+              <rect class="sw-card sw-card--mid" x="331" y="377" width="58" height="44" rx="7" />
+              <rect class="sw-card" x="326" y="372" width="58" height="44" rx="7" />
+              <path class="sw-card__line" d="M335,385 L369,385 M335,394 L361,394 M335,403 L369,403" />
+              <rect class="sw-card sw-card--new" style="animation-name: sw-deck;" x="321" y="367" width="58" height="44" rx="7" />
+            </g>
+            <text class="sw-label" x="355" y="448" text-anchor="middle">verified demos</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== Overview ===================== -->
+  <section class="section" id="video">
+    <div class="container">
+      <h2 class="section-title">Video</h2>
+
+      <div class="media media--video">
+        <video controls preload="metadata" playsinline
+          poster="assets/images/video-poster.jpg" width="1108" height="720">
+          <source src="assets/videos/skillweaver-demo.mp4" type="video/mp4" />
+          <p>Your browser cannot play this video.
+            <a href="assets/videos/skillweaver-demo.mp4">Download it</a> instead.</p>
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Abstract ===================== -->
+  <section class="section section--alt" id="what">
+    <div class="container">
+      <h2 class="section-title">What SkillWeaver does</h2>
+
+      <!--
+      <div class="stats">
+        <div class="stat">
+          <div class="stat__num">11K+</div>
+          <div class="stat__label">Simulated scenes</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">31K</div>
+          <div class="stat__label">Demonstrations</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">8.7M</div>
+          <div class="stat__label">Frames</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">0</div>
+          <div class="stat__label">Teleoperated episodes</div>
+        </div>
+      </div>
+      <div class="figure media">
+        <img loading="lazy" decoding="async" src="assets/images/teaser.jpg" width="1920" height="1080"
+          alt="A grid of simulated kitchen, living-room and tabletop scenes with a Franka arm manipulating everyday objects, beside per-step point tracks, depth and RGB for two pick-and-place demonstrations." />
+      </div>
+      <p class="caption"><b>SkillWeaver</b> generates large-scale manipulation demonstrations in simulation by combining
+        scalable environment generation, verifier-guided agentic search, and reusable learned interaction skills. Every
+        trajectory arrives already synchronised with RGB, depth, segmentation, point tracks, object state and language.
+      </p>
+
+      <div class="prose">
+        <p>
+          Robot manipulation has recently achieved remarkable progress through large-scale learning from teleoperated
+          demonstrations. However, collecting such data remains expensive, labor-intensive, and difficult to scale
+          across diverse environments and long-horizon tasks. Recent efforts have explored language-guided skill
+          composition and simulation-based data generation to reduce human supervision, yet they typically rely on
+          <b>fixed skill sequencing, hand-designed controllers, or manually specified execution pipelines</b>.
+        </p>
+        <p>
+          We present <b>SkillWeaver</b>, a framework for autonomous robot data generation in simulation. Given a task
+          instruction and a procedurally generated or reconstructed scene from a real-world observation, SkillWeaver
+          decomposes the task into semantic subgoals, executes <b>reusable closed-loop interaction skills learned with
+          reinforcement learning</b>, and iteratively verifies execution outcomes to guide search, reflection, and
+          re-planning. By tightly coupling environment generation, skill learning, hierarchical planning, and automatic
+          trajectory verification, SkillWeaver autonomously produces diverse long-horizon manipulation demonstrations
+          together with rich semantic and geometric supervision for downstream policy learning.
+        </p>
+        <p>
+          We evaluate SkillWeaver on LIBERO-PRO and real-world Franka manipulation, and it produces high-quality
+          training data and yields policies that adapt more effectively to <b>novel objects, scenes, and long-horizon
+          tasks</b> than existing simulation-based data generation pipelines.
+        </p>
+      </div>
+      -->
+    </div>
+  </section>
+
+  <!-- ===================== Method ===================== -->
+  <section class="section" id="method">
+    <div class="container">
+      <h2 class="section-title">Method</h2>
+
+      <!--
+      <div class="figure media media--pad">
+        <img loading="lazy" decoding="async" src="assets/images/pipeline.jpg" width="1900" height="1060"
+          alt="SkillWeaver pipeline: RL pick and place skills, an MCTS search tree with failed and successful branches feeding memory and distillation, a VLM planner producing a structured skill proposal with axis alignment, skill execution frames, and a VLM verifier scoring subgoal completion and branch progress." />
+      </div>
+      <p class="caption"><b>Overview of SkillWeaver.</b> A VLM planner proposes interaction skills, which are executed
+        by learned RL policies in simulation. A hierarchical verifier evaluates each execution and provides progress
+        rewards and reflection, while semantic memory guides future exploration. Verified trajectories are distilled
+        into a multimodal training dataset.</p>
+
+      <div class="prose">
+        <p>
+          Contact-rich manipulation needs <b>continuous closed-loop adaptation</b>: even if a planner correctly decides
+          to grasp a bottle from the side, the executed motion must keep adapting as contact is established and the
+          object begins to move. SkillWeaver therefore separates semantic reasoning &mdash; <i>what</i> interaction to
+          perform next &mdash; from physical adaptation &mdash; <i>how</i> to execute it robustly.
+        </p>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card__idx">01</div>
+          <h3>Scalable environment generation</h3>
+          <p>Gemini proposes indoor object categories and synthesises images; SAM3D-Objects reconstructs textured
+            meshes; CoACD builds collision geometry; assets ship as IsaacLab USD annotated with canonical axes, size,
+            friction and placement priors. Scenes are composed procedurally (<i>in-the-wild</i>) or reconstructed from
+            a real observation (<i>seeded</i>).</p>
+        </div>
+        <div class="card">
+          <div class="card__idx">02</div>
+          <h3>Closed-loop RL interaction skills</h3>
+          <p>Reusable <b>Pick</b> and <b>Place</b> skills are trained with PPO in IsaacLab, each specialised into
+            sub-policies for different contact regimes. They read proprioception plus object-centric state and output
+            Cartesian end-effector motion &mdash; adapting to pose and contact rather than replaying an open-loop
+            geometric primitive.</p>
+        </div>
+        <div class="card">
+          <div class="card__idx">03</div>
+          <h3>Hierarchical closed-loop search</h3>
+          <p>At each node the VLM predicts a structured action &mdash; subgoal, skill, object, target position, target
+            orientation. Orientation is predicted as a correspondence between <b>canonical object axes</b> and solved
+            analytically. cuRobo moves the arm into a local pre-interaction pose, the RL skill executes, and MCTS
+            expands the frontier so alternatives are explored instead of committed to greedily.</p>
+        </div>
+        <div class="card">
+          <div class="card__idx">04</div>
+          <h3>Verification, reflection &amp; memory</h3>
+          <p>A <i>subgoal verifier</i> checks each executed skill; a <i>progress verifier</i> scores the whole branch in
+            [0, 100] and writes a natural-language reflection. Scores replace rollouts as search rewards, reflections
+            re-enter the planner prompt, and distilled memories are retrieved before every expansion.</p>
+        </div>
+      </div>
+
+      <h3 class="sub-title">Environment generation</h3>
+      <div class="figure media media--pad">
+        <img loading="lazy" decoding="async" src="assets/images/real2sim.jpg" width="1777" height="885"
+          alt="Nine-stage loop: real data, 3D vision tools, scene and asset abstraction, IsaacLab simulation, augmentation engine, MCTS trajectory generation, training data, policy training, and evaluation feeding back to real data." />
+      </div>
+      <p class="caption"><b>The seeded loop.</b> A single view is reconstructed into meshes, 6-DoF poses and a scene
+        graph, instantiated in IsaacLab, augmented over layout, assets, background, lighting, camera and language, then
+        searched for successful trajectories that train a policy evaluated back in the real world.</p>
+
+      <div class="media media--pad">
+        <img loading="lazy" decoding="async" src="assets/images/assets.jpg" width="1800" height="665"
+          alt="Left: Gemini prompted for manipulated objects and containers per room, yielding four variants each of timer, saucepan, bottle and mug. Right: a rendered spread of dozens of reconstructed household assets." />
+      </div>
+      <p class="caption"><b>Asset database.</b> Category proposal and image synthesis with Gemini, reconstruction with
+        SAM3D-Objects, collision geometry with CoACD, and per-asset semantic and physical metadata.</p>
+
+      <div class="media media--pad">
+        <img loading="lazy" decoding="async" src="assets/images/env_aug.jpg" width="1700" height="957"
+          alt="One seed scene of a table with groceries and a basket, expanded into six augmented variants differing in table texture, background, lighting, camera viewpoint and object identity." />
+      </div>
+      <p class="caption"><b>Appearance and layout randomisation.</b> Perturbing lighting, textures, backgrounds and
+        camera viewpoints pushes downstream policies toward behaviourally relevant interaction cues instead of
+        simulation statistics.</p>
+
+      <h3 class="sub-title">Why not a grasp proposer and a motion planner?</h3>
+      <div class="figure media media--pad">
+        <img loading="lazy" decoding="async" src="assets/images/grasp_failure.png" width="1164" height="812"
+          alt="Four point clouds — two boxes and two mugs — each surrounded by dense magenta grasp proposals, many of which pass through the supporting table or approach from below." />
+      </div>
+      <p class="caption"><b>Common failure modes of grasp proposers.</b> For certain geometries and poses every proposal
+        can be unreachable in the current scene &mdash; penetrating the table, for instance &mdash; because a scripted
+        pipeline decouples grasp proposal from scene-specific reachability.</p>
+
+      <h3 class="sub-title">What memory buys the planner</h3>
+      <div class="figure media media--pad">
+        <img loading="lazy" decoding="async" src="assets/images/memory.jpg" width="1486" height="786"
+          alt="Instruction 'place the chocolate to the right of the plate': without memory the robot puts the chocolate on the plate; retrieved guidance explains that beside means the vacant supporting surface, and the robot then places it correctly." />
+      </div>
+      <p class="caption"><b>Semantic memory.</b> Successful and failed trajectories are distilled into a scenario
+        description plus behavioural guidance. A selector VLM retrieves the top-<i>K</i> memories for the current
+        instruction and subgoal, letting the planner reuse strategies and avoid repeating known failures.</p>
+      -->
+    </div>
+  </section>
+
+  <!-- ===================== Environments ===================== -->
+  <!-- ===================== Generated demonstrations ===================== -->
+  <section class="section section--alt" id="tree">
+    <div class="container">
+      <h2 class="section-title">Examples of Tree Search Process</h2>
+
+<!-- TODO(tree-search): needs a figure or clip of an actual search tree —
+           root state, expanded children, the verifier's verdict on each, and the
+           accepted path. figure/MCTS1-4.png in the paper repo look right but
+           cannot be used: they show the superseded code-generation design
+           (lift_object(...), push_object_towards_desription(...)) and a drawer
+           task, while the method now emits a structured skill proposal and the
+           skill library is Pick and Place only. -->
+      <!--
+      <div class="media media--placeholder">
+        <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+          <circle class="ph-node" cx="24" cy="8" r="4" />
+          <circle class="ph-node" cx="12" cy="26" r="4" />
+          <circle class="ph-node" cx="36" cy="26" r="4" />
+          <circle class="ph-node" cx="30" cy="42" r="4" />
+          <circle class="ph-node" cx="42" cy="42" r="4" />
+          <path class="ph-edge" d="M24,12 L12,22 M24,12 L36,22 M36,30 L30,38 M36,30 L42,38" />
+        </svg>
+        <p class="placeholder__text">Search-tree example coming soon</p>
+      </div>
+      -->
+    </div>
+  </section>
+
+  <section class="section" id="data">
+    <div class="container">
+      <h2 class="section-title">Examples of Collected Data</h2>
+
+      <!--
+      <div class="tabs" role="tablist" aria-label="Trajectory family" data-tabs>
+        <button class="tab" role="tab" id="tab-pick" aria-controls="panel-pick" aria-selected="true">Pick</button>
+        <button class="tab" role="tab" id="tab-place" aria-controls="panel-place" aria-selected="false">Place</button>
+        <button class="tab" role="tab" id="tab-orient" aria-controls="panel-orient"
+          aria-selected="false">Orientation</button>
+        <button class="tab" role="tab" id="tab-long" aria-controls="panel-long" aria-selected="false">Long-horizon</button>
+      </div>
+
+      <div class="panel" id="panel-pick" role="tabpanel" aria-labelledby="tab-pick">
+        <div class="media">
+          <img loading="lazy" decoding="async" src="assets/images/traj_pick.jpg" width="1500" height="997"
+            alt="Four rows of six frames each, showing a Franka arm approaching, grasping and lifting different household objects from tables in varied simulated rooms." />
+        </div>
+        <p class="caption"><b>Pick.</b> The RL skill adapts its approach and closure to each object's geometry and
+          resting pose rather than replaying a proposed grasp.</p>
+      </div>
+
+      <div class="panel" id="panel-place" role="tabpanel" aria-labelledby="tab-place" hidden>
+        <div class="media">
+          <img loading="lazy" decoding="async" src="assets/images/traj_place.jpg" width="1500" height="997"
+            alt="Four rows of six frames each, showing a Franka arm transporting objects and releasing them onto plates, into bowls and onto table surfaces." />
+        </div>
+        <p class="caption"><b>Place.</b> Target position comes from the planner; the skill closes the loop on contact
+          and support so the object settles where it was asked to go.</p>
+      </div>
+
+      <div class="panel" id="panel-orient" role="tabpanel" aria-labelledby="tab-orient" hidden>
+        <div class="media">
+          <img loading="lazy" decoding="async" src="assets/images/traj_orientation.jpg" width="1500" height="997"
+            alt="Four rows of six frames each, showing a Franka arm picking up cups and bottles lying on their sides and setting them down upright." />
+        </div>
+        <p class="caption"><b>Orientation-aware.</b> Axis-alignment prediction turns "stand the cup upright" into an
+          analytic target rotation, so the search never has to guess an unconstrained 3D orientation.</p>
+      </div>
+
+      <div class="panel" id="panel-long" role="tabpanel" aria-labelledby="tab-long" hidden>
+        <div class="media">
+          <img loading="lazy" decoding="async" src="assets/images/traj_long.jpg" width="1500" height="997"
+            alt="Four rows of six frames each, showing multi-step tasks: moving several mugs onto plates, and inserting a toothbrush into a cup that first has to be stood upright." />
+        </div>
+        <p class="caption"><b>Long-horizon.</b> Multi-step tasks the planner reaches by composing skills across search
+          depth &mdash; including ones where an object must first be straightened before it can be filled.</p>
+      </div>
+      -->
+    </div>
+  </section>
+
+  <!-- ===================== Results ===================== -->
+  <section class="section section--alt" id="sim">
+    <div class="container">
+      <h2 class="section-title">Simulation Results</h2>
+
+      <!--
+      <div class="prose">
+        <p>
+          We reconstruct LIBERO environments in IsaacLab, apply extensive augmentation, and collect a dataset about
+          <b>10&times; larger</b> than the original. Pi0.5 is trained on mixtures of the original LIBERO data and our
+          generated trajectories, then evaluated on 33 pick-and-place tasks across the four
+          <a href="https://arxiv.org/abs/2510.13626" target="_blank">LIBERO-PRO</a> suites, which perturb language,
+          object, position, task and environment.
+        </p>
+      </div>
+
+      <div class="table-wrap" role="region" tabindex="0" aria-label="LIBERO-PRO Object suite success rates">
+        <table class="table--wide">
+          <thead>
+            <tr>
+              <th scope="col">Method</th>
+              <th scope="col">Original</th>
+              <th scope="col">Language</th>
+              <th scope="col">Object</th>
+              <th scope="col">Position</th>
+              <th scope="col">Task</th>
+              <th scope="col">Environment</th>
+              <th scope="col">OOD Avg.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">GT only</th>
+              <td>95.0</td>
+              <td>95.2</td>
+              <td><b>97.4</b></td>
+              <td>0.0</td>
+              <td>6.4</td>
+              <td>39.1</td>
+              <td>47.6</td>
+            </tr>
+            <tr class="ours">
+              <th scope="row">SkillWeaver Data + GT</th>
+              <td><b>95.8</b><span class="gain">+0.8</span></td>
+              <td><b>97.0</b><span class="gain">+1.8</span></td>
+              <td>92.0<span class="drop">&minus;5.4</span></td>
+              <td><b>77.0</b><span class="gain">+77.0</span></td>
+              <td><b>43.2</b><span class="gain">+36.8</span></td>
+              <td><b>81.3</b><span class="gain">+42.2</span></td>
+              <td><b>78.1</b><span class="gain">+30.5</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">Success rate (%) on <b>LIBERO-PRO-Object</b> with and without our generated data.</p>
+
+      <h3 class="sub-title">Stress test: two perturbations at a time</h3>
+      <div class="table-wrap" role="region" tabindex="0" aria-label="LIBERO-PRO pairwise perturbation success rates">
+        <table class="table--wide">
+          <thead>
+            <tr>
+              <th scope="col">Method</th>
+              <th scope="col">L+O</th>
+              <th scope="col">L+P</th>
+              <th scope="col">L+T</th>
+              <th scope="col">L+E</th>
+              <th scope="col">O+P</th>
+              <th scope="col">O+T</th>
+              <th scope="col">O+E</th>
+              <th scope="col">P+T</th>
+              <th scope="col">P+E</th>
+              <th scope="col">T+E</th>
+              <th scope="col">Avg.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">GT only</th>
+              <td><b>97.8</b></td>
+              <td>0.0</td>
+              <td>7.2</td>
+              <td>39.8</td>
+              <td>0.0</td>
+              <td>2.8</td>
+              <td>40.2</td>
+              <td>0.0</td>
+              <td>21.3</td>
+              <td>0.4</td>
+              <td>21.0</td>
+            </tr>
+            <tr class="ours">
+              <th scope="row">SkillWeaver Data + GT</th>
+              <td>89.4<span class="drop">&minus;8.4</span></td>
+              <td><b>78.4</b><span class="gain">+78.4</span></td>
+              <td><b>40.8</b><span class="gain">+33.6</span></td>
+              <td><b>77.1</b><span class="gain">+37.3</span></td>
+              <td><b>82.6</b><span class="gain">+82.6</span></td>
+              <td><b>34.0</b><span class="gain">+31.2</span></td>
+              <td><b>57.3</b><span class="gain">+17.1</span></td>
+              <td><b>76.8</b><span class="gain">+76.8</span></td>
+              <td><b>70.0</b><span class="gain">+48.7</span></td>
+              <td><b>50.6</b><span class="gain">+50.2</span></td>
+              <td><b>65.7</b><span class="gain">+44.7</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">All 10 <b>pairwise</b> augmentation combinations. L = Language, O = Object, P = Position,
+        T = Task, E = Environment. Even under this setting our data gains <b>+44.7</b> points on average.</p>
+
+      <h3 class="sub-title">The gain scales with the data</h3>
+      <div class="figure media media--pad">
+        <img loading="lazy" decoding="async" src="assets/images/scaling.jpg" width="1300" height="975"
+          alt="Line plot of OOD success rate against percentage of generated data mixed in. Single perturbation rises from 47.6 percent at zero to 78.1 percent at 100 percent; pairwise perturbation rises from 21.0 to 65.7 percent." />
+      </div>
+      <p class="caption"><b>Data scaling.</b> OOD success rate climbs steadily as more SkillWeaver demonstrations are
+        mixed in &mdash; 100% corresponds to +1.849M added frames.</p>
+
+      <h3 class="sub-title">Ablations</h3>
+      <div class="table-wrap" role="region" tabindex="0" aria-label="RL skill versus scripted pick-up success by geometry profile">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Pick-up success (%)</th>
+              <th scope="col">round</th>
+              <th scope="col">flat</th>
+              <th scope="col">elong.</th>
+              <th scope="col">concave</th>
+              <th scope="col">conc. lying</th>
+              <th scope="col">Overall</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Scripted (GraspGen + cuRobo)</th>
+              <td>87.0</td>
+              <td>55.6</td>
+              <td>93.2</td>
+              <td>6.0</td>
+              <td>2.0</td>
+              <td>65.1</td>
+            </tr>
+            <tr class="ours">
+              <th scope="row">RL skill (ours)</th>
+              <td><b>99.0</b></td>
+              <td><b>94.0</b></td>
+              <td><b>99.6</b></td>
+              <td><b>97.0</b></td>
+              <td><b>98.0</b></td>
+              <td><b>97.4</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note"><b>Closed-loop skills beat scripted execution</b> on 170 assets held out of the RL training
+        set &mdash; and the gap is widest exactly where open-loop grasping breaks down, on concave and lying objects.</p>
+
+      <div class="table-wrap" role="region" tabindex="0" aria-label="MCTS versus linear skill sequencing efficiency">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Search</th>
+              <th scope="col">Branch</th>
+              <th scope="col">Depth</th>
+              <th scope="col">Sims</th>
+              <th scope="col">Expansions / traj.</th>
+              <th scope="col">Time / traj. (s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Linear sequencing</th>
+              <td>1</td>
+              <td>20</td>
+              <td>20</td>
+              <td>6.74</td>
+              <td>891</td>
+            </tr>
+            <tr class="ours">
+              <th scope="row">MCTS (ours)</th>
+              <td>2</td>
+              <td>4</td>
+              <td>20</td>
+              <td><b>3.60</b></td>
+              <td><b>645</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note"><b>MCTS collects faster</b> on five long-horizon tasks under the same simulation budget, by
+        reusing successful skill prefixes across branches.</p>
+
+      <div class="table-wrap" role="region" tabindex="0" aria-label="MCTS success rate with and without memory">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">MCTS success (%)</th>
+              <th scope="col">Pudding &rarr; Side</th>
+              <th scope="col">Bottle Upright</th>
+              <th scope="col">Toothbrush &rarr; Cup</th>
+              <th scope="col">Toothbrush &rarr; Lying Cup</th>
+              <th scope="col">Avg.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">w/o Memory</th>
+              <td>20.0</td>
+              <td>50.0</td>
+              <td>80.0</td>
+              <td>0.0</td>
+              <td>37.5</td>
+            </tr>
+            <tr class="ours">
+              <th scope="row">w/ Memory</th>
+              <td><b>100.0</b></td>
+              <td><b>60.0</b></td>
+              <td><b>100.0</b></td>
+              <td><b>80.0</b></td>
+              <td><b>85.0</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note"><b>Memory more than doubles search success</b> on tasks that hinge on orientation
+        adjustment or spatial reasoning.</p>
+
+      <div class="table-wrap" role="region" tabindex="0" aria-label="Verifier-guided search success under a limited budget">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Search guidance</th>
+              <th scope="col">K &le; 4</th>
+              <th scope="col">K &le; 5</th>
+              <th scope="col">K &le; 6</th>
+              <th scope="col">Time / success traj. (s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="ours">
+              <th scope="row">w/ Verifier, w/o Rollout</th>
+              <td><b>58.3</b></td>
+              <td><b>76.7</b></td>
+              <td><b>95.0</b></td>
+              <td><b>454</b></td>
+            </tr>
+            <tr>
+              <th scope="row">w/o Verifier, w/o Rollout</th>
+              <td>8.3</td>
+              <td>31.7</td>
+              <td>50.0</td>
+              <td>943</td>
+            </tr>
+            <tr>
+              <th scope="row">w/o Verifier, w/ Rollout</th>
+              <td>6.7</td>
+              <td>21.7</td>
+              <td>43.3</td>
+              <td>2872</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note"><b>Verifier scores as search rewards</b> (%) matter most under a tight budget, where the
+        agent has to find the promising branch without exhausting the tree.</p>
+
+      <div class="table-wrap" role="region" tabindex="0" aria-label="Verifier success-detection accuracy">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Success detection accuracy (%)</th>
+              <th scope="col">pick up</th>
+              <th scope="col">place</th>
+              <th scope="col">orientation aware</th>
+              <th scope="col">straighten</th>
+              <th scope="col">Overall</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Image-only</th>
+              <td>85.7</td>
+              <td>77.0</td>
+              <td>76.0</td>
+              <td>76.5</td>
+              <td>78.8</td>
+            </tr>
+            <tr class="ours">
+              <th scope="row">+ Privileged states</th>
+              <td><b>100.0</b></td>
+              <td><b>100.0</b></td>
+              <td><b>99.0</b></td>
+              <td><b>99.0</b></td>
+              <td><b>99.5</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">Measured against hand-crafted ground-truth success conditions. Giving the verifier
+        privileged simulator state alongside the rendered images is what makes it <b>reliable enough to filter the
+        dataset unsupervised</b>.</p>
+      -->
+    </div>
+  </section>
+
+  <!-- ===================== Real world ===================== -->
+  <section class="section" id="real">
+    <div class="container">
+      <h2 class="section-title">Real World Results</h2>
+
+      <!--
+      <div class="prose">
+        <p>
+          The real-world pipeline has two stages: <b>large-scale simulation training</b> (LST) on in-the-wild scenes,
+          followed by <b>post-training</b> (PT) on trajectories collected from a reconstructed digital twin of the
+          specific scene of interest. Neither stage uses a teleoperated episode. We evaluate object, colour and spatial
+          recognition under the original setup and two distribution shifts &mdash; swapped object positions and a
+          changed tablecloth.
+        </p>
+      </div>
+
+      <div class="figure media media--pad">
+        <img loading="lazy" decoding="async" src="assets/images/real_world.jpg" width="1300" height="975"
+          alt="Two real Franka images for the instruction 'pick up the fruit on the left': LST+PT grasps the apple on the left, while PT only grasps the banana on the right." />
+      </div>
+      <p class="caption"><b>OOD spatial grounding.</b> With simulation pre-training the policy resolves "the fruit on
+        the left" spatially; without it, the policy falls back on object identity and layout priors.</p>
+
+      <div class="table-wrap" role="region" tabindex="0" aria-label="Real-world Franka success rate per task">
+        <table class="table--wide">
+          <thead>
+            <tr>
+              <th scope="col" colspan="2">Task</th>
+              <th scope="col">Original PT</th>
+              <th scope="col">Original LST+PT</th>
+              <th scope="col">Swap PT</th>
+              <th scope="col">Swap LST+PT</th>
+              <th scope="col">Bg. PT</th>
+              <th scope="col">Bg. LST+PT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="rowgroup" class="group" rowspan="4">Object</th>
+              <th scope="row">pick up the apple</th>
+              <td>40</td>
+              <td><b>90</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>90</b><span class="gain">+90</span></td>
+              <td>30</td>
+              <td><b>50</b><span class="gain">+20</span></td>
+            </tr>
+            <tr>
+              <th scope="row">pick up the banana</th>
+              <td><b>80</b></td>
+              <td>60<span class="drop">&minus;20</span></td>
+              <td>10</td>
+              <td><b>80</b><span class="gain">+70</span></td>
+              <td><b>80</b></td>
+              <td>40<span class="drop">&minus;40</span></td>
+            </tr>
+            <tr>
+              <th scope="row">place the apple in the bowl</th>
+              <td>10</td>
+              <td><b>100</b><span class="gain">+90</span></td>
+              <td>0</td>
+              <td><b>60</b><span class="gain">+60</span></td>
+              <td>0</td>
+              <td><b>80</b><span class="gain">+80</span></td>
+            </tr>
+            <tr>
+              <th scope="row">place the lemon in the bowl</th>
+              <td>0</td>
+              <td><b>50</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>50</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>80</b><span class="gain">+80</span></td>
+            </tr>
+            <tr class="rule">
+              <th scope="rowgroup" class="group" rowspan="4">Spatial</th>
+              <th scope="row">pick up the fruit on the left</th>
+              <td>30</td>
+              <td><b>80</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>70</b><span class="gain">+70</span></td>
+              <td>10</td>
+              <td><b>40</b><span class="gain">+30</span></td>
+            </tr>
+            <tr>
+              <th scope="row">pick up the fruit on the right</th>
+              <td><b>70</b></td>
+              <td>50<span class="drop">&minus;20</span></td>
+              <td>0</td>
+              <td><b>60</b><span class="gain">+60</span></td>
+              <td>20</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <th scope="row">place the fruit at the front in the bowl</th>
+              <td>0</td>
+              <td><b>30</b><span class="gain">+30</span></td>
+              <td>0</td>
+              <td><b>10</b><span class="gain">+10</span></td>
+              <td>0</td>
+              <td><b>30</b><span class="gain">+30</span></td>
+            </tr>
+            <tr>
+              <th scope="row">place the fruit at the back in the bowl</th>
+              <td>0</td>
+              <td><b>20</b><span class="gain">+20</span></td>
+              <td>0</td>
+              <td><b>30</b><span class="gain">+30</span></td>
+              <td>0</td>
+              <td><b>30</b><span class="gain">+30</span></td>
+            </tr>
+            <tr class="rule">
+              <th scope="rowgroup" class="group" rowspan="4">Colour</th>
+              <th scope="row">pick up the red fruit</th>
+              <td>50</td>
+              <td><b>90</b><span class="gain">+40</span></td>
+              <td>0</td>
+              <td><b>80</b><span class="gain">+80</span></td>
+              <td>30</td>
+              <td><b>60</b><span class="gain">+30</span></td>
+            </tr>
+            <tr>
+              <th scope="row">pick up the yellow fruit</th>
+              <td><b>80</b></td>
+              <td>50<span class="drop">&minus;30</span></td>
+              <td>10</td>
+              <td><b>80</b><span class="gain">+70</span></td>
+              <td>20</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <th scope="row">place the red fruit in the bowl</th>
+              <td>0</td>
+              <td><b>80</b><span class="gain">+80</span></td>
+              <td>0</td>
+              <td><b>50</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>50</b><span class="gain">+50</span></td>
+            </tr>
+            <tr>
+              <th scope="row">place the yellow fruit in the bowl</th>
+              <td>10</td>
+              <td><b>60</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>40</b><span class="gain">+40</span></td>
+              <td>0</td>
+              <td><b>10</b><span class="gain">+10</span></td>
+            </tr>
+            <tr class="total">
+              <th scope="row" colspan="2">Average</th>
+              <td>30.8</td>
+              <td><b>63.3</b><span class="gain">+32.5</span></td>
+              <td>1.7</td>
+              <td><b>58.3</b><span class="gain">+56.7</span></td>
+              <td>15.8</td>
+              <td><b>42.5</b><span class="gain">+26.7</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">Success rate (%) per real-world task, 10 trials each. <b>PT</b> = post-training on the
+        reconstructed scene only; <b>LST+PT</b> = large-scale simulation training followed by the same post-training.
+        The shift columns are where the gap is widest: under swapped object positions, PT alone collapses to
+        <b>1.7%</b>.</p>
+      -->
+    </div>
+  </section>
+
+  <!-- ===================== Citation ===================== -->
+  <section class="section section--alt" id="cite">
+    <div class="container">
+      <h2 class="section-title">BibTeX</h2>
+      <div class="cite-block">
+        <button class="copy" type="button" data-copy="bibtex" hidden>Copy</button>
+        <pre class="cite"><code id="bibtex">@inproceedings{zhu2026skillweaver,
+  title     = {Beyond Teleoperation: Autonomous Robot Data Generation in
+               Simulation through Search over Learned Interaction Skills},
+  author    = {Zhu, He and Zhao, Lusen and Cheng, Kwan Man and Fragkiadaki, Katerina},
+  booktitle = {Conference on Robot Learning (CoRL)},
+  year      = {2026}
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>SkillWeaver &middot; Autonomous robot data generation in simulation</p>
+    </div>
+  </footer>
+
+  <script src="js/nav.js"></script>
+</body>
+
+</html>
