@@ -49,7 +49,7 @@
       }, 30000);
     }
   </script>
-  <link href="css/style.css?v=f94545d2f4" rel="stylesheet" />
+  <link href="css/style.css?v=1977b6b486" rel="stylesheet" />
 </head>
 
 <body>
@@ -59,7 +59,7 @@
        rectangle waiting for a listener that will not run. -->
   <div class="intro" id="intro">
     <video class="intro__video" id="intro-video" autoplay muted playsinline
-      preload="auto" src="assets/videos/intro.mp4?v=52112f586c"></video>
+      preload="auto" src="assets/videos/intro.mp4?v=0d46dd4467"></video>
     <button class="intro__skip" id="intro-skip" type="button">Skip &rarr;</button>
   </div>
 
@@ -73,6 +73,7 @@
       <li><a href="#data"><span class="sidenav__mark"></span><span class="sidenav__label">Collected Data</span></a></li>
       <li><a href="#sim"><span class="sidenav__mark"></span><span class="sidenav__label">Sim Results</span></a></li>
       <li><a href="#real"><span class="sidenav__mark"></span><span class="sidenav__label">Real World</span></a></li>
+      <li><a href="#ablation"><span class="sidenav__mark"></span><span class="sidenav__label">Ablations</span></a></li>
       <li><a href="#cite"><span class="sidenav__mark"></span><span class="sidenav__label">Cite</span></a></li>
     </ul>
   </nav>
@@ -478,51 +479,314 @@
     <div class="container">
       <h2 class="section-title">Examples of Collected Data</h2>
 
-      <!--
-      <div class="tabs" role="tablist" aria-label="Trajectory family" data-tabs>
+      <div class="tabs" role="tablist" aria-label="Task family" data-tabs>
         <button class="tab" role="tab" id="tab-pick" aria-controls="panel-pick" aria-selected="true">Pick</button>
         <button class="tab" role="tab" id="tab-place" aria-controls="panel-place" aria-selected="false">Place</button>
-        <button class="tab" role="tab" id="tab-orient" aria-controls="panel-orient"
-          aria-selected="false">Orientation</button>
+        <button class="tab" role="tab" id="tab-insert" aria-controls="panel-insert" aria-selected="false">Insert</button>
+        <button class="tab" role="tab" id="tab-pour" aria-controls="panel-pour" aria-selected="false">Pour</button>
+        <button class="tab" role="tab" id="tab-open" aria-controls="panel-open" aria-selected="false">Open</button>
+        <button class="tab" role="tab" id="tab-close" aria-controls="panel-close" aria-selected="false">Close</button>
         <button class="tab" role="tab" id="tab-long" aria-controls="panel-long" aria-selected="false">Long-horizon</button>
+        <button class="tab" role="tab" id="tab-libero" aria-controls="panel-libero" aria-selected="false">LIBERO-style Tasks</button>
+        <button class="tab" role="tab" id="tab-simpler" aria-controls="panel-simpler" aria-selected="false">SIMPLER Tasks</button>
       </div>
 
       <div class="panel" id="panel-pick" role="tabpanel" aria-labelledby="tab-pick">
-        <div class="media">
-          <img loading="lazy" decoding="async" src="assets/images/traj_pick.jpg?v=02e8478b72" width="1500" height="997"
-            alt="Four rows of six frames each, showing a Franka arm approaching, grasping and lifting different household objects from tables in varied simulated rooms." />
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Pick &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Pick &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Pick &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Pick &middot; clip 4</p>
+          </div>
         </div>
-        <p class="caption"><b>Pick.</b> The RL skill adapts its approach and closure to each object's geometry and
-          resting pose rather than replaying a proposed grasp.</p>
       </div>
 
       <div class="panel" id="panel-place" role="tabpanel" aria-labelledby="tab-place" hidden>
-        <div class="media">
-          <img loading="lazy" decoding="async" src="assets/images/traj_place.jpg?v=f104746cac" width="1500" height="997"
-            alt="Four rows of six frames each, showing a Franka arm transporting objects and releasing them onto plates, into bowls and onto table surfaces." />
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Place &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Place &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Place &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Place &middot; clip 4</p>
+          </div>
         </div>
-        <p class="caption"><b>Place.</b> Target position comes from the planner; the skill closes the loop on contact
-          and support so the object settles where it was asked to go.</p>
       </div>
 
-      <div class="panel" id="panel-orient" role="tabpanel" aria-labelledby="tab-orient" hidden>
-        <div class="media">
-          <img loading="lazy" decoding="async" src="assets/images/traj_orientation.jpg?v=1836f0b235" width="1500" height="997"
-            alt="Four rows of six frames each, showing a Franka arm picking up cups and bottles lying on their sides and setting them down upright." />
+      <div class="panel" id="panel-insert" role="tabpanel" aria-labelledby="tab-insert" hidden>
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Insert &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Insert &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Insert &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Insert &middot; clip 4</p>
+          </div>
         </div>
-        <p class="caption"><b>Orientation-aware.</b> Axis-alignment prediction turns "stand the cup upright" into an
-          analytic target rotation, so the search never has to guess an unconstrained 3D orientation.</p>
+      </div>
+
+      <div class="panel" id="panel-pour" role="tabpanel" aria-labelledby="tab-pour" hidden>
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Pour &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Pour &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Pour &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Pour &middot; clip 4</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-open" role="tabpanel" aria-labelledby="tab-open" hidden>
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Open &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Open &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Open &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Open &middot; clip 4</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-close" role="tabpanel" aria-labelledby="tab-close" hidden>
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Close &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Close &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Close &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Close &middot; clip 4</p>
+          </div>
+        </div>
       </div>
 
       <div class="panel" id="panel-long" role="tabpanel" aria-labelledby="tab-long" hidden>
-        <div class="media">
-          <img loading="lazy" decoding="async" src="assets/images/traj_long.jpg?v=af684f73b9" width="1500" height="997"
-            alt="Four rows of six frames each, showing multi-step tasks: moving several mugs onto plates, and inserting a toothbrush into a cup that first has to be stood upright." />
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Long-horizon &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Long-horizon &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Long-horizon &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Long-horizon &middot; clip 4</p>
+          </div>
         </div>
-        <p class="caption"><b>Long-horizon.</b> Multi-step tasks the planner reaches by composing skills across search
-          depth &mdash; including ones where an object must first be straightened before it can be filled.</p>
       </div>
-      -->
+
+      <div class="panel" id="panel-libero" role="tabpanel" aria-labelledby="tab-libero" hidden>
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">LIBERO-style Tasks &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">LIBERO-style Tasks &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">LIBERO-style Tasks &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">LIBERO-style Tasks &middot; clip 4</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-simpler" role="tabpanel" aria-labelledby="tab-simpler" hidden>
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">SIMPLER Tasks &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">SIMPLER Tasks &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">SIMPLER Tasks &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">SIMPLER Tasks &middot; clip 4</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -541,7 +805,11 @@
           object, position, task and environment.
         </p>
       </div>
+      -->
 
+      <h3 class="sub-title">SkillWeaver data improves OOD generalization</h3>
+
+      <!--
       <div class="table-wrap" role="region" tabindex="0" aria-label="LIBERO-PRO Object suite success rates">
         <table class="table--wide">
           <thead>
@@ -581,70 +849,361 @@
         </table>
       </div>
       <p class="table-note">Success rate (%) on <b>LIBERO-PRO-Object</b> with and without our generated data.</p>
+      -->
 
-      <h3 class="sub-title">Stress test: two perturbations at a time</h3>
-      <div class="table-wrap" role="region" tabindex="0" aria-label="LIBERO-PRO pairwise perturbation success rates">
+      <h3 class="sub-title">SkillWeaver data enables robust sim-to-sim transfer</h3>
+    </div>
+  </section>
+
+  <!-- ===================== Real world ===================== -->
+  <section class="section" id="real">
+    <div class="container">
+      <h2 class="section-title">Real World Results</h2>
+
+      <div class="prose">
+        <p>
+          The real-world pipeline has two stages: <b>large-scale simulation training</b> (LST) on in-the-wild scenes,
+          followed by <b>post-training</b> (PT) on trajectories collected from a reconstructed digital twin of the
+          specific scene of interest. Neither stage uses a teleoperated episode. We evaluate object, colour and spatial
+          recognition under the original setup and two distribution shifts &mdash; swapped object positions and a
+          changed tablecloth.
+        </p>
+      </div>
+
+      <h3 class="sub-title">Quantitative Results</h3>
+      <div class="table-wrap" role="region" tabindex="0" aria-label="Real-world Franka success rate per task">
         <table class="table--wide">
           <thead>
             <tr>
-              <th scope="col">Method</th>
-              <th scope="col">L+O</th>
-              <th scope="col">L+P</th>
-              <th scope="col">L+T</th>
-              <th scope="col">L+E</th>
-              <th scope="col">O+P</th>
-              <th scope="col">O+T</th>
-              <th scope="col">O+E</th>
-              <th scope="col">P+T</th>
-              <th scope="col">P+E</th>
-              <th scope="col">T+E</th>
-              <th scope="col">Avg.</th>
+              <th scope="col" colspan="2">Task</th>
+              <th scope="col">Original PT</th>
+              <th scope="col">Original LST+PT</th>
+              <th scope="col">Swap PT</th>
+              <th scope="col">Swap LST+PT</th>
+              <th scope="col">Bg. PT</th>
+              <th scope="col">Bg. LST+PT</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th scope="row">GT only</th>
-              <td><b>97.8</b></td>
-              <td>0.0</td>
-              <td>7.2</td>
-              <td>39.8</td>
-              <td>0.0</td>
-              <td>2.8</td>
-              <td>40.2</td>
-              <td>0.0</td>
-              <td>21.3</td>
-              <td>0.4</td>
-              <td>21.0</td>
+              <th scope="rowgroup" class="group" rowspan="4">Object</th>
+              <th scope="row">pick up the apple</th>
+              <td>40</td>
+              <td><b>90</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>90</b><span class="gain">+90</span></td>
+              <td>30</td>
+              <td><b>50</b><span class="gain">+20</span></td>
             </tr>
-            <tr class="ours">
-              <th scope="row">SkillWeaver Data + GT</th>
-              <td>89.4<span class="drop">&minus;8.4</span></td>
-              <td><b>78.4</b><span class="gain">+78.4</span></td>
-              <td><b>40.8</b><span class="gain">+33.6</span></td>
-              <td><b>77.1</b><span class="gain">+37.3</span></td>
-              <td><b>82.6</b><span class="gain">+82.6</span></td>
-              <td><b>34.0</b><span class="gain">+31.2</span></td>
-              <td><b>57.3</b><span class="gain">+17.1</span></td>
-              <td><b>76.8</b><span class="gain">+76.8</span></td>
-              <td><b>70.0</b><span class="gain">+48.7</span></td>
-              <td><b>50.6</b><span class="gain">+50.2</span></td>
-              <td><b>65.7</b><span class="gain">+44.7</span></td>
+            <tr>
+              <th scope="row">pick up the banana</th>
+              <td><b>80</b></td>
+              <td>60<span class="drop">&minus;20</span></td>
+              <td>10</td>
+              <td><b>80</b><span class="gain">+70</span></td>
+              <td><b>80</b></td>
+              <td>40<span class="drop">&minus;40</span></td>
+            </tr>
+            <tr>
+              <th scope="row">place the apple in the bowl</th>
+              <td>10</td>
+              <td><b>100</b><span class="gain">+90</span></td>
+              <td>0</td>
+              <td><b>60</b><span class="gain">+60</span></td>
+              <td>0</td>
+              <td><b>80</b><span class="gain">+80</span></td>
+            </tr>
+            <tr>
+              <th scope="row">place the lemon in the bowl</th>
+              <td>0</td>
+              <td><b>50</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>50</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>80</b><span class="gain">+80</span></td>
+            </tr>
+            <tr class="rule">
+              <th scope="rowgroup" class="group" rowspan="4">Spatial</th>
+              <th scope="row">pick up the fruit on the left</th>
+              <td>30</td>
+              <td><b>80</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>70</b><span class="gain">+70</span></td>
+              <td>10</td>
+              <td><b>40</b><span class="gain">+30</span></td>
+            </tr>
+            <tr>
+              <th scope="row">pick up the fruit on the right</th>
+              <td><b>70</b></td>
+              <td>50<span class="drop">&minus;20</span></td>
+              <td>0</td>
+              <td><b>60</b><span class="gain">+60</span></td>
+              <td>20</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <th scope="row">place the fruit at the front in the bowl</th>
+              <td>0</td>
+              <td><b>30</b><span class="gain">+30</span></td>
+              <td>0</td>
+              <td><b>10</b><span class="gain">+10</span></td>
+              <td>0</td>
+              <td><b>30</b><span class="gain">+30</span></td>
+            </tr>
+            <tr>
+              <th scope="row">place the fruit at the back in the bowl</th>
+              <td>0</td>
+              <td><b>20</b><span class="gain">+20</span></td>
+              <td>0</td>
+              <td><b>30</b><span class="gain">+30</span></td>
+              <td>0</td>
+              <td><b>30</b><span class="gain">+30</span></td>
+            </tr>
+            <tr class="rule">
+              <th scope="rowgroup" class="group" rowspan="4">Colour</th>
+              <th scope="row">pick up the red fruit</th>
+              <td>50</td>
+              <td><b>90</b><span class="gain">+40</span></td>
+              <td>0</td>
+              <td><b>80</b><span class="gain">+80</span></td>
+              <td>30</td>
+              <td><b>60</b><span class="gain">+30</span></td>
+            </tr>
+            <tr>
+              <th scope="row">pick up the yellow fruit</th>
+              <td><b>80</b></td>
+              <td>50<span class="drop">&minus;30</span></td>
+              <td>10</td>
+              <td><b>80</b><span class="gain">+70</span></td>
+              <td>20</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <th scope="row">place the red fruit in the bowl</th>
+              <td>0</td>
+              <td><b>80</b><span class="gain">+80</span></td>
+              <td>0</td>
+              <td><b>50</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>50</b><span class="gain">+50</span></td>
+            </tr>
+            <tr>
+              <th scope="row">place the yellow fruit in the bowl</th>
+              <td>10</td>
+              <td><b>60</b><span class="gain">+50</span></td>
+              <td>0</td>
+              <td><b>40</b><span class="gain">+40</span></td>
+              <td>0</td>
+              <td><b>10</b><span class="gain">+10</span></td>
+            </tr>
+            <tr class="total">
+              <th scope="row" colspan="2">Average</th>
+              <td>30.8</td>
+              <td><b>63.3</b><span class="gain">+32.5</span></td>
+              <td>1.7</td>
+              <td><b>58.3</b><span class="gain">+56.7</span></td>
+              <td>15.8</td>
+              <td><b>42.5</b><span class="gain">+26.7</span></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p class="table-note">All 10 <b>pairwise</b> augmentation combinations. L = Language, O = Object, P = Position,
-        T = Task, E = Environment. Even under this setting our data gains <b>+44.7</b> points on average.</p>
+      <p class="table-note">Success rate (%) per real-world task, 10 trials each. <b>PT</b> = post-training on the
+        reconstructed scene only; <b>LST+PT</b> = large-scale simulation training followed by the same post-training.
+        The shift columns are where the gap is widest: under swapped object positions, PT alone collapses to
+        <b>1.7%</b>.</p>
 
-      <h3 class="sub-title">The gain scales with the data</h3>
-      <div class="figure media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/scaling.jpg?v=f329941e1e" width="1300" height="975"
-          alt="Line plot of OOD success rate against percentage of generated data mixed in. Single perturbation rises from 47.6 percent at zero to 78.1 percent at 100 percent; pairwise perturbation rises from 21.0 to 65.7 percent." />
+      <!-- TODO(quantitative): the second figure that sits with the table. -->
+      <div class="media media--placeholder">
+        <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+          <circle class="ph-node" cx="24" cy="24" r="20" />
+          <path class="ph-edge" d="M14,32 L21,22 L28,27 L34,16" />
+        </svg>
+        <p class="placeholder__text">Quantitative &middot; figure 2</p>
       </div>
-      <p class="caption"><b>Data scaling.</b> OOD success rate climbs steadily as more SkillWeaver demonstrations are
-        mixed in &mdash; 100% corresponds to +1.849M added frames.</p>
 
-      <h3 class="sub-title">Ablations</h3>
+      <h3 class="sub-title">Qualitative Results</h3>
+      <div class="tabs" role="tablist" aria-label="Real-world condition" data-tabs>
+        <button class="tab" role="tab" id="tab-rw-original" aria-controls="panel-rw-original" aria-selected="true">Original Setup</button>
+        <button class="tab" role="tab" id="tab-rw-swap" aria-controls="panel-rw-swap" aria-selected="false">Swap Objects</button>
+        <button class="tab" role="tab" id="tab-rw-background" aria-controls="panel-rw-background" aria-selected="false">Change Background</button>
+        <button class="tab" role="tab" id="tab-rw-distract" aria-controls="panel-rw-distract" aria-selected="false">Add Distractors</button>
+        <button class="tab" role="tab" id="tab-rw-arti" aria-controls="panel-rw-arti" aria-selected="false">Articulation</button>
+      </div>
+
+      <div class="panel" id="panel-rw-original" role="tabpanel" aria-labelledby="tab-rw-original">
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Original Setup &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Original Setup &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Original Setup &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Original Setup &middot; clip 4</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-rw-swap" role="tabpanel" aria-labelledby="tab-rw-swap" hidden>
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Swap Objects &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Swap Objects &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Swap Objects &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Swap Objects &middot; clip 4</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-rw-background" role="tabpanel" aria-labelledby="tab-rw-background" hidden>
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Change Background &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Change Background &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Change Background &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Change Background &middot; clip 4</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-rw-distract" role="tabpanel" aria-labelledby="tab-rw-distract" hidden>
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Add Distractors &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Add Distractors &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Add Distractors &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Add Distractors &middot; clip 4</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-rw-arti" role="tabpanel" aria-labelledby="tab-rw-arti" hidden>
+        <div class="clip-grid">
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Articulation &middot; clip 1</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Articulation &middot; clip 2</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Articulation &middot; clip 3</p>
+          </div>
+          <div class="media media--placeholder media--clip">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="ph-node" cx="24" cy="24" r="20" />
+              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
+            </svg>
+            <p class="placeholder__text">Articulation &middot; clip 4</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Ablations ===================== -->
+  <section class="section section--alt" id="ablation">
+    <div class="container">
+      <h2 class="section-title">Ablations</h2>
+
+      <!--
       <div class="table-wrap" role="region" tabindex="0" aria-label="RL skill versus scripted pick-up success by geometry profile">
         <table>
           <thead>
@@ -831,176 +1390,8 @@
     </div>
   </section>
 
-  <!-- ===================== Real world ===================== -->
-  <section class="section" id="real">
-    <div class="container">
-      <h2 class="section-title">Real World Results</h2>
-
-      <!--
-      <div class="prose">
-        <p>
-          The real-world pipeline has two stages: <b>large-scale simulation training</b> (LST) on in-the-wild scenes,
-          followed by <b>post-training</b> (PT) on trajectories collected from a reconstructed digital twin of the
-          specific scene of interest. Neither stage uses a teleoperated episode. We evaluate object, colour and spatial
-          recognition under the original setup and two distribution shifts &mdash; swapped object positions and a
-          changed tablecloth.
-        </p>
-      </div>
-
-      <div class="figure media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/real_world.jpg?v=33264231ea" width="1300" height="975"
-          alt="Two real Franka images for the instruction 'pick up the fruit on the left': LST+PT grasps the apple on the left, while PT only grasps the banana on the right." />
-      </div>
-      <p class="caption"><b>OOD spatial grounding.</b> With simulation pre-training the policy resolves "the fruit on
-        the left" spatially; without it, the policy falls back on object identity and layout priors.</p>
-
-      <div class="table-wrap" role="region" tabindex="0" aria-label="Real-world Franka success rate per task">
-        <table class="table--wide">
-          <thead>
-            <tr>
-              <th scope="col" colspan="2">Task</th>
-              <th scope="col">Original PT</th>
-              <th scope="col">Original LST+PT</th>
-              <th scope="col">Swap PT</th>
-              <th scope="col">Swap LST+PT</th>
-              <th scope="col">Bg. PT</th>
-              <th scope="col">Bg. LST+PT</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="rowgroup" class="group" rowspan="4">Object</th>
-              <th scope="row">pick up the apple</th>
-              <td>40</td>
-              <td><b>90</b><span class="gain">+50</span></td>
-              <td>0</td>
-              <td><b>90</b><span class="gain">+90</span></td>
-              <td>30</td>
-              <td><b>50</b><span class="gain">+20</span></td>
-            </tr>
-            <tr>
-              <th scope="row">pick up the banana</th>
-              <td><b>80</b></td>
-              <td>60<span class="drop">&minus;20</span></td>
-              <td>10</td>
-              <td><b>80</b><span class="gain">+70</span></td>
-              <td><b>80</b></td>
-              <td>40<span class="drop">&minus;40</span></td>
-            </tr>
-            <tr>
-              <th scope="row">place the apple in the bowl</th>
-              <td>10</td>
-              <td><b>100</b><span class="gain">+90</span></td>
-              <td>0</td>
-              <td><b>60</b><span class="gain">+60</span></td>
-              <td>0</td>
-              <td><b>80</b><span class="gain">+80</span></td>
-            </tr>
-            <tr>
-              <th scope="row">place the lemon in the bowl</th>
-              <td>0</td>
-              <td><b>50</b><span class="gain">+50</span></td>
-              <td>0</td>
-              <td><b>50</b><span class="gain">+50</span></td>
-              <td>0</td>
-              <td><b>80</b><span class="gain">+80</span></td>
-            </tr>
-            <tr class="rule">
-              <th scope="rowgroup" class="group" rowspan="4">Spatial</th>
-              <th scope="row">pick up the fruit on the left</th>
-              <td>30</td>
-              <td><b>80</b><span class="gain">+50</span></td>
-              <td>0</td>
-              <td><b>70</b><span class="gain">+70</span></td>
-              <td>10</td>
-              <td><b>40</b><span class="gain">+30</span></td>
-            </tr>
-            <tr>
-              <th scope="row">pick up the fruit on the right</th>
-              <td><b>70</b></td>
-              <td>50<span class="drop">&minus;20</span></td>
-              <td>0</td>
-              <td><b>60</b><span class="gain">+60</span></td>
-              <td>20</td>
-              <td>20</td>
-            </tr>
-            <tr>
-              <th scope="row">place the fruit at the front in the bowl</th>
-              <td>0</td>
-              <td><b>30</b><span class="gain">+30</span></td>
-              <td>0</td>
-              <td><b>10</b><span class="gain">+10</span></td>
-              <td>0</td>
-              <td><b>30</b><span class="gain">+30</span></td>
-            </tr>
-            <tr>
-              <th scope="row">place the fruit at the back in the bowl</th>
-              <td>0</td>
-              <td><b>20</b><span class="gain">+20</span></td>
-              <td>0</td>
-              <td><b>30</b><span class="gain">+30</span></td>
-              <td>0</td>
-              <td><b>30</b><span class="gain">+30</span></td>
-            </tr>
-            <tr class="rule">
-              <th scope="rowgroup" class="group" rowspan="4">Colour</th>
-              <th scope="row">pick up the red fruit</th>
-              <td>50</td>
-              <td><b>90</b><span class="gain">+40</span></td>
-              <td>0</td>
-              <td><b>80</b><span class="gain">+80</span></td>
-              <td>30</td>
-              <td><b>60</b><span class="gain">+30</span></td>
-            </tr>
-            <tr>
-              <th scope="row">pick up the yellow fruit</th>
-              <td><b>80</b></td>
-              <td>50<span class="drop">&minus;30</span></td>
-              <td>10</td>
-              <td><b>80</b><span class="gain">+70</span></td>
-              <td>20</td>
-              <td>20</td>
-            </tr>
-            <tr>
-              <th scope="row">place the red fruit in the bowl</th>
-              <td>0</td>
-              <td><b>80</b><span class="gain">+80</span></td>
-              <td>0</td>
-              <td><b>50</b><span class="gain">+50</span></td>
-              <td>0</td>
-              <td><b>50</b><span class="gain">+50</span></td>
-            </tr>
-            <tr>
-              <th scope="row">place the yellow fruit in the bowl</th>
-              <td>10</td>
-              <td><b>60</b><span class="gain">+50</span></td>
-              <td>0</td>
-              <td><b>40</b><span class="gain">+40</span></td>
-              <td>0</td>
-              <td><b>10</b><span class="gain">+10</span></td>
-            </tr>
-            <tr class="total">
-              <th scope="row" colspan="2">Average</th>
-              <td>30.8</td>
-              <td><b>63.3</b><span class="gain">+32.5</span></td>
-              <td>1.7</td>
-              <td><b>58.3</b><span class="gain">+56.7</span></td>
-              <td>15.8</td>
-              <td><b>42.5</b><span class="gain">+26.7</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="table-note">Success rate (%) per real-world task, 10 trials each. <b>PT</b> = post-training on the
-        reconstructed scene only; <b>LST+PT</b> = large-scale simulation training followed by the same post-training.
-        The shift columns are where the gap is widest: under swapped object positions, PT alone collapses to
-        <b>1.7%</b>.</p>
-      -->
-    </div>
-  </section>
-
   <!-- ===================== Citation ===================== -->
-  <section class="section section--alt" id="cite">
+  <section class="section" id="cite">
     <div class="container">
       <h2 class="section-title">BibTeX</h2>
       <div class="cite-block">

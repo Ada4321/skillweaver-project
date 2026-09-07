@@ -211,7 +211,8 @@ body::before {
   line-height: 1.72;
   color: #2A3140;
   margin: 0;
-  max-width: 68ch;
+  /* Full container width, so the intro lines up edge to edge with the table
+     or figure it introduces. */
   text-wrap: pretty;
 }
 
@@ -1415,6 +1416,14 @@ body::before {
   margin-top: 40px;
 }
 
+/* That spacing is for figures stacked in normal flow. A grid lays its own
+   gaps, and there every item after the first still matches `.media + .media`
+   — the margin then pushes each one down inside its own cell, which is a row
+   that does not line up rather than space between figures. */
+.clip-grid > .media {
+  margin-top: 0;
+}
+
 /* Prose introducing or following a figure, and each table after the note
    belonging to the table above it. Sibling rules rather than inline styles, so
    the rhythm stays in one place. */
@@ -1500,6 +1509,35 @@ body::before {
   fill: none;
   stroke: #C2C8D2;
   stroke-width: 2.4;
+}
+
+/* A grid of clip slots under the task buttons. Two up on a wide screen so a
+   pair reads side by side; the ratio is 4:3 because the real clips run 1:1,
+   4:3 and 3:2 — drop it once they are in and let each video's own shape set
+   the box. */
+.clip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.media--clip {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+  gap: 10px;
+}
+
+.media--clip .placeholder__mark {
+  width: 44px;
+  height: 44px;
+}
+
+.media--clip .placeholder__text {
+  font-size: 0.7rem;
+}
+
+.placeholder__mark .ph-play {
+  fill: #C2C8D2;
 }
 
 .placeholder__mark .ph-edge {
@@ -1791,7 +1829,8 @@ td b {
    Responsive
    ============================================================ */
 @media (max-width: 940px) {
-  .cards {
+  .cards,
+  .clip-grid {
     grid-template-columns: 1fr;
   }
 
