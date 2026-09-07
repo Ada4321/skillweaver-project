@@ -124,6 +124,18 @@
       });
     }, { rootMargin: '0px 0px -16% 0px', threshold: 0.04 });
     document.querySelectorAll('.section').forEach((s) => reveal.observe(s));
+
+    /* Charts that build themselves get their own observer rather than riding
+       the section's: #sim runs several screens tall, so its .is-in fires long
+       before a chart partway down it is anywhere near the viewport. */
+    const play = new IntersectionObserver((entries, obs) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        obs.unobserve(e.target);
+      });
+    }, { threshold: 0.35 });
+    document.querySelectorAll('.chart--play').forEach((c) => play.observe(c));
   }
 
   /* ---------- Trajectory tabs ----------

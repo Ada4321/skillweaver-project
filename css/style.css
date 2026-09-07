@@ -23,6 +23,7 @@
   --ink: #0D1119;
   --mute: #69707E;
   --line: #E5E8EC;
+  --head: #333B4A;
 
   /* Skill spectrum — the three woven strands */
   --teal: #2DD4BF;
@@ -1420,7 +1421,8 @@ body::before {
    gaps, and there every item after the first still matches `.media + .media`
    — the margin then pushes each one down inside its own cell, which is a row
    that does not line up rather than space between figures. */
-.clip-grid > .media {
+.clip-grid > .media,
+.ood-group > .media {
   margin-top: 0;
 }
 
@@ -1446,6 +1448,31 @@ body::before {
 
 .caption + .table-wrap {
   margin-top: 34px;
+}
+
+.panel + .table-wrap,
+.panel + .chart-wrap {
+  margin-top: 40px;
+}
+
+.chart-wrap + .table-wrap {
+  margin-top: 30px;
+}
+
+.chart-wrap + .caption {
+  margin-top: 18px;
+}
+
+.sub-title + .chart-row {
+  margin-top: 22px;
+}
+
+.caption + .figure {
+  margin-top: 40px;
+}
+
+.table-note + .figure {
+  margin-top: 40px;
 }
 
 .media img {
@@ -1521,6 +1548,22 @@ body::before {
   gap: 18px;
 }
 
+/* Four clips reading as one row per benchmark. They pair up rather than
+   shrinking to a quarter of a phone screen. */
+.clip-grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.clip-grid--4 > .media {
+  min-height: 190px;
+}
+
+@media (max-width: 900px) {
+  .clip-grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .media--clip {
   aspect-ratio: 4 / 3;
   min-height: 0;
@@ -1556,6 +1599,184 @@ body::before {
   margin: 0;
 }
 
+/* ---------- OOD comparison grid ----------
+   Six clips abreast will not read at 154px each, which is all the 1200px
+   container leaves once the task column and gutters are taken out. This block
+   alone steps outside it — capped so it does not sprawl on an ultrawide, and
+   clamped to the viewport so it never introduces a horizontal scrollbar. The
+   negative inline margin resolves against the container's own width, so on
+   anything narrower than the cap it comes out to zero and nothing moves. */
+.ood-wide {
+  --ood-w: min(1560px, calc(100vw - 48px));
+  width: var(--ood-w);
+  margin-inline: calc((var(--ood-w) - 100%) / -2);
+}
+
+/* Task label, then three pairs. Pairs rather than six equal columns because
+   the task-perturbation pair carries its own caption underneath. */
+.ood-row,
+.ood-head {
+  display: grid;
+  grid-template-columns: 160px repeat(3, 1fr);
+  gap: 14px;
+}
+
+.ood-row + .ood-row {
+  margin-top: 14px;
+}
+
+.ood-head {
+  margin-bottom: 10px;
+  align-items: end;
+}
+
+.ood-head__grp {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 8px;
+}
+
+.ood-head__name {
+  grid-column: 1 / -1;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #3C4453;
+}
+
+.ood-head__sub,
+.ood-row__task,
+.ood-group__label,
+.ood-group__note {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+  margin: 0;
+}
+
+.ood-row__task {
+  align-self: center;
+  text-transform: none;
+  line-height: 1.5;
+}
+
+.ood-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  align-content: start;
+}
+
+.ood-group__note {
+  grid-column: 1 / -1;
+  margin-top: 2px;
+  color: #8A91A0;
+}
+
+/* The header row states the group names while it is on screen; each group also
+   carries its own, for the stacked layout where the header cannot line up. */
+.ood-group__label {
+  grid-column: 1 / -1;
+  display: none;
+}
+
+/* Per-task clips under the pairwise chart: one row per task, the instruction
+   on the left and the two policies beside it. Only two cells wide, so this one
+   stays inside the container instead of breaking out the way .ood-wide does.
+   The video tracks are capped rather than free: at 1200px an unbounded 1fr
+   would hand each clip 400px+ and make one panel four screens tall. */
+.pair-row,
+.pair-head {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(0, 380px) minmax(0, 380px);
+  gap: 18px;
+}
+
+.pair-row + .pair-row {
+  margin-top: 18px;
+}
+
+.pair-head {
+  margin-bottom: 10px;
+  align-items: end;
+}
+
+.pair-head__name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #3C4453;
+}
+
+/* An instruction is a sentence, not a label: it gets sentence type rather than
+   the tracked-out mono the column heads use. */
+.pair-row__task {
+  align-self: center;
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #3B4353;
+  margin: 0;
+}
+
+.pair-row > .media {
+  margin-top: 0;
+}
+
+@media (max-width: 860px) {
+  .pair-row,
+  .pair-head {
+    grid-template-columns: 1fr;
+  }
+
+  .pair-head {
+    display: none;
+  }
+}
+
+.media--cell {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+  gap: 6px;
+}
+
+.media--cell .placeholder__mark {
+  width: 30px;
+  height: 30px;
+}
+
+.media--cell .placeholder__text {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+}
+
+/* Below this the six-abreast reading is gone anyway, so stop pretending: the
+   header comes off, each group takes a full row and names itself. */
+@media (max-width: 1100px) {
+  .ood-head {
+    display: none;
+  }
+
+  .ood-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .ood-row + .ood-row {
+    margin-top: 26px;
+  }
+
+  .ood-row__task {
+    font-size: 0.78rem;
+    color: var(--ink);
+  }
+
+  .ood-group__label {
+    display: block;
+  }
+}
+
 /* A video is a control surface — it should not slide out from under the
    pointer on the way to the play button. */
 .media--video:hover {
@@ -1581,6 +1802,35 @@ body::before {
   margin: 0 0 22px;
 }
 
+/* A plot that was 0.45\textwidth in the paper: giving it the full 1200px
+   would blow the type inside it up past the page's own headings. The cap sits
+   on the chart alone, so the caption below still runs the container's width
+   and lines up with the caption of the chart above it. */
+/* Two half-width figures on one line. They collapse before either chart hits
+   its own 380px scroll floor, so neither ever scrolls inside a column. */
+.chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  align-items: start;
+}
+
+.chart-row > .figure {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .chart-row {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+.chart-wrap--sm {
+  max-width: 620px;
+  margin-inline: auto;
+}
+
 /* ============================================================
    Trajectory tabs — four families of generated demonstrations
    ============================================================ */
@@ -1589,6 +1839,16 @@ body::before {
   flex-wrap: wrap;
   gap: 8px;
   margin: 0 0 18px;
+}
+
+/* Two of the three button rows follow a heading, which brings its own space
+   below it. The OOD one follows a figure grid and would otherwise sit flush
+   against it — 40px is what this stylesheet already puts between figures. */
+.clip-grid + .tabs,
+.caption + .tabs,
+.chart-row + .tabs,
+.media + .tabs {
+  margin-top: 40px;
 }
 
 .tab {
@@ -1623,6 +1883,196 @@ body::before {
 }
 
 /* ============================================================
+   Result chart
+   ============================================================ */
+/* Same scroll-on-narrow contract as a wide table: the viewBox would otherwise
+   shrink the labels along with the bars until neither can be read. */
+.chart-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  min-width: 960px;
+  height: auto;
+}
+
+.chart .rule {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.chart .axis {
+  stroke: #CFD4DC;
+  stroke-width: 1;
+}
+
+.chart .g-a { stop-color: var(--teal); }
+.chart .g-b { stop-color: var(--indigo); }
+.chart .g-c { stop-color: var(--amber); }
+
+.bar--gt { fill: #C4CAD4; }
+/* Each chart's bars take that chart's own gradient. This has to be keyed on
+   the chart rather than left to a fill="url(#...)" on the rect: a presentation
+   attribute loses to any CSS rule, so a single .bar--ours fill here would
+   silently paint every chart on the page with the first chart's ramp. Where
+   one chart needs more than one gradient (the four suite panels) the rect
+   carries it in an inline style, which does win. */
+.chart--pairs .bar--ours { fill: url(#pairsBar); }
+.chart--suites .bar--ours { fill: url(#suitesBar0); }
+.chart--fewshot .bar--ours { fill: url(#fewshotBar); }
+.chart--simpler .bar--ours { fill: url(#simplerBar); }
+.chart--rw .bar--ours { fill: url(#rwBar); }
+
+.chart text {
+  font-family: var(--mono);
+}
+
+/* Tick and axis labels sit behind the data. */
+.chart .tick {
+  font-size: 12px;
+  fill: var(--mute);
+  text-anchor: end;
+}
+
+/* Axis titles name what is being measured, so they carry the same weight as
+   the column heads in the tables rather than sitting back with the ticks. */
+.chart .ylab,
+.chart .atitle {
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--head);
+  text-anchor: middle;
+  letter-spacing: 0.04em;
+}
+
+/* Small enough to live inside .chart-wrap--sm, so it must not inherit the
+   wide charts' scroll floor. */
+.chart--sm {
+  min-width: 380px;
+}
+
+.chart .curve {
+  fill: none;
+  stroke: url(#scalingLine);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chart .dot {
+  fill: url(#scalingLine);
+  stroke: var(--paper);
+  stroke-width: 2.5;
+}
+
+/* The baseline the curve is measured against, drawn like the GT bars: present,
+   clearly secondary. */
+.chart .gtline {
+  stroke: var(--mute);
+  stroke-width: 1.6;
+  stroke-dasharray: 6 5;
+}
+
+.chart .key--end { text-anchor: end; }
+.chart .tick--mid { text-anchor: middle; }
+.chart .val--under { dominant-baseline: hanging; }
+
+/* ---- The build-up ----------------------------------------------------
+   The line is revealed by a travelling dash and each marker pops as the line
+   reaches it; --d is measured along the path by the generator, so the two stay
+   in step through the steep middle segments.
+
+   Gated on .has-reveal, set in <head> only when IntersectionObserver exists, so
+   the starting opacity: 0 can never strand the chart. Runs once: replaying a
+   build-up every time it scrolls back into view reads as a glitch. */
+.has-reveal .chart--play .draw {
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+}
+
+.has-reveal .chart--play .pop {
+  opacity: 0;
+}
+
+/* Bars climb out of their own baseline, so the zero line stays put and the
+   height is the only thing that moves. */
+.chart .rise {
+  transform-box: fill-box;
+  transform-origin: bottom;
+}
+
+.has-reveal .chart--play .rise {
+  transform: scaleY(0);
+}
+
+.has-reveal .chart--play.is-in .draw {
+  animation: chart-draw 3.4s linear forwards;
+}
+
+.has-reveal .chart--play.is-in .rise {
+  animation: chart-rise 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0s);
+}
+
+.has-reveal .chart--play.is-in .pop {
+  animation: chart-pop 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--d, 0s);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes chart-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes chart-pop {
+  from { opacity: 0; transform: scale(0.3); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes chart-rise {
+  from { transform: scaleY(0); }
+  to { transform: none; }
+}
+
+.chart .plab {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  fill: var(--ink);
+}
+
+.chart .xlab {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-anchor: middle;
+  fill: var(--head);
+}
+
+/* The value on top of each bar, so a zero reads as a measurement and not as
+   a bar that failed to draw. */
+.chart .val {
+  font-size: 13px;
+  text-anchor: middle;
+}
+
+.chart .val--gt { fill: var(--mute); }
+
+.chart .val--ours {
+  font-weight: 700;
+  fill: var(--head);
+}
+
+.chart .key {
+  font-size: 12.5px;
+  fill: var(--head);
+}
+
+/* ============================================================
    Result tables
    ============================================================ */
 .table-wrap {
@@ -1644,13 +2094,44 @@ table.table--wide {
   min-width: 780px;
 }
 
+/* A table too wide for one row of columns, split into stacked column blocks
+   the way the paper prints it. Each block repeats the row labels, so the
+   second block carries its own header row inside its own tbody. */
+.table--pairs tbody + tbody tr:first-child th,
+.table--pairs tbody + tbody tr:first-child td {
+  border-top: 1px solid #CFD4DC;
+}
+
+.table--pairs tr.subhead th {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--head);
+  font-weight: 700;
+  text-align: right;
+  padding: 22px 12px 14px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.table--pairs tr.subhead th:first-child {
+  text-align: left;
+}
+
+/* The subhead already draws the line under itself. */
+.table--pairs tr.subhead + tr th,
+.table--pairs tr.subhead + tr td {
+  border-top: 0;
+}
+
 thead th {
   font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--mute);
-  font-weight: 400;
+  color: var(--head);
+  font-weight: 700;
   text-align: right;
   padding: 14px 12px;
   border-bottom: 1px solid var(--line);
@@ -1893,6 +2374,15 @@ td b {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .has-reveal .chart--play .draw,
+  .has-reveal .chart--play .pop,
+  .has-reveal .chart--play .rise {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .media,

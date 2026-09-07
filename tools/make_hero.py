@@ -711,7 +711,7 @@ if start is None:
     end = css.index("/* ============================================================\n   Stat strip")
 else:
     end = css.index("/* <<< HERO FIGURE <<< */") + len("/* <<< HERO FIGURE <<< */\n")
-open(CSS, "w").write(css[:start] + CSS_BLOCK + "\n\n" + css[end:])
+open(CSS, "w").write(css[:start] + CSS_BLOCK + "\n" + css[end:])
 
 print(f"svg      : {len(SVG)} chars, {SVG.count('<path')} paths")
 print(f"keyframes: {len(KF)} blocks")
