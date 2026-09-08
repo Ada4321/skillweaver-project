@@ -227,6 +227,7 @@ body::before {
   font-weight: 600;
 }
 
+
 /* ---------- Section headings ---------- */
 /* .kicker is currently UNUSED — sections open straight on their title.
    Kept so the eyebrow can come back without rebuilding it. */
@@ -1278,9 +1279,6 @@ body::before {
 /* <<< HERO FIGURE <<< */
 
 
-
-
-
 /* ============================================================
    Stat strip — the scale of the generated dataset
    ============================================================ */
@@ -1422,7 +1420,7 @@ body::before {
    — the margin then pushes each one down inside its own cell, which is a row
    that does not line up rather than space between figures. */
 .clip-grid > .media,
-.ood-group > .media {
+.ood2-row > .media {
   margin-top: 0;
 }
 
@@ -1438,6 +1436,7 @@ body::before {
 }
 
 .prose + .table-wrap,
+.prose + .chart-wrap,
 .table-note + .table-wrap {
   margin-top: 26px;
 }
@@ -1554,6 +1553,20 @@ body::before {
   grid-template-columns: repeat(4, 1fr);
 }
 
+/* Three square rollouts on one line. The grid is capped rather than filling the
+   container: the source frames are 224px, and three tracks of a full 1200px
+   would blow each one up 2.6x. At this width it is 1.4x and still reads. */
+.clip-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+.clip-grid--3 .media--video {
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+}
+
 .clip-grid--4 > .media {
   min-height: 190px;
 }
@@ -1606,84 +1619,17 @@ body::before {
    clamped to the viewport so it never introduces a horizontal scrollbar. The
    negative inline margin resolves against the container's own width, so on
    anything narrower than the cap it comes out to zero and nothing moves. */
-.ood-wide {
-  --ood-w: min(1560px, calc(100vw - 48px));
-  width: var(--ood-w);
-  margin-inline: calc((var(--ood-w) - 100%) / -2);
-}
 
 /* Task label, then three pairs. Pairs rather than six equal columns because
    the task-perturbation pair carries its own caption underneath. */
-.ood-row,
-.ood-head {
-  display: grid;
-  grid-template-columns: 160px repeat(3, 1fr);
-  gap: 14px;
-}
 
-.ood-row + .ood-row {
-  margin-top: 14px;
-}
-
-.ood-head {
-  margin-bottom: 10px;
-  align-items: end;
-}
-
-.ood-head__grp {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px 8px;
-}
-
-.ood-head__name {
-  grid-column: 1 / -1;
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 0.92rem;
-  color: #3C4453;
-}
-
-.ood-head__sub,
-.ood-row__task,
-.ood-group__label,
-.ood-group__note {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  color: var(--mute);
-  margin: 0;
-}
-
-.ood-row__task {
-  align-self: center;
-  text-transform: none;
-  line-height: 1.5;
-}
-
-.ood-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  align-content: start;
-}
-
-.ood-group__note {
-  grid-column: 1 / -1;
-  margin-top: 2px;
-  color: #8A91A0;
-}
 
 /* The header row states the group names while it is on screen; each group also
    carries its own, for the stacked layout where the header cannot line up. */
-.ood-group__label {
-  grid-column: 1 / -1;
-  display: none;
-}
 
 /* Per-task clips under the pairwise chart: one row per task, the instruction
    on the left and the two policies beside it. Only two cells wide, so this one
-   stays inside the container instead of breaking out the way .ood-wide does.
+   stays inside the container rather than breaking out of it.
    The video tracks are capped rather than free: at 1200px an unbounded 1fr
    would hand each clip 400px+ and make one panel four screens tall. */
 .pair-row,
@@ -1735,6 +1681,105 @@ body::before {
   }
 }
 
+/* Second-level buttons, inside a panel of the first level. Deliberately
+   quieter than the row above them -- no gradient edge, no border at rest -- so
+   the two levels read as an order rather than as two equal rows of pills. */
+.tabs--sub {
+  margin: 0 0 18px;
+  gap: 6px;
+}
+
+.tabs--sub .tab {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  padding: 6px 13px;
+  background: transparent;
+  border-color: transparent;
+}
+
+.tabs--sub .tab:hover {
+  color: var(--ink);
+}
+
+.tabs--sub .tab[aria-selected="true"] {
+  color: var(--ink);
+  border: 1px solid transparent;
+  background: rgba(124, 131, 247, 0.11);
+  box-shadow: none;
+}
+
+/* One row per task: what the task is, then its clips. The clip tracks are
+   capped rather than free -- at container width an unbounded 1fr would give
+   two clips 470px each and make one panel three screens tall. */
+.ood2-row,
+.ood2-head {
+  display: grid;
+  gap: 18px;
+  align-items: center;
+}
+
+.ood2--2 .ood2-row,
+.ood2--2 .ood2-head {
+  grid-template-columns: minmax(170px, 1fr) repeat(2, minmax(0, 380px));
+}
+
+.ood2--3 .ood2-row,
+.ood2--3 .ood2-head {
+  grid-template-columns: minmax(170px, 1fr) repeat(3, minmax(0, 300px));
+}
+
+.ood2-row + .ood2-row {
+  margin-top: 18px;
+}
+
+.ood2-head {
+  margin-bottom: 10px;
+  align-items: end;
+}
+
+.ood2-head__name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #3C4453;
+}
+
+.ood2-row__name,
+.ood2-row__note {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  color: var(--mute);
+  margin: 0;
+}
+
+/* The task a perturbed rollout was renamed to, under the task it came from. */
+.ood2-row__note {
+  margin-top: 4px;
+  color: #8A91A0;
+}
+
+@media (max-width: 900px) {
+  .ood2-row,
+  .ood2-head {
+    grid-template-columns: 1fr;
+  }
+
+  .ood2-head {
+    display: none;
+  }
+
+  .ood2-row + .ood2-row {
+    margin-top: 30px;
+  }
+
+  .ood2-row__name {
+    font-size: 0.78rem;
+    color: var(--ink);
+  }
+}
+
 .media--cell {
   aspect-ratio: 4 / 3;
   min-height: 0;
@@ -1751,34 +1796,45 @@ body::before {
   letter-spacing: 0.08em;
 }
 
-/* Below this the six-abreast reading is gone anyway, so stop pretending: the
-   header comes off, each group takes a full row and names itself. */
-@media (max-width: 1100px) {
-  .ood-head {
-    display: none;
-  }
-
-  .ood-row {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .ood-row + .ood-row {
-    margin-top: 26px;
-  }
-
-  .ood-row__task {
-    font-size: 0.78rem;
-    color: var(--ink);
-  }
-
-  .ood-group__label {
-    display: block;
-  }
-}
-
 /* A video is a control surface — it should not slide out from under the
    pointer on the way to the play button. */
+/* Clips inside a grid fill their cell; the cell, not the clip, sets the shape.
+   Without this a 4:3 rollout and a 16:9 one would sit at different heights in
+   the same row. */
+.clip-grid .media--video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #0D1119;
+}
+
+.clip-grid--4 .media--video {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+}
+
+/* A clip with the instruction it was given underneath it. The caption is the
+   point of the figure, so it goes outside the aspect-ratio box rather than
+   over the video. */
+.clip {
+  margin: 0;
+}
+
+.clip > .media {
+  margin-top: 0;
+}
+
+.clip__cap {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  color: var(--mute);
+  margin: 9px 0 0;
+  text-wrap: pretty;
+}
+
 .media--video:hover {
   transform: none;
   box-shadow: 0 1px 2px rgba(13, 17, 25, 0.04);
@@ -1795,6 +1851,20 @@ body::before {
 
 .caption b {
   color: var(--ink);
+  font-weight: 700;
+}
+
+/* One number carrying a paragraph's point. Coloured rather than merely bolded:
+   these sentences already run to four bold spans and a fifth would not stand
+   out among them.
+
+   Two classes, not one: the bare `.mark` this used to be is (0,1,0) and loses
+   to the `.caption b` / `.prose b` rules above, which match the same <b> at
+   (0,1,1). The mark simply never showed. */
+.prose .mark,
+.caption .mark,
+.table-note .mark {
+  color: var(--indigo);
   font-weight: 700;
 }
 
@@ -1841,14 +1911,21 @@ body::before {
   margin: 0 0 18px;
 }
 
-/* Two of the three button rows follow a heading, which brings its own space
-   below it. The OOD one follows a figure grid and would otherwise sit flush
-   against it — 40px is what this stylesheet already puts between figures. */
+/* Button rows that follow a heading get their space from the heading. The ones
+   that follow a figure would otherwise sit flush against it — 40px is what this
+   stylesheet already puts between figures. */
 .clip-grid + .tabs,
 .caption + .tabs,
 .chart-row + .tabs,
 .media + .tabs {
   margin-top: 40px;
+}
+
+/* More again after a bare chart: a caption ends well above its own box, but a
+   chart's axis labels run to the bottom edge of the SVG, so 40px here reads as
+   much less than 40px anywhere else. */
+.chart-wrap + .tabs {
+  margin-top: 56px;
 }
 
 .tab {

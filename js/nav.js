@@ -149,7 +149,17 @@
       tabs.forEach((t, j) => {
         t.setAttribute('aria-selected', String(j === i));
         t.tabIndex = j === i ? 0 : -1;
-        if (panels[j]) panels[j].hidden = j !== i;
+        if (!panels[j]) return;
+        panels[j].hidden = j !== i;
+        // An autoplaying clip in a display:none panel never starts, so it has
+        // to be told to once its panel is shown — and told to stop when it is
+        // hidden again, so a tab strip does not leave a stack of clips
+        // decoding out of sight.
+        panels[j].querySelectorAll('video[autoplay]').forEach((v) => {
+          if (j !== i) return v.pause();
+          const started = v.play();
+          if (started && started.catch) started.catch(() => {});
+        });
       });
     };
 
