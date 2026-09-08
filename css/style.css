@@ -1545,24 +1545,44 @@ body::before {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 18px;
+  /* Tiles top-align, so a row that mixes captioned clips with bare placeholders
+     still lines its videos up along one edge. */
+  align-items: start;
 }
 
-/* Four clips reading as one row per benchmark. They pair up rather than
-   shrinking to a quarter of a phone screen. */
+/* Column count and clip shape are separate modifiers: the same four-across row
+   holds 4:3 simulator rollouts in one place and square real-world ones in
+   another, and only the shape differs. */
 .clip-grid--4 {
   grid-template-columns: repeat(4, 1fr);
 }
 
-/* Three square rollouts on one line. The grid is capped rather than filling the
-   container: the source frames are 224px, and three tracks of a full 1200px
-   would blow each one up 2.6x. At this width it is 1.4x and still reads. */
+/* Three across, capped rather than filling the container: the source frames are
+   224px, and three tracks of a full 1200px would blow each one up 2.6x. At this
+   width it is 1.4x and still reads. Four across needs no cap — the tracks are
+   narrower than that on their own. */
+.clip-grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 660px;
+  margin-inline: auto;
+}
+
 .clip-grid--3 {
   grid-template-columns: repeat(3, 1fr);
   max-width: 1000px;
   margin-inline: auto;
 }
 
-.clip-grid--3 .media--video {
+/* The shape applies to every tile in the grid, not just the ones that already
+   hold a clip: a 4:3 placeholder beside a 1:1 video would leave the row ragged
+   while a panel is half filled. Two classes beats the (0,1,0) of .media--clip
+   and .media--placeholder, so this wins wherever it is set. */
+.clip-grid--43 .media {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+}
+
+.clip-grid--sq .media {
   aspect-ratio: 1 / 1;
   min-height: 0;
 }
@@ -1809,11 +1829,6 @@ body::before {
   background: #0D1119;
 }
 
-.clip-grid--4 .media--video {
-  aspect-ratio: 4 / 3;
-  min-height: 0;
-}
-
 /* A clip with the instruction it was given underneath it. The caption is the
    point of the figure, so it goes outside the aspect-ratio box rather than
    over the video. */
@@ -1833,6 +1848,17 @@ body::before {
   color: var(--mute);
   margin: 9px 0 0;
   text-wrap: pretty;
+}
+
+/* The geometry/pose profile the grasp had to handle, under the instruction it
+   was given. Its own line and a step quieter: it annotates the clip rather
+   than being part of what the robot was told. */
+.clip__tag {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  color: #8A91A0;
 }
 
 .media--video:hover {

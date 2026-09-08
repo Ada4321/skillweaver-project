@@ -59,7 +59,7 @@
       }, 30000);
     }
   </script>
-  <link href="css/style.css?v=ebde476aaa" rel="stylesheet" />
+  <link href="css/style.css?v=55681b1074" rel="stylesheet" />
 </head>
 
 <body>
@@ -502,40 +502,92 @@
       </div>
 
       <div class="panel" id="panel-pick" role="tabpanel" aria-labelledby="tab-pick">
-        <div class="clip-grid">
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Pick &middot; clip 1</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Pick &middot; clip 2</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Pick &middot; clip 3</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Pick &middot; clip 4</p>
-          </div>
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-pick-1.jpg?v=2815d77167"
+                     width="256" height="256" aria-label="Collected Pick trajectory">
+                <source src="assets/videos/data/pick/clip-1.mp4?v=cc62d12149" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Grasp the pickle jar.&rdquo;<span class="clip__tag">(round)</span></figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-pick-2.jpg?v=381a25d92a"
+                     width="256" height="256" aria-label="Collected Pick trajectory">
+                <source src="assets/videos/data/pick/clip-2.mp4?v=4bf341297f" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Take hold of the lemon.&rdquo;<span class="clip__tag">(round)</span></figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-pick-3.jpg?v=8796f7a094"
+                     width="256" height="256" aria-label="Collected Pick trajectory">
+                <source src="assets/videos/data/pick/clip-3.mp4?v=ac706ea52d" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Pick up the banana.&rdquo;<span class="clip__tag">(elongated lying)</span></figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-pick-4.jpg?v=a617c1d024"
+                     width="256" height="256" aria-label="Collected Pick trajectory">
+                <source src="assets/videos/data/pick/clip-4.mp4?v=2f34706e70" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Lift the green cup.&rdquo;<span class="clip__tag">(concave)</span></figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-pick-5.jpg?v=505c3dae90"
+                     width="256" height="256" aria-label="Collected Pick trajectory">
+                <source src="assets/videos/data/pick/clip-5.mp4?v=0b3c8eca9c" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Take hold of the curvy bottle.&rdquo;<span class="clip__tag">(elongated upright)</span></figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-pick-6.jpg?v=ea2eae2c80"
+                     width="256" height="256" aria-label="Collected Pick trajectory">
+                <source src="assets/videos/data/pick/clip-6.mp4?v=7394c0273c" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Grasp the long neck beer bottle.&rdquo;<span class="clip__tag">(elongated upright)</span></figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-pick-7.jpg?v=8aa83b0673"
+                     width="256" height="256" aria-label="Collected Pick trajectory">
+                <source src="assets/videos/data/pick/clip-7.mp4?v=3612cdf626" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Lift the yellow milk carton.&rdquo;<span class="clip__tag">(elongated upright)</span></figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-pick-8.jpg?v=cb789d97d5"
+                     width="256" height="256" aria-label="Collected Pick trajectory">
+                <source src="assets/videos/data/pick/clip-8.mp4?v=a5f5434d44" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Pick up the bowl.&rdquo;<span class="clip__tag">(concave)</span></figcaption>
+          </figure>
         </div>
       </div>
 
       <div class="panel" id="panel-place" role="tabpanel" aria-labelledby="tab-place" hidden>
-        <div class="clip-grid">
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
           <div class="media media--placeholder media--clip">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -568,7 +620,7 @@
       </div>
 
       <div class="panel" id="panel-insert" role="tabpanel" aria-labelledby="tab-insert" hidden>
-        <div class="clip-grid">
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
           <div class="media media--placeholder media--clip">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -601,7 +653,7 @@
       </div>
 
       <div class="panel" id="panel-pour" role="tabpanel" aria-labelledby="tab-pour" hidden>
-        <div class="clip-grid">
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
           <div class="media media--placeholder media--clip">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -634,7 +686,7 @@
       </div>
 
       <div class="panel" id="panel-open" role="tabpanel" aria-labelledby="tab-open" hidden>
-        <div class="clip-grid">
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
           <div class="media media--placeholder media--clip">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -667,7 +719,7 @@
       </div>
 
       <div class="panel" id="panel-close" role="tabpanel" aria-labelledby="tab-close" hidden>
-        <div class="clip-grid">
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
           <div class="media media--placeholder media--clip">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -700,7 +752,7 @@
       </div>
 
       <div class="panel" id="panel-long" role="tabpanel" aria-labelledby="tab-long" hidden>
-        <div class="clip-grid">
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
           <div class="media media--placeholder media--clip">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -733,7 +785,7 @@
       </div>
 
       <div class="panel" id="panel-libero" role="tabpanel" aria-labelledby="tab-libero" hidden>
-        <div class="clip-grid">
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
           <div class="media media--placeholder media--clip">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -766,7 +818,7 @@
       </div>
 
       <div class="panel" id="panel-simpler" role="tabpanel" aria-labelledby="tab-simpler" hidden>
-        <div class="clip-grid">
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
           <div class="media media--placeholder media--clip">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -3337,7 +3389,7 @@
       </div>
 
       <div class="panel" id="panel-tr-libero" role="tabpanel" aria-labelledby="tab-tr-libero">
-        <div class="clip-grid clip-grid--4">
+        <div class="clip-grid clip-grid--4 clip-grid--43">
           <div class="media media--placeholder">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -3370,10 +3422,10 @@
       </div>
 
       <div class="panel" id="panel-tr-simpler" role="tabpanel" aria-labelledby="tab-tr-simpler" hidden>
-        <div class="clip-grid clip-grid--4">
+        <div class="clip-grid clip-grid--4 clip-grid--43">
           <figure class="clip">
             <div class="media media--video">
-              <video autoplay muted loop playsinline preload="auto"
+              <video autoplay muted loop playsinline controls preload="auto"
                      poster="assets/images/posters/simpler-eggplant.jpg?v=be7e362b24"
                      width="640" height="480" aria-label="SIMPLER-WidowX rollout">
                 <source src="assets/videos/transfer/simpler/eggplant.mp4?v=b5ada91dd9" type="video/mp4" />
@@ -3383,7 +3435,7 @@
           </figure>
           <figure class="clip">
             <div class="media media--video">
-              <video autoplay muted loop playsinline preload="auto"
+              <video autoplay muted loop playsinline controls preload="auto"
                      poster="assets/images/posters/simpler-carrot.jpg?v=95049706c6"
                      width="640" height="480" aria-label="SIMPLER-WidowX rollout">
                 <source src="assets/videos/transfer/simpler/carrot.mp4?v=32fcc3b71c" type="video/mp4" />
@@ -3393,7 +3445,7 @@
           </figure>
           <figure class="clip">
             <div class="media media--video">
-              <video autoplay muted loop playsinline preload="auto"
+              <video autoplay muted loop playsinline controls preload="auto"
                      poster="assets/images/posters/simpler-spoon.jpg?v=eca4657ed0"
                      width="640" height="480" aria-label="SIMPLER-WidowX rollout">
                 <source src="assets/videos/transfer/simpler/spoon.mp4?v=577bdfb33d" type="video/mp4" />
@@ -3403,7 +3455,7 @@
           </figure>
           <figure class="clip">
             <div class="media media--video">
-              <video autoplay muted loop playsinline preload="auto"
+              <video autoplay muted loop playsinline controls preload="auto"
                      poster="assets/images/posters/simpler-stack-cube.jpg?v=a8a5a98d96"
                      width="640" height="480" aria-label="SIMPLER-WidowX rollout">
                 <source src="assets/videos/transfer/simpler/stack-cube.mp4?v=2a0012587b" type="video/mp4" />
@@ -3647,109 +3699,105 @@
       </div>
 
       <div class="panel" id="panel-rw-original" role="tabpanel" aria-labelledby="tab-rw-original">
-        <div class="clip-grid">
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Original Setup &middot; clip 1</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Original Setup &middot; clip 2</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Original Setup &middot; clip 3</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Original Setup &middot; clip 4</p>
-          </div>
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/rw-pick-apple.jpg?v=304a18beb3"
+                     width="224" height="224" aria-label="Real-world rollout, original setup">
+                <source src="assets/videos/real/original/pick-apple.mp4?v=d22e10b40a" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;pick up the apple&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/rw-pick-banana.jpg?v=91c5eeb186"
+                     width="224" height="224" aria-label="Real-world rollout, original setup">
+                <source src="assets/videos/real/original/pick-banana.mp4?v=58f504cc14" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;pick up the banana&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/rw-place-apple.jpg?v=4ba4ab9a05"
+                     width="224" height="224" aria-label="Real-world rollout, original setup">
+                <source src="assets/videos/real/original/place-apple.mp4?v=ade50052c6" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;place the apple in the bowl&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/rw-place-lemon.jpg?v=d6b318f24c"
+                     width="224" height="224" aria-label="Real-world rollout, original setup">
+                <source src="assets/videos/real/original/place-lemon.mp4?v=981f6cb07f" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;place the lemon in the bowl&rdquo;</figcaption>
+          </figure>
         </div>
       </div>
 
       <div class="panel" id="panel-rw-swap" role="tabpanel" aria-labelledby="tab-rw-swap" hidden>
-        <div class="clip-grid">
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Swap Objects &middot; clip 1</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Swap Objects &middot; clip 2</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Swap Objects &middot; clip 3</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Swap Objects &middot; clip 4</p>
-          </div>
+        <div class="clip-grid clip-grid--2 clip-grid--sq">
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/rw-swap-pick-banana.jpg?v=48e7774a37"
+                     width="224" height="224" aria-label="Real-world rollout, objects swapped">
+                <source src="assets/videos/real/swap/pick-banana.mp4?v=1e47388014" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;pick up the banana&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/rw-swap-place-apple.jpg?v=616a883cec"
+                     width="224" height="224" aria-label="Real-world rollout, objects swapped">
+                <source src="assets/videos/real/swap/place-apple.mp4?v=440fd8e1d5" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;place the apple in the bowl&rdquo;</figcaption>
+          </figure>
         </div>
       </div>
 
       <div class="panel" id="panel-rw-background" role="tabpanel" aria-labelledby="tab-rw-background" hidden>
-        <div class="clip-grid">
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Change Background &middot; clip 1</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Change Background &middot; clip 2</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Change Background &middot; clip 3</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Change Background &middot; clip 4</p>
-          </div>
+        <div class="clip-grid clip-grid--2 clip-grid--sq">
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/rw-background-pick-apple.jpg?v=61ce1e8630"
+                     width="224" height="224" aria-label="Real-world rollout, background changed">
+                <source src="assets/videos/real/background/pick-apple.mp4?v=7e2102abac" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;pick up the apple&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/rw-background-place-lemon.jpg?v=45fd91103a"
+                     width="224" height="224" aria-label="Real-world rollout, background changed">
+                <source src="assets/videos/real/background/place-lemon.mp4?v=84273e07cf" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;place the lemon in the bowl&rdquo;</figcaption>
+          </figure>
         </div>
       </div>
 
       <div class="panel" id="panel-rw-distract" role="tabpanel" aria-labelledby="tab-rw-distract" hidden>
-        <div class="clip-grid clip-grid--3">
+        <div class="clip-grid clip-grid--3 clip-grid--sq">
           <figure class="clip">
             <div class="media media--video">
-              <video autoplay muted loop playsinline preload="auto"
+              <video autoplay muted loop playsinline controls preload="auto"
                      poster="assets/images/posters/rw-distractor-1.jpg?v=ca4f8cc2be"
                      width="224" height="224" aria-label="Real-world rollout with added distractors">
                 <source src="assets/videos/real/distract/distractor-1.mp4?v=a4d96b5c43" type="video/mp4" />
@@ -3758,7 +3806,7 @@
           </figure>
           <figure class="clip">
             <div class="media media--video">
-              <video autoplay muted loop playsinline preload="auto"
+              <video autoplay muted loop playsinline controls preload="auto"
                      poster="assets/images/posters/rw-distractor-3.jpg?v=b9c617769d"
                      width="224" height="224" aria-label="Real-world rollout with added distractors">
                 <source src="assets/videos/real/distract/distractor-3.mp4?v=df9024eae7" type="video/mp4" />
@@ -3767,7 +3815,7 @@
           </figure>
           <figure class="clip">
             <div class="media media--video">
-              <video autoplay muted loop playsinline preload="auto"
+              <video autoplay muted loop playsinline controls preload="auto"
                      poster="assets/images/posters/rw-distractor-4.jpg?v=61122c77b5"
                      width="224" height="224" aria-label="Real-world rollout with added distractors">
                 <source src="assets/videos/real/distract/distractor-4.mp4?v=3f5e8742b2" type="video/mp4" />
