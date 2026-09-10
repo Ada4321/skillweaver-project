@@ -59,7 +59,7 @@
       }, 30000);
     }
   </script>
-  <link href="css/style.css?v=55681b1074" rel="stylesheet" />
+  <link href="css/style.css?v=70fe0761f6" rel="stylesheet" />
 </head>
 
 <body>
@@ -298,58 +298,72 @@
     <div class="container">
       <h2 class="section-title">What SkillWeaver does</h2>
 
-      <!--
-      <div class="stats">
-        <div class="stat">
-          <div class="stat__num">11K+</div>
-          <div class="stat__label">Simulated scenes</div>
-        </div>
-        <div class="stat">
-          <div class="stat__num">31K</div>
-          <div class="stat__label">Demonstrations</div>
-        </div>
-        <div class="stat">
-          <div class="stat__num">8.7M</div>
-          <div class="stat__label">Frames</div>
-        </div>
-        <div class="stat">
-          <div class="stat__num">0</div>
-          <div class="stat__label">Teleoperated episodes</div>
-        </div>
-      </div>
-      <div class="figure media">
-        <img loading="lazy" decoding="async" src="assets/images/teaser.jpg?v=097e2f5206" width="1920" height="1080"
-          alt="A grid of simulated kitchen, living-room and tabletop scenes with a Franka arm manipulating everyday objects, beside per-step point tracks, depth and RGB for two pick-and-place demonstrations." />
-      </div>
-      <p class="caption"><b>SkillWeaver</b> generates large-scale manipulation demonstrations in simulation by combining
-        scalable environment generation, verifier-guided agentic search, and reusable learned interaction skills. Every
-        trajectory arrives already synchronised with RGB, depth, segmentation, point tracks, object state and language.
-      </p>
+      <div class="pillars">
+        <article class="pillar">
+          <div class="pillar__media">
+            <img loading="lazy" decoding="async" src="assets/images/what-assets.jpg?v=20aaf985bf" width="960" height="640"
+              alt="Dozens of reconstructed simulation assets — cereal boxes, jars, bottles, a teapot, a woven basket, plates — arranged on a table." />
+          </div>
+          <div class="pillar__body">
+            <h3 class="pillar__title">Asset generation</h3>
+            <div class="pillar__num">10,192</div>
+            <div class="pillar__label">Sim-ready assets &middot; 159 categories</div>
+            <p class="pillar__text">Gemini proposes object categories and images; SAM3D-Objects reconstructs each one into a
+              textured, collision-ready IsaacLab asset.</p>
+          </div>
+        </article>
 
-      <div class="prose">
-        <p>
-          Robot manipulation has recently achieved remarkable progress through large-scale learning from teleoperated
-          demonstrations. However, collecting such data remains expensive, labor-intensive, and difficult to scale
-          across diverse environments and long-horizon tasks. Recent efforts have explored language-guided skill
-          composition and simulation-based data generation to reduce human supervision, yet they typically rely on
-          <b>fixed skill sequencing, hand-designed controllers, or manually specified execution pipelines</b>.
-        </p>
-        <p>
-          We present <b>SkillWeaver</b>, a framework for autonomous robot data generation in simulation. Given a task
-          instruction and a procedurally generated or reconstructed scene from a real-world observation, SkillWeaver
-          decomposes the task into semantic subgoals, executes <b>reusable closed-loop interaction skills learned with
-          reinforcement learning</b>, and iteratively verifies execution outcomes to guide search, reflection, and
-          re-planning. By tightly coupling environment generation, skill learning, hierarchical planning, and automatic
-          trajectory verification, SkillWeaver autonomously produces diverse long-horizon manipulation demonstrations
-          together with rich semantic and geometric supervision for downstream policy learning.
-        </p>
-        <p>
-          We evaluate SkillWeaver on LIBERO-PRO and real-world Franka manipulation, and it produces high-quality
-          training data and yields policies that adapt more effectively to <b>novel objects, scenes, and long-horizon
-          tasks</b> than existing simulation-based data generation pipelines.
-        </p>
+        <article class="pillar">
+          <div class="pillar__media pillar__media--ph">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <rect class="ph-edge" x="6" y="10" width="36" height="28" rx="3" />
+              <path class="ph-edge" d="M10,34 L20,23 L27,30 L32,25 L38,34" />
+              <circle class="ph-node" cx="33" cy="17" r="3" />
+            </svg>
+            <p class="placeholder__text">Scene figure coming soon</p>
+          </div>
+          <div class="pillar__body">
+            <h3 class="pillar__title">Scene generation</h3>
+            <div class="pillar__num">11K+</div>
+            <div class="pillar__label">Generated scenes</div>
+            <p class="pillar__text">Scenes are composed procedurally from the asset library, or reconstructed from a real
+              observation as an interactive digital twin.</p>
+          </div>
+        </article>
+
+        <article class="pillar">
+          <div class="pillar__media pillar__media--ph">
+            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
+              <path class="ph-edge" d="M8,40 L20,40 M14,40 L14,30 L24,18 L34,22" />
+              <circle class="ph-node" cx="14" cy="30" r="3" />
+              <circle class="ph-node" cx="24" cy="18" r="3" />
+              <path class="ph-edge" d="M34,22 L40,17 M34,22 L39,28" />
+            </svg>
+            <p class="placeholder__text">Skill figure coming soon</p>
+          </div>
+          <div class="pillar__body">
+            <h3 class="pillar__title">RL skill training</h3>
+            <div class="pillar__num">4</div>
+            <div class="pillar__label">Interaction types</div>
+            <p class="pillar__text">Pick and Place are trained with PPO in IsaacLab and split into sub-policies by object
+              geometry and pose, so each one adapts to contact instead of replaying a fixed grasp.</p>
+          </div>
+        </article>
+
+        <article class="pillar">
+          <div class="pillar__media">
+            <img loading="lazy" decoding="async" src="assets/images/what-mcts.jpg?v=73ca632f1f" width="960" height="640"
+              alt="An MCTS planner exchanges past experience with memory and feedback with a verifier, and selects pick, place, open and close skills that execute in a simulated environment." />
+          </div>
+          <div class="pillar__body">
+            <h3 class="pillar__title">Data collection</h3>
+            <div class="pillar__num">31K</div>
+            <div class="pillar__label">Demonstrations &middot; 8.7M frames</div>
+            <p class="pillar__text">An MCTS planner chains RL skills, a VLM verifier checks every outcome, and memory
+              carries what failed into the next expansion.</p>
+          </div>
+        </article>
       </div>
-      -->
     </div>
   </section>
 
@@ -492,6 +506,7 @@
       <div class="tabs" role="tablist" aria-label="Task family" data-tabs>
         <button class="tab" role="tab" id="tab-pick" aria-controls="panel-pick" aria-selected="true">Pick</button>
         <button class="tab" role="tab" id="tab-place" aria-controls="panel-place" aria-selected="false">Place</button>
+        <button class="tab" role="tab" id="tab-straighten" aria-controls="panel-straighten" aria-selected="false">Straighten-up</button>
         <button class="tab" role="tab" id="tab-insert" aria-controls="panel-insert" aria-selected="false">Insert</button>
         <button class="tab" role="tab" id="tab-pour" aria-controls="panel-pour" aria-selected="false">Pour</button>
         <button class="tab" role="tab" id="tab-open" aria-controls="panel-open" aria-selected="false">Open</button>
@@ -511,7 +526,7 @@
                 <source src="assets/videos/data/pick/clip-1.mp4?v=cc62d12149" type="video/mp4" />
               </video>
             </div>
-            <figcaption class="clip__cap">&ldquo;Grasp the pickle jar.&rdquo;<span class="clip__tag">(round)</span></figcaption>
+            <figcaption class="clip__cap">&ldquo;Grasp the pickle jar.&rdquo;<span class="clip__tag">(round object)</span></figcaption>
           </figure>
           <figure class="clip">
             <div class="media media--video">
@@ -521,7 +536,7 @@
                 <source src="assets/videos/data/pick/clip-2.mp4?v=4bf341297f" type="video/mp4" />
               </video>
             </div>
-            <figcaption class="clip__cap">&ldquo;Take hold of the lemon.&rdquo;<span class="clip__tag">(round)</span></figcaption>
+            <figcaption class="clip__cap">&ldquo;Take hold of the lemon.&rdquo;<span class="clip__tag">(round object)</span></figcaption>
           </figure>
           <figure class="clip">
             <div class="media media--video">
@@ -531,7 +546,7 @@
                 <source src="assets/videos/data/pick/clip-3.mp4?v=ac706ea52d" type="video/mp4" />
               </video>
             </div>
-            <figcaption class="clip__cap">&ldquo;Pick up the banana.&rdquo;<span class="clip__tag">(elongated lying)</span></figcaption>
+            <figcaption class="clip__cap">&ldquo;Pick up the banana.&rdquo;<span class="clip__tag">(elongated lying object)</span></figcaption>
           </figure>
           <figure class="clip">
             <div class="media media--video">
@@ -541,7 +556,7 @@
                 <source src="assets/videos/data/pick/clip-4.mp4?v=2f34706e70" type="video/mp4" />
               </video>
             </div>
-            <figcaption class="clip__cap">&ldquo;Lift the green cup.&rdquo;<span class="clip__tag">(concave)</span></figcaption>
+            <figcaption class="clip__cap">&ldquo;Lift the green cup.&rdquo;<span class="clip__tag">(concave object)</span></figcaption>
           </figure>
           <figure class="clip">
             <div class="media media--video">
@@ -551,7 +566,7 @@
                 <source src="assets/videos/data/pick/clip-5.mp4?v=0b3c8eca9c" type="video/mp4" />
               </video>
             </div>
-            <figcaption class="clip__cap">&ldquo;Take hold of the curvy bottle.&rdquo;<span class="clip__tag">(elongated upright)</span></figcaption>
+            <figcaption class="clip__cap">&ldquo;Take hold of the curvy bottle.&rdquo;<span class="clip__tag">(elongated upright object)</span></figcaption>
           </figure>
           <figure class="clip">
             <div class="media media--video">
@@ -561,7 +576,7 @@
                 <source src="assets/videos/data/pick/clip-6.mp4?v=7394c0273c" type="video/mp4" />
               </video>
             </div>
-            <figcaption class="clip__cap">&ldquo;Grasp the long neck beer bottle.&rdquo;<span class="clip__tag">(elongated upright)</span></figcaption>
+            <figcaption class="clip__cap">&ldquo;Grasp the long neck beer bottle.&rdquo;<span class="clip__tag">(elongated upright object)</span></figcaption>
           </figure>
           <figure class="clip">
             <div class="media media--video">
@@ -571,7 +586,7 @@
                 <source src="assets/videos/data/pick/clip-7.mp4?v=3612cdf626" type="video/mp4" />
               </video>
             </div>
-            <figcaption class="clip__cap">&ldquo;Lift the yellow milk carton.&rdquo;<span class="clip__tag">(elongated upright)</span></figcaption>
+            <figcaption class="clip__cap">&ldquo;Lift the yellow milk carton.&rdquo;<span class="clip__tag">(elongated upright object)</span></figcaption>
           </figure>
           <figure class="clip">
             <div class="media media--video">
@@ -581,86 +596,219 @@
                 <source src="assets/videos/data/pick/clip-8.mp4?v=a5f5434d44" type="video/mp4" />
               </video>
             </div>
-            <figcaption class="clip__cap">&ldquo;Pick up the bowl.&rdquo;<span class="clip__tag">(concave)</span></figcaption>
+            <figcaption class="clip__cap">&ldquo;Pick up the bowl.&rdquo;<span class="clip__tag">(concave object)</span></figcaption>
           </figure>
         </div>
       </div>
 
       <div class="panel" id="panel-place" role="tabpanel" aria-labelledby="tab-place" hidden>
         <div class="clip-grid clip-grid--4 clip-grid--sq">
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Place &middot; clip 1</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Place &middot; clip 2</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Place &middot; clip 3</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Place &middot; clip 4</p>
-          </div>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-place-1.jpg?v=c4659af8f6"
+                     width="256" height="256" aria-label="Collected Place trajectory">
+                <source src="assets/videos/data/place/clip-1.mp4?v=76806942db" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Put the bell pepper in the plate.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-place-2.jpg?v=9af843f196"
+                     width="256" height="256" aria-label="Collected Place trajectory">
+                <source src="assets/videos/data/place/clip-2.mp4?v=8802ffda10" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Place the orange into the bowl.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-place-3.jpg?v=517fbb91e5"
+                     width="256" height="256" aria-label="Collected Place trajectory">
+                <source src="assets/videos/data/place/clip-3.mp4?v=99682efc1c" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Deposit the apple in the food storage container.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-place-4.jpg?v=db79f08075"
+                     width="256" height="256" aria-label="Collected Place trajectory">
+                <source src="assets/videos/data/place/clip-4.mp4?v=53d444fd8b" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Settle the aftershave bottle in the bucket.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-place-5.jpg?v=f8ae8c395e"
+                     width="256" height="256" aria-label="Collected Place trajectory">
+                <source src="assets/videos/data/place/clip-5.mp4?v=24ae8900ff" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Put the potato in the perforated colander.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-place-6.jpg?v=c5e6ac2ad8"
+                     width="256" height="256" aria-label="Collected Place trajectory">
+                <source src="assets/videos/data/place/clip-6.mp4?v=eb295ed0ef" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Shift the electric shaver over to the basket.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-place-7.jpg?v=a0ebfc3ebb"
+                     width="256" height="256" aria-label="Collected Place trajectory">
+                <source src="assets/videos/data/place/clip-7.mp4?v=de54172916" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Place the cologne bottle into the small frying pan.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-place-8.jpg?v=80c07bd7b6"
+                     width="256" height="256" aria-label="Collected Place trajectory">
+                <source src="assets/videos/data/place/clip-8.mp4?v=7cf48d3a55" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Situate the oil bottle on the cutting board.&rdquo;</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-straighten" role="tabpanel" aria-labelledby="tab-straighten" hidden>
+        <div class="prose">
+          <p>Nothing in &ldquo;straighten it up&rdquo; says what upright means. Both the <b>planner</b> and <b>verifier</b>
+            have to work that out for themselves &mdash; that the object&rsquo;s own
+            <b class="mark">+z</b> should end up in line with the table&rsquo;s &mdash; the planner to
+            aim for it, the verifier to judge whether it was reached.</p>
+        </div>
+
+        <div class="clip-grid clip-grid--4 clip-grid--sq">
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-straighten-1.jpg?v=aaf990bc01"
+                     width="256" height="256" aria-label="Collected Straighten-up trajectory">
+                <source src="assets/videos/data/straighten/clip-1.mp4?v=a2d63c7d67" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Straighten up the lying oil bottle.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-straighten-2.jpg?v=95a48fd4d9"
+                     width="256" height="256" aria-label="Collected Straighten-up trajectory">
+                <source src="assets/videos/data/straighten/clip-2.mp4?v=59ff45fcd8" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Upright the lying perfume bottle.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-straighten-3.jpg?v=bac3ca251f"
+                     width="256" height="256" aria-label="Collected Straighten-up trajectory">
+                <source src="assets/videos/data/straighten/clip-3.mp4?v=5a08451829" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Make the lying mug stand straight up.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-straighten-4.jpg?v=a82066c4f4"
+                     width="256" height="256" aria-label="Collected Straighten-up trajectory">
+                <source src="assets/videos/data/straighten/clip-4.mp4?v=89a1b3ebdd" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Set the cup upright.&rdquo;</figcaption>
+          </figure>
         </div>
       </div>
 
       <div class="panel" id="panel-insert" role="tabpanel" aria-labelledby="tab-insert" hidden>
+        <div class="prose">
+          <p>What makes "insert" hard is <b>orientation reasoning</b>. For example, a long spoon carried in flat will never
+            enter a holder however well it is centred: its <b class="mark">long axis</b> has to be
+            brought in line with the container&rsquo;s <b class="mark">+z</b> first. The instruction
+            says none of that &mdash; the <b>planner</b> has to identify the challenge and reason about the correct orientation by itself.</p>
+        </div>
+
         <div class="clip-grid clip-grid--4 clip-grid--sq">
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Insert &middot; clip 1</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Insert &middot; clip 2</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Insert &middot; clip 3</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Insert &middot; clip 4</p>
-          </div>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-insert-1.jpg?v=49c5c36ca6"
+                     width="256" height="256" aria-label="Collected Insert trajectory">
+                <source src="assets/videos/data/insert/clip-1.mp4?v=b84bbab5e7" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Place the toothpaste tube into the utensil holder.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-insert-2.jpg?v=9c3d43ccd9"
+                     width="256" height="256" aria-label="Collected Insert trajectory">
+                <source src="assets/videos/data/insert/clip-2.mp4?v=1bb5534df7" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Rest the spoon inside the utensil holder.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-insert-3.jpg?v=304e1e8540"
+                     width="256" height="256" aria-label="Collected Insert trajectory">
+                <source src="assets/videos/data/insert/clip-3.mp4?v=d2558a4b48" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Deposit the fork into the cup.&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-insert-4.jpg?v=dbbb35e3b0"
+                     width="256" height="256" aria-label="Collected Insert trajectory">
+                <source src="assets/videos/data/insert/clip-4.mp4?v=e5f10e3562" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Pick up the butter knife and place it into the mug.&rdquo;</figcaption>
+          </figure>
         </div>
       </div>
 
       <div class="panel" id="panel-pour" role="tabpanel" aria-labelledby="tab-pour" hidden>
+        <div class="prose">
+          <p>What makes "pour" hard:
+            the planner has to decompose pouring into a sequence of primitives—“pick,” “move above the container,” and “rotate”—while correctly reasoning about the source object’s target orientation required for tilting and pouring.</p>
+            <!-- enter a holder however well it is centred: its <b class="mark">long axis</b> has to be
+            brought in line with the container&rsquo;s <b class="mark">+z</b> first. The instruction
+            says none of that &mdash; the <b>planner</b> has to identify the challenge and reason about the correct orientation by itself.</p> -->
+        </div>
         <div class="clip-grid clip-grid--4 clip-grid--sq">
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Pour &middot; clip 1</p>
-          </div>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-pour-1.jpg?v=a0fe01c4e5"
+                     width="256" height="256" aria-label="Collected Pour trajectory">
+                <source src="assets/videos/data/pour/clip-1.mp4?v=4564e943b1" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Pour from the cup into the bowl.&rdquo;</figcaption>
+          </figure>
           <div class="media media--placeholder media--clip">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -708,13 +856,16 @@
             </svg>
             <p class="placeholder__text">Open &middot; clip 3</p>
           </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Open &middot; clip 4</p>
-          </div>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-open-4.jpg?v=0de8d67f21"
+                     width="256" height="256" aria-label="Collected Open trajectory">
+                <source src="assets/videos/data/open/clip-4.mp4?v=2b2fd701aa" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Open the microwave door.&rdquo;</figcaption>
+          </figure>
         </div>
       </div>
 
@@ -741,32 +892,52 @@
             </svg>
             <p class="placeholder__text">Close &middot; clip 3</p>
           </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Close &middot; clip 4</p>
-          </div>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-close-4.jpg?v=9bd7c28fb3"
+                     width="256" height="256" aria-label="Collected Close trajectory">
+                <source src="assets/videos/data/close/clip-4.mp4?v=e886a3e86d" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Close the microwave door.&rdquo;</figcaption>
+          </figure>
         </div>
       </div>
 
       <div class="panel" id="panel-long" role="tabpanel" aria-labelledby="tab-long" hidden>
+        <div class="prose">
+          <p>These tasks are challenging not just because they are long-horizon—-
+          often requiring <b class="mark">four or five skills</b> in sequence—-
+          but also because the scene may violate the instruction's <b class="mark">implicit assumptions</b>. 
+          If a container starts on its side, “put it in” first requires standing it upright, 
+          even though that step is <b>never stated</b>. 
+          The planner has to discover such missing steps through search, with <b>memory</b> using past failures to guide the next attempt.</p>
+          <!-- <p><b class="mark">Four or five skills</b> deep &mdash; and the container starts on its
+            side, which the instruction never mentions. The <b>planner</b> has to discover that by
+            searching; <b>memory</b> stops it repeating what already failed.</p> -->
+        </div>
         <div class="clip-grid clip-grid--4 clip-grid--sq">
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Long-horizon &middot; clip 1</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">Long-horizon &middot; clip 2</p>
-          </div>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-long-1.jpg?v=c0e32f6dd3"
+                     width="256" height="256" aria-label="Collected long-horizon trajectory">
+                <source src="assets/videos/data/long/clip-1.mp4?v=1f122e3013" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Place the toothbrush into the mug.&rdquo;<span class="clip__tag">(4 skills &middot; the mug starts lying down)</span></figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-long-2.jpg?v=bc2eebab75"
+                     width="256" height="256" aria-label="Collected long-horizon trajectory">
+                <source src="assets/videos/data/long/clip-2.mp4?v=441e078133" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;Pour from the green cup into the pink cup.&rdquo;<span class="clip__tag">(5 skills &middot; the pink cup starts lying down)</span></figcaption>
+          </figure>
           <div class="media media--placeholder media--clip">
             <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
               <circle class="ph-node" cx="24" cy="24" r="20" />
@@ -786,67 +957,131 @@
 
       <div class="panel" id="panel-libero" role="tabpanel" aria-labelledby="tab-libero" hidden>
         <div class="clip-grid clip-grid--4 clip-grid--sq">
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">LIBERO-style Tasks &middot; clip 1</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">LIBERO-style Tasks &middot; clip 2</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">LIBERO-style Tasks &middot; clip 3</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">LIBERO-style Tasks &middot; clip 4</p>
-          </div>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-libero-1.jpg?v=b4831d65ce"
+                     width="256" height="256" aria-label="Collected LIBERO-style trajectory">
+                <source src="assets/videos/data/libero/clip-1.mp4?v=aa51df2a6a" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;put both the milk and the orange juice in the basket&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-libero-2.jpg?v=e52b2e1f19"
+                     width="256" height="256" aria-label="Collected LIBERO-style trajectory">
+                <source src="assets/videos/data/libero/clip-2.mp4?v=f343076449" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;put the red coffee mug on the left plate and put the white mug on the right plate&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-libero-3.jpg?v=6dd80156d0"
+                     width="256" height="256" aria-label="Collected LIBERO-style trajectory">
+                <source src="assets/videos/data/libero/clip-3.mp4?v=5c608003ab" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;insert the bottle into the lower drawer and close it&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-libero-4.jpg?v=8708d6b884"
+                     width="256" height="256" aria-label="Collected LIBERO-style trajectory">
+                <source src="assets/videos/data/libero/clip-4.mp4?v=fe2b2d82e0" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;open the top drawer and place the cream cheese inside&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-libero-5.jpg?v=248db7393b"
+                     width="256" height="256" aria-label="Collected LIBERO-style trajectory">
+                <source src="assets/videos/data/libero/clip-5.mp4?v=dcaf06bb3f" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;place both the ketchup and the milk into the basket&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-libero-6.jpg?v=1c92d3ff53"
+                     width="256" height="256" aria-label="Collected LIBERO-style trajectory">
+                <source src="assets/videos/data/libero/clip-6.mp4?v=58be066157" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;set the white mug on the plate and the chocolate pudding to the left of the plate&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-libero-7.jpg?v=a73d44f68a"
+                     width="256" height="256" aria-label="Collected LIBERO-style trajectory">
+                <source src="assets/videos/data/libero/clip-7.mp4?v=931d0c1545" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;place the yellow and white mug into the microwave and close the door&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-libero-8.jpg?v=7bdc82dab5"
+                     width="256" height="256" aria-label="Collected LIBERO-style trajectory">
+                <source src="assets/videos/data/libero/clip-8.mp4?v=f1bf229b97" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;rest the plate on the stove&rdquo;</figcaption>
+          </figure>
         </div>
       </div>
 
       <div class="panel" id="panel-simpler" role="tabpanel" aria-labelledby="tab-simpler" hidden>
-        <div class="clip-grid clip-grid--4 clip-grid--sq">
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">SIMPLER Tasks &middot; clip 1</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">SIMPLER Tasks &middot; clip 2</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">SIMPLER Tasks &middot; clip 3</p>
-          </div>
-          <div class="media media--placeholder media--clip">
-            <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="ph-node" cx="24" cy="24" r="20" />
-              <path class="ph-play" d="M19.5,15 L33,24 L19.5,33 Z" />
-            </svg>
-            <p class="placeholder__text">SIMPLER Tasks &middot; clip 4</p>
-          </div>
+        <div class="clip-grid clip-grid--4 clip-grid--43">
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-simpler-1.jpg?v=1590f72d54"
+                     width="640" height="480" aria-label="Collected SIMPLER trajectory">
+                <source src="assets/videos/data/simpler/clip-1.mp4?v=5c1985e51c" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;put eggplant into yellow basket&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-simpler-2.jpg?v=9cf6746279"
+                     width="640" height="480" aria-label="Collected SIMPLER trajectory">
+                <source src="assets/videos/data/simpler/clip-2.mp4?v=140b36735d" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;put carrot on plate&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-simpler-3.jpg?v=3c70d9756e"
+                     width="640" height="480" aria-label="Collected SIMPLER trajectory">
+                <source src="assets/videos/data/simpler/clip-3.mp4?v=7deef020ed" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;put the spoon on the towel&rdquo;</figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="media media--video">
+              <video autoplay muted loop playsinline controls preload="auto"
+                     poster="assets/images/posters/data-simpler-4.jpg?v=725b07f05e"
+                     width="640" height="480" aria-label="Collected SIMPLER trajectory">
+                <source src="assets/videos/data/simpler/clip-4.mp4?v=2ee5bd4845" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption class="clip__cap">&ldquo;stack the green block on the yellow block&rdquo;</figcaption>
+          </figure>
         </div>
       </div>
     </div>
@@ -3864,6 +4099,131 @@
   <section class="section section--alt" id="ablation">
     <div class="container">
       <h2 class="section-title">Ablations</h2>
+
+      <div class="tabs" role="tablist" aria-label="Ablation" data-tabs>
+        <button class="tab" role="tab" id="tab-abl-rl" aria-controls="panel-abl-rl" aria-selected="true">RL Skills vs. Scripted Controllers</button>
+        <button class="tab" role="tab" id="tab-abl-mcts" aria-controls="panel-abl-mcts" aria-selected="false">MCTS vs. Linear Skill Sequencing</button>
+        <button class="tab" role="tab" id="tab-abl-verifier" aria-controls="panel-abl-verifier" aria-selected="false">Verifier vs. no Verifier</button>
+        <button class="tab" role="tab" id="tab-abl-memory" aria-controls="panel-abl-memory" aria-selected="false">Memory vs. no Memory</button>
+      </div>
+
+      <div class="panel" id="panel-abl-rl" role="tabpanel" aria-labelledby="tab-abl-rl">
+        <div class="media media--placeholder">
+          <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true"><path class="ph-edge" d="M8,40 L40,40" /><path class="ph-edge" d="M14,40 L14,26 M22,40 L22,16 M30,40 L30,30 M38,40 L38,12" /></svg>
+          <p class="placeholder__text">RL Skills vs. Scripted Controllers</p>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-abl-mcts" role="tabpanel" aria-labelledby="tab-abl-mcts" hidden>
+        <!-- >>> SEARCH ABLATION — generated by tools/make_search_ablation.py, do not edit by hand >>> -->
+        <div class="abl-split">
+          <div class="abl-anims">
+            <figure class="abl-anim">
+              <figcaption class="abl-anim__cap"><b>MCTS</b><span>failed branch dropped &middot; verified prefix kept</span></figcaption>
+        <svg class="search-anim" viewBox="0 0 620 190" role="img" aria-label="MCTS: each expansion proposes two skills and the verifier checks both; failed branches are dropped and search resumes from the last verified node until the four-step trajectory is accepted.">
+        <defs><linearGradient id="saWinM" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="540" y2="0"><stop offset="0" stop-color="#2DD4BF"/><stop offset="0.55" stop-color="#7C83F7"/><stop offset="1" stop-color="#FFB020"/></linearGradient></defs>
+        <path id="sa-m-e-A" class="sa" d="M47,95 C102.5,95 102.5,95 158,95" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-m-e-A2" class="sa" d="M47,95 C102.5,95 102.5,155 158,155" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-m-e-B" class="sa" d="M172,95 C227.5,95 227.5,95 283,95" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-m-e-B2" class="sa" d="M172,95 C227.5,95 227.5,35 283,35" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-m-e-C" class="sa" d="M297,95 C352.5,95 352.5,155 408,155" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-m-e-C2" class="sa" d="M297,95 C352.5,95 352.5,95 408,95" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-m-e-D2" class="sa" d="M422,95 C477.5,95 477.5,35 533,35" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-m-e-D" class="sa" d="M422,95 C477.5,95 477.5,95 533,95" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-m-glow" class="sa sa-glow" d="M47,95 C102.5,95 102.5,95 158,95 L172,95 C227.5,95 227.5,95 283,95 L297,95 C352.5,95 352.5,95 408,95 L422,95 C477.5,95 477.5,95 533,95" fill="none" stroke="url(#saWinM)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path id="sa-m-sel-A" class="sa" d="M47,95 C102.5,95 102.5,95 158,95" fill="none" stroke="#7C83F7" stroke-width="3" stroke-linecap="round"/>
+        <path id="sa-m-sel-B" class="sa" d="M47,95 C102.5,95 102.5,95 158,95 L172,95 C227.5,95 227.5,95 283,95" fill="none" stroke="#7C83F7" stroke-width="3" stroke-linecap="round"/>
+        <path id="sa-m-sel-C2" class="sa" d="M47,95 C102.5,95 102.5,95 158,95 L172,95 C227.5,95 227.5,95 283,95 L297,95 C352.5,95 352.5,95 408,95" fill="none" stroke="#7C83F7" stroke-width="3" stroke-linecap="round"/>
+        <path id="sa-m-resel-B" class="sa" d="M47,95 C102.5,95 102.5,95 158,95 L172,95 C227.5,95 227.5,95 283,95" fill="none" stroke="#7C83F7" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="40" cy="95" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><text x="40" y="117" text-anchor="middle" font-family="Space Mono, ui-monospace, monospace" font-size="10" letter-spacing="1" fill="#8892A6">START</text>
+        <g id="sa-m-A" class="sa"><circle cx="165" cy="95" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-m-A-v" class="sa"><circle cx="165" cy="95" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M161.9,95.2 L164.1,97.4 L168.2,92.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-m-A2" class="sa"><circle cx="165" cy="155" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-m-A2-v" class="sa"><circle cx="165" cy="155" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M161.9,155.2 L164.1,157.4 L168.2,152.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-m-B" class="sa"><circle cx="290" cy="95" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-m-B-v" class="sa"><circle cx="290" cy="95" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M286.9,95.2 L289.1,97.4 L293.2,92.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-m-B2" class="sa"><circle cx="290" cy="35" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-m-B2-v" class="sa"><circle cx="290" cy="35" r="7" fill="#161C27" stroke="#F4566E" stroke-width="1.8"/><path d="M287.3,32.3 L292.7,37.7 M292.7,32.3 L287.3,37.7" fill="none" stroke="#F4566E" stroke-width="1.6" stroke-linecap="round"/></g></g>
+        <g id="sa-m-C" class="sa"><circle cx="415" cy="155" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-m-C-v" class="sa"><circle cx="415" cy="155" r="7" fill="#161C27" stroke="#F4566E" stroke-width="1.8"/><path d="M412.3,152.3 L417.7,157.7 M417.7,152.3 L412.3,157.7" fill="none" stroke="#F4566E" stroke-width="1.6" stroke-linecap="round"/></g></g>
+        <g id="sa-m-C2" class="sa"><circle cx="415" cy="95" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-m-C2-v" class="sa"><circle cx="415" cy="95" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M411.9,95.2 L414.1,97.4 L418.2,92.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-m-D2" class="sa"><circle cx="540" cy="35" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-m-D2-v" class="sa"><circle cx="540" cy="35" r="7" fill="#161C27" stroke="#F4566E" stroke-width="1.8"/><path d="M537.3,32.3 L542.7,37.7 M542.7,32.3 L537.3,37.7" fill="none" stroke="#F4566E" stroke-width="1.6" stroke-linecap="round"/></g></g>
+        <g id="sa-m-D" class="sa"><circle cx="540" cy="95" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-m-D-v" class="sa"><circle cx="540" cy="95" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M536.9,95.2 L539.1,97.4 L543.2,92.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-m-goal" class="sa sa-goal"><circle cx="540" cy="95" r="7.5" fill="#FFB020"/><path d="M536.9,95.2 L539.1,97.4 L543.2,92.7" fill="none" stroke="#0A0D13" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></g>
+        <g id="sa-m-count" class="sa"><text x="612" y="182" text-anchor="end" font-family="Space Mono, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="2" fill="#FFB020">4 EXPANSIONS</text></g>
+        </svg>
+            </figure>
+            <figure class="abl-anim">
+              <figcaption class="abl-anim__cap"><b>Linear</b><span>chain grows on failure &middot; restarts at max depth</span></figcaption>
+        <svg class="search-anim" viewBox="0 0 620 146" role="img" aria-label="Linear skill sequencing: the chain keeps growing after failures until it reaches the maximum depth, is discarded, and restarts from scratch before it succeeds.">
+        <defs><linearGradient id="saWinL" gradientUnits="userSpaceOnUse" x1="36" y1="0" x2="466" y2="0"><stop offset="0" stop-color="#2DD4BF"/><stop offset="0.55" stop-color="#7C83F7"/><stop offset="1" stop-color="#FFB020"/></linearGradient></defs>
+        <path d="M594,24 L594,122" stroke="#39424F" stroke-width="1.6" stroke-dasharray="3 4.5" stroke-linecap="round"/><text x="614" y="14" text-anchor="end" font-family="Space Mono, ui-monospace, monospace" font-size="10" letter-spacing="1" fill="#8892A6">MAX DEPTH</text>
+        <path id="sa-l-e-r1-0" class="sa" d="M43,44 C79,44 79,44 115,44" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-e-r1-1" class="sa" d="M129,44 C165,44 165,44 201,44" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-e-r1-2" class="sa" d="M215,44 C251,44 251,44 287,44" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-e-r1-3" class="sa" d="M301,44 C337,44 337,44 373,44" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-e-r1-4" class="sa" d="M387,44 C423,44 423,44 459,44" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-e-r1-5" class="sa" d="M473,44 C509,44 509,44 545,44" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-e-r2-0" class="sa" d="M43,108 C79,108 79,108 115,108" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-e-r2-1" class="sa" d="M129,108 C165,108 165,108 201,108" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-e-r2-2" class="sa" d="M215,108 C251,108 251,108 287,108" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-e-r2-3" class="sa" d="M301,108 C337,108 337,108 373,108" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-e-r2-4" class="sa" d="M387,108 C423,108 423,108 459,108" fill="none" stroke="#39424F" stroke-width="1.8" stroke-linecap="round"/>
+        <path id="sa-l-glow" class="sa sa-glow" d="M43,108 C79,108 79,108 115,108 L129,108 C165,108 165,108 201,108 L215,108 C251,108 251,108 287,108 L301,108 C337,108 337,108 373,108 L387,108 C423,108 423,108 459,108" fill="none" stroke="url(#saWinL)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="36" cy="44" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><text x="36" y="66" text-anchor="middle" font-family="Space Mono, ui-monospace, monospace" font-size="10" letter-spacing="1" fill="#8892A6">START</text>
+        <g id="sa-l-root2" class="sa"><circle cx="36" cy="108" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><text x="36" y="130" text-anchor="middle" font-family="Space Mono, ui-monospace, monospace" font-size="10" letter-spacing="1" fill="#7C83F7">RESTART</text></g>
+        <g id="sa-l-wall-hit" class="sa"><path d="M594,24 L594,122" stroke="#F4566E" stroke-width="2" stroke-dasharray="3 4.5" stroke-linecap="round"/><text x="614" y="14" text-anchor="end" font-family="Space Mono, ui-monospace, monospace" font-size="10" letter-spacing="1" fill="#F4566E">MAX DEPTH</text></g>
+        <g id="sa-l-r1-0" class="sa"><circle cx="122" cy="44" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r1-0-v" class="sa"><circle cx="122" cy="44" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M118.9,44.2 L121.1,46.4 L125.2,41.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-l-r1-1" class="sa"><circle cx="208" cy="44" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r1-1-v" class="sa"><circle cx="208" cy="44" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M204.9,44.2 L207.1,46.4 L211.2,41.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-l-r1-2" class="sa"><circle cx="294" cy="44" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r1-2-v" class="sa"><circle cx="294" cy="44" r="7" fill="#161C27" stroke="#F4566E" stroke-width="1.8"/><path d="M291.3,41.3 L296.7,46.7 M296.7,41.3 L291.3,46.7" fill="none" stroke="#F4566E" stroke-width="1.6" stroke-linecap="round"/></g></g>
+        <g id="sa-l-r1-3" class="sa"><circle cx="380" cy="44" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r1-3-v" class="sa"><circle cx="380" cy="44" r="7" fill="#161C27" stroke="#F4566E" stroke-width="1.8"/><path d="M377.3,41.3 L382.7,46.7 M382.7,41.3 L377.3,46.7" fill="none" stroke="#F4566E" stroke-width="1.6" stroke-linecap="round"/></g></g>
+        <g id="sa-l-r1-4" class="sa"><circle cx="466" cy="44" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r1-4-v" class="sa"><circle cx="466" cy="44" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M462.9,44.2 L465.1,46.4 L469.2,41.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-l-r1-5" class="sa"><circle cx="552" cy="44" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r1-5-v" class="sa"><circle cx="552" cy="44" r="7" fill="#161C27" stroke="#F4566E" stroke-width="1.8"/><path d="M549.3,41.3 L554.7,46.7 M554.7,41.3 L549.3,46.7" fill="none" stroke="#F4566E" stroke-width="1.6" stroke-linecap="round"/></g></g>
+        <g id="sa-l-r2-0" class="sa"><circle cx="122" cy="108" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r2-0-v" class="sa"><circle cx="122" cy="108" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M118.9,108.2 L121.1,110.4 L125.2,105.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-l-r2-1" class="sa"><circle cx="208" cy="108" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r2-1-v" class="sa"><circle cx="208" cy="108" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M204.9,108.2 L207.1,110.4 L211.2,105.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-l-r2-2" class="sa"><circle cx="294" cy="108" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r2-2-v" class="sa"><circle cx="294" cy="108" r="7" fill="#161C27" stroke="#F4566E" stroke-width="1.8"/><path d="M291.3,105.3 L296.7,110.7 M296.7,105.3 L291.3,110.7" fill="none" stroke="#F4566E" stroke-width="1.6" stroke-linecap="round"/></g></g>
+        <g id="sa-l-r2-3" class="sa"><circle cx="380" cy="108" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r2-3-v" class="sa"><circle cx="380" cy="108" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M376.9,108.2 L379.1,110.4 L383.2,105.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-l-r2-4" class="sa"><circle cx="466" cy="108" r="7" fill="#161C27" stroke="#8892A6" stroke-width="1.6"/><g id="sa-l-r2-4-v" class="sa"><circle cx="466" cy="108" r="7" fill="#161C27" stroke="#2DD4BF" stroke-width="1.8"/><path d="M462.9,108.2 L465.1,110.4 L469.2,105.7" fill="none" stroke="#2DD4BF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+        <g id="sa-l-goal" class="sa sa-goal"><circle cx="466" cy="108" r="7.5" fill="#FFB020"/><path d="M462.9,108.2 L465.1,110.4 L469.2,105.7" fill="none" stroke="#0A0D13" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></g>
+        <g id="sa-l-count" class="sa"><text x="612" y="140" text-anchor="end" font-family="Space Mono, ui-monospace, monospace" font-size="13" font-weight="700" letter-spacing="2" fill="#FFB020">11 EXPANSIONS</text></g>
+        </svg>
+            </figure>
+            <div class="abl-legend"><span><i class="k-pass"></i>verifier pass</span><span><i class="k-fail"></i>verifier fail</span><span><i class="k-win"></i>accepted trajectory</span></div>
+          </div>
+          <div class="abl-side">
+        <div class="table-wrap abl-table" role="region" tabindex="0" aria-label="MCTS versus linear skill sequencing efficiency">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Search</th>
+                <th scope="col">Linear</th>
+                <th scope="col" class="ours">MCTS (ours)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Breadth</th><td>1</td><td class="ours">2</td></tr>
+              <tr><th scope="row">Max Depth</th><td>20</td><td class="ours">4</td></tr>
+              <tr><th scope="row">Max Simulation Rounds</th><td>20</td><td class="ours">20</td></tr>
+              <tr><th scope="row">Expansions / traj.</th><td>6.74</td><td class="ours"><b>3.60</b></td></tr>
+              <tr><th scope="row">Time / traj. (s)</th><td>891</td><td class="ours"><b>645</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">Tested on five long-horizon tasks under the same simulation budget. <b>MCTS needs fewer expansions and
+          less wall-clock time</b> per successful trajectory, by reusing successful skill prefixes across branches.</p>
+          </div>
+        </div>
+        <!-- <<< SEARCH ABLATION <<< -->
+      </div>
+
+      <div class="panel" id="panel-abl-verifier" role="tabpanel" aria-labelledby="tab-abl-verifier" hidden>
+        <div class="media media--placeholder">
+          <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true"><path class="ph-edge" d="M8,40 L40,40" /><path class="ph-edge" d="M14,40 L14,26 M22,40 L22,16 M30,40 L30,30 M38,40 L38,12" /></svg>
+          <p class="placeholder__text">Verifier vs. no Verifier</p>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-abl-memory" role="tabpanel" aria-labelledby="tab-abl-memory" hidden>
+        <div class="media media--placeholder">
+          <svg class="placeholder__mark" viewBox="0 0 48 48" aria-hidden="true"><path class="ph-edge" d="M8,40 L40,40" /><path class="ph-edge" d="M14,40 L14,26 M22,40 L22,16 M30,40 L30,30 M38,40 L38,12" /></svg>
+          <p class="placeholder__text">Memory vs. no Memory</p>
+        </div>
+      </div>
 
       <!--
       <div class="table-wrap" role="region" tabindex="0" aria-label="RL skill versus scripted pick-up success by geometry profile">
