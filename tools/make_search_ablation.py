@@ -229,11 +229,16 @@ def goal(uid, cx, cy, t):
             .track("o", appear(t, out=(FADE1, FADE1 + 0.3))).track("s", pop(t)))
 
 
-def count_label(uid, x, y, n, t):
-    """Shown once the trajectory is lit: how many expansions it took."""
+def count_label(uid, x, y, n, verdicts, t):
+    """Shown once the trajectory is lit: how many expansions it took, how many
+    rollouts -- one per branch executed, so MCTS's two-child expansions count
+    twice -- and the node-level success rate: the share of those rollouts, i.e.
+    of the child nodes they produced, that the verifier passed."""
+    rollouts = len(verdicts)
+    rate = f"{100.0 * sum(verdicts) / rollouts:.1f}%"
     return (El(uid, "g", children=[
-        f'<text x="{f(x)}" y="{f(y)}" text-anchor="end" font-family="{MONO}" font-size="13" '
-        f'font-weight="700" letter-spacing="2" fill="{AMBER}">{n} EXPANSIONS</text>'])
+        f'<text x="{f(x)}" y="{f(y)}" text-anchor="end" font-family="{MONO}" font-size="12" '
+        f'font-weight="700" letter-spacing="1" fill="{AMBER}">{n} EXPANSIONS, {rollouts} ROLLOUTS, {rate} NODE-LEVEL SUCCESS</text>'])
         .track("o", appear(t, dur=0.3)))
 
 
@@ -246,10 +251,12 @@ def root(cx, cy):
 # Shared pacing
 # ----------------------------------------------------------------------------
 # Every skill execution takes EXEC seconds in both animations, its verdict
-# landing VERDICT seconds in, and both fail about as often: MCTS executes 8
-# skills in 4 expansions (3 fail); linear executes 11, one expansion each
-# (4 fail), plus a restart. The goals are reached at ~9.3 s and ~12.7 s --
-# roughly the 891 s / 645 s wall-clock ratio of tab:execution-search-ablation (b).
+# landing VERDICT seconds in, and both draw verdicts from one shared sequence,
+# in execution order: MCTS executes the first 8 (4 expansions, 3 fail) and
+# linear all 11, one expansion each (4 fail), plus a restart -- so rollout k
+# passes or fails alike in both and only the search differs. The goals are
+# reached at ~9.3 s and ~12.7 s -- roughly the 891 s / 645 s wall-clock ratio
+# of tab:execution-search-ablation (b).
 EXEC, VERDICT = 0.95, 0.8
 
 
@@ -258,7 +265,7 @@ EXEC, VERDICT = 0.95, 0.8
 # ----------------------------------------------------------------------------
 M_POS = {"R": (40, 95), "A": (165, 95), "A2": (165, 155), "B": (290, 95), "B2": (290, 35),
          "C": (415, 155), "C2": (415, 95), "D": (540, 95), "D2": (540, 35)}
-M_OK = {"A": True, "A2": True, "B": True, "B2": False, "C": False, "C2": True, "D": True, "D2": False}
+M_OK = {"A": True, "A2": False, "B": True, "B2": False, "C": False, "C2": True, "D": True, "D2": True}
 M_PATH = ["R", "A", "B", "C2", "D"]
 M_PARENTS = {"A": "R", "A2": "R", "B": "A", "B2": "A", "C": "B", "C2": "B", "D": "C2", "D2": "C2"}
 # (parent, expansion start, children in execution order). Both children are
@@ -267,7 +274,7 @@ M_PARENTS = {"A": "R", "A2": "R", "B": "A", "B2": "A", "C": "B", "C2": "B", "D":
 M_EXP = [("R", 0.5, ["A", "A2"]),
          ("A", 2.7, ["B", "B2"]),
          ("B", 5.0, ["C", "C2"]),
-         ("C2", 7.55, ["D2", "D"])]
+         ("C2", 7.55, ["D", "D2"])]
 M_RESELECT = [("B", 6.34)]           # back to the verified node before its other child
 M_GLOW = 9.45
 
@@ -299,7 +306,7 @@ def build_mcts():
     return ([gradient("saWinM", pts[0][0], pts[-1][0])] + edges
             + [glow(f"{P}-glow", pts, M_GLOW, "saWinM")] + tokens
             + [root(*M_POS["R"])] + nodes + [goal(f"{P}-goal", *pts[-1], M_GLOW + 1.0),
-                                             count_label(f"{P}-count", 612, 182, len(M_EXP), M_GLOW + 1.3)])
+                                             count_label(f"{P}-count", 612, 182, len(M_EXP), M_SEQ, M_GLOW + 1.3)])
 
 
 # ----------------------------------------------------------------------------
@@ -308,8 +315,11 @@ def build_mcts():
 L_X = [36 + 86 * i for i in range(7)]
 L_Y1, L_Y2 = 44, 108
 L_WALL = 594
-L_RUN1 = [True, True, False, False, True, False]     # 3 of 4 steps done at max depth
+L_RUN1 = [True, False, True, False, False, True]     # 3 of 4 steps done at max depth
 L_RUN2 = [True, True, False, True, True]             # recovers within it
+# Rollout k has the same verdict in both animations (see the pacing note).
+M_SEQ = [M_OK[k] for _, _, kids in M_EXP for k in kids]
+assert (L_RUN1 + L_RUN2)[:len(M_SEQ)] == M_SEQ, "MCTS and linear verdict orders diverge"
 L_T1, L_T2 = 0.5, 8.1
 L_WALL_HIT = L_T1 + EXEC * len(L_RUN1) + 0.05        # 6.25
 L_GHOST = (L_WALL_HIT + 0.45, 0.28)                  # the discarded attempt stays, greyed out
@@ -341,7 +351,8 @@ def build_linear():
     return ([gradient("saWinL", pts[0][0], pts[-1][0]), wall] + edges
             + [glow(f"{P}-glow", pts, L_GLOW, "saWinL"), root(L_X[0], L_Y1), root2, flash]
             + nodes + [goal(f"{P}-goal", *pts[-1], L_GLOW + 1.0),
-                       count_label(f"{P}-count", 612, 140, len(L_RUN1) + len(L_RUN2), L_GLOW + 1.3)])
+                       count_label(f"{P}-count", 612, 140, len(L_RUN1) + len(L_RUN2),
+                                   L_RUN1 + L_RUN2, L_GLOW + 1.3)])
 
 
 # ----------------------------------------------------------------------------
@@ -424,9 +435,9 @@ TABLE = """<div class="table-wrap abl-table" role="region" tabindex="0" aria-lab
     <tbody>
       <tr><th scope="row">Breadth</th><td>1</td><td class="ours">2</td></tr>
       <tr><th scope="row">Max Depth</th><td>20</td><td class="ours">4</td></tr>
-      <tr><th scope="row">Max Simulation Rounds</th><td>20</td><td class="ours">20</td></tr>
-      <tr><th scope="row">Expansions / traj.</th><td>6.74</td><td class="ours"><b>3.60</b></td></tr>
-      <tr><th scope="row">Time / traj. (s)</th><td>891</td><td class="ours"><b>645</b></td></tr>
+      <tr><th scope="row">Simulation Budget</th><td>20</td><td class="ours">20</td></tr>
+      <tr><th scope="row">Expansions / Success Traj.</th><td>6.74</td><td class="ours"><b>3.60</b></td></tr>
+      <tr><th scope="row">Time / Success Traj. (s)</th><td>891</td><td class="ours"><b>645</b></td></tr>
     </tbody>
   </table>
 </div>

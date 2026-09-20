@@ -179,6 +179,33 @@
     select(tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true') || 0);
   });
 
+  /* ---------- Carousels ----------
+     Slides ship visible (all of them show with JS off); this collapses them to
+     one and wires the arrows, plus left/right while focus is inside. Wraps. */
+  document.querySelectorAll('[data-carousel]').forEach((car) => {
+    const slides = [...car.querySelectorAll(':scope > .carousel__slide')];
+    const name = car.querySelector('.carousel__name');
+    const count = car.querySelector('.carousel__count');
+    let at = 0;
+    const show = (k) => {
+      at = (k + slides.length) % slides.length;
+      slides.forEach((s, j) => { s.hidden = j !== at; });
+      if (name) name.textContent = slides[at].dataset.title || '';
+      if (count) count.textContent = `${at + 1} / ${slides.length}`;
+    };
+    car.querySelectorAll('[data-dir]').forEach((b) => {
+      b.addEventListener('click', () => show(at + Number(b.dataset.dir)));
+    });
+    car.addEventListener('keydown', (e) => {
+      if (e.target.closest('input, textarea, [role="tab"]')) return;
+      const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      show(at + d);
+    });
+    show(0);
+  });
+
   /* ---------- Copy BibTeX ---------- */
   document.querySelectorAll('[data-copy]').forEach((btn) => {
     const src = document.getElementById(btn.getAttribute('data-copy'));
