@@ -60,7 +60,7 @@ action Skills for Scalable Robot Data Generation</title>
       }, 30000);
     }
   </script>
-  <link href="css/style.css?v=50df03dc9b" rel="stylesheet" />
+  <link href="css/style.css?v=c0aa84aa9f" rel="stylesheet" />
 </head>
 
 <body>
@@ -80,7 +80,7 @@ action Skills for Scalable Robot Data Generation</title>
       <li><a href="#video"><span class="sidenav__mark"></span><span class="sidenav__label">Video</span></a></li>
       <li><a href="#what"><span class="sidenav__mark"></span><span class="sidenav__label">What it does</span></a></li>
       <li><a href="#method"><span class="sidenav__mark"></span><span class="sidenav__label">Method</span></a></li>
-      <li><a href="#tree"><span class="sidenav__mark"></span><span class="sidenav__label">Tree Search</span></a></li>
+      <!-- <li><a href="#tree"><span class="sidenav__mark"></span><span class="sidenav__label">Tree Search</span></a></li> -->
       <li><a href="#data"><span class="sidenav__mark"></span><span class="sidenav__label">Collected Data</span></a></li>
       <li><a href="#sim"><span class="sidenav__mark"></span><span class="sidenav__label">Sim Results</span></a></li>
       <li><a href="#real"><span class="sidenav__mark"></span><span class="sidenav__label">Real World</span></a></li>
@@ -144,8 +144,8 @@ action Skills for Scalable Robot Data Generation</title>
              then woven — teal over indigo over amber — into a single verified
              demonstration that lands in the dataset. -->
         <div class="hero__figure">
-          <svg class="field" viewBox="0 0 560 470" role="img"
-            aria-label="The SkillWeaver engine: a Monte Carlo tree search grows a tree of interaction skills. Memory feeds a VLM planner, which proposes a skill; a learned robot skill executes it; a VLM verifier scores the result, sending it back up the tree, into the verified-demonstration dataset, and back into memory.">
+          <svg class="field" viewBox="-178 0 784 470" role="img"
+            aria-label="The SkillWeaver engine: given a simulated scene and a language instruction, a Monte Carlo tree search grows a tree of interaction skills. Memory feeds a VLM planner, which proposes a skill; a learned robot skill executes it; a VLM verifier scores the result, sending it back up the tree, into the verified-demonstration dataset, and back into memory. The verified demonstrations then train a visuomotor policy.">
             <defs>
               <linearGradient id="swWin" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="230" y2="0">
                 <stop offset="0" stop-color="#2DD4BF" />
@@ -229,6 +229,29 @@ action Skills for Scalable Robot Data Generation</title>
               <text class="sw-chip__t" x="313" y="314" dominant-baseline="central">VLM VERIFIER</text>
             </g>
 
+            <!-- The task: a simulated scene and a language instruction, handed to the
+                 search once, before its first iteration. They meet at the root. -->
+            <text class="sw-label" x="-97" y="158" text-anchor="middle">input</text>
+            <g class="sw-chip" style="animation-name: sw-chip-scene;">
+              <rect class="sw-chip__glow" x="-170" y="172" width="146" height="36" rx="11" />
+              <rect class="sw-chip__box" x="-170" y="172" width="146" height="36" rx="11" />
+              <g transform="translate(-147,190)"><path class="sw-glyph-s" d="M0,-8 L7,-4 L7,4 L0,8 L-7,4 L-7,-4 Z M-7,-4 L0,0 L7,-4 M0,0 L0,8" /></g>
+              <text class="sw-chip__t" x="-125" y="190" dominant-baseline="central">SIM SCENE</text>
+            </g>
+            <g class="sw-chip" style="animation-name: sw-chip-instr;">
+              <rect class="sw-chip__glow" x="-170" y="262" width="146" height="36" rx="11" />
+              <rect class="sw-chip__box" x="-170" y="262" width="146" height="36" rx="11" />
+              <g transform="translate(-147,280)"><path class="sw-glyph-s" d="M-7.5,-6.5 L7.5,-6.5 L7.5,3.5 L-1.5,3.5 L-5,7 L-5,3.5 L-7.5,3.5 Z M-4.5,-3 L4.5,-3 M-4.5,0.3 L2,0.3" /></g>
+              <text class="sw-chip__t" x="-125" y="280" dominant-baseline="central">INSTRUCTION</text>
+            </g>
+            <path class="sw-arrow" d="M-20,190.0 C-4.0,190.0 -4.0,235 12,235" />
+            <path class="sw-token sw-token--arrow sw-token--in" style="animation-name: sw-in-scene; stroke-dasharray: 12 58.4;" d="M-20,190.0 C-4.0,190.0 -4.0,235 12,235" />
+            <path class="sw-arrow" d="M-20,280.0 C-4.0,280.0 -4.0,235 12,235" />
+            <path class="sw-token sw-token--arrow sw-token--in" style="animation-name: sw-in-instr; stroke-dasharray: 12 58.4;" d="M-20,280.0 C-4.0,280.0 -4.0,235 12,235" />
+            <path class="sw-arrow" d="M12,235 L31,235" />
+            <path class="sw-head" d="M31.0,235.0 L23.5,238.9 L23.5,231.1 Z" />
+            <path class="sw-token sw-token--arrow sw-token--in" style="animation-name: sw-in-root; stroke-dasharray: 10 19.0;" d="M12,235 L31,235" />
+
             <!-- The engine loop: memory feeds the planner, the planner proposes a
                  skill, the robot executes it, the verifier scores it, and what passes
                  goes to the dataset and back into memory. -->
@@ -261,7 +284,7 @@ action Skills for Scalable Robot Data Generation</title>
             <text class="sw-label" x="368" y="102" text-anchor="start">retrieve</text>
             <text class="sw-label" x="368" y="354" text-anchor="start">accept</text>
             <text class="sw-label" x="212" y="178" text-anchor="middle">propose</text>
-            <text class="sw-label" x="486" y="176" text-anchor="middle">distill</text>
+            <text class="sw-label" x="486" y="176" text-anchor="middle">add</text>
             <text class="sw-label sw-label--sub sw-outcome sw-label--fail" style="animation-name: sw-out-fail;" x="486" y="194" text-anchor="middle">lesson</text>
             <text class="sw-label sw-label--sub sw-outcome sw-label--ok" style="animation-name: sw-out-ok;" x="486" y="194" text-anchor="middle">strategy</text>
 
@@ -274,6 +297,19 @@ action Skills for Scalable Robot Data Generation</title>
               <rect class="sw-card sw-card--new" style="animation-name: sw-deck;" x="321" y="367" width="58" height="44" rx="7" />
             </g>
             <text class="sw-label" x="355" y="448" text-anchor="middle">verified demos</text>
+
+            <!-- Downstream of the engine: the verified demos train a visuomotor policy. -->
+            <g class="sw-chip" style="animation-name: sw-chip-policy;">
+              <rect class="sw-chip__glow" x="452" y="372" width="148" height="44" rx="11" />
+              <rect class="sw-chip__box" x="452" y="372" width="148" height="44" rx="11" />
+              <g transform="translate(475,394)"><path class="sw-glyph-s" d="M-4.4,-4.6 L4.1,-0.9 M-4.4,4.6 L4.1,0.9 M-6.5,-3.1 L-6.5,3.1" /><circle class="sw-glyph-s" cx="-6.5" cy="-5.5" r="2.1" /><circle class="sw-glyph-s" cx="-6.5" cy="5.5" r="2.1" /><circle class="sw-glyph-s" cx="6.5" cy="0" r="2.4" /></g>
+              <text class="sw-chip__t" x="497" y="386.5" dominant-baseline="central">VISUOMOTOR</text>
+              <text class="sw-chip__t" x="497" y="401.5" dominant-baseline="central">POLICY</text>
+            </g>
+            <path class="sw-arrow" d="M400,394.0 L446,394.0" />
+            <path class="sw-head" d="M446.0,394.0 L438.5,397.9 L438.5,390.1 Z" />
+            <path class="sw-token sw-token--arrow" style="animation-name: sw-train; stroke-dasharray: 12 46.0;" d="M400,394.0 L446,394.0" />
+            <text class="sw-label" x="423" y="384" text-anchor="middle">train</text>
           </svg>
         </div>
       </div>
@@ -364,16 +400,18 @@ action Skills for Scalable Robot Data Generation</title>
   <!-- ===================== Method ===================== -->
   <section class="section" id="method">
     <div class="container">
-      <h2 class="section-title">Method</h2>
+      <h2 class="section-title">SkillWeaver Agent</h2>
 
       <div class="figure media media--pad">
         <img loading="lazy" decoding="async" src="assets/images/pipeline.jpg?v=c61ee7b2c1" width="1900" height="1060"
           alt="SkillWeaver pipeline: RL pick, place, open, and close skills, an MCTS search tree with failed and successful branches feeding memory and distillation, a VLM planner producing a structured skill proposal with axis alignment, skill execution frames, and a VLM verifier scoring subgoal completion and branch progress." />
       </div>
-      <p class="caption"><b>Overview of SkillWeaver.</b> A VLM planner proposes interaction skills, which are executed
-        by learned RL policies in simulation. A hierarchical verifier evaluates each execution and provides progress
-        rewards and reflection, while semantic memory guides future exploration. Verified trajectories are distilled
-        into a multimodal training dataset.</p>
+      <p class="caption"><b>Overview of SkillWeaver.</b> SkillWeaver generates robot experience through agentic
+        exploration over Neural Interaction Skills (NIS). Given a task and an interactive simulated environment, a VLM
+        agent selects and parameterizes an NIS, executes it in the environment, and observes the resulting state. A
+        hierarchical verifier evaluates the physical outcome and provides progress rewards and reflection, while
+        semantic memory transfers experience across search episodes. Verifier-guided tree search explores alternative
+        interaction strategies, and successful trajectories are retained as multimodal robot training data.</p>
 
       <!--
       <div class="prose">
@@ -466,9 +504,13 @@ action Skills for Scalable Robot Data Generation</title>
 
   <!-- ===================== Environments ===================== -->
   <!-- ===================== Generated demonstrations ===================== -->
+  <!-- Tree-search examples: hidden for now. The opening and closing tags are
+       commented out separately because the section already holds two comments
+       and HTML comments do not nest; delete both wrappers to bring it back.
   <section class="section section--alt" id="tree">
     <div class="container">
       <h2 class="section-title">Examples of Tree Search Process</h2>
+  -->
 
 <!-- TODO(tree-search): needs a figure or clip of an actual search tree —
            root state, expanded children, the verifier's verdict on each, and the
@@ -490,8 +532,10 @@ action Skills for Scalable Robot Data Generation</title>
         <p class="placeholder__text">Search-tree example coming soon</p>
       </div>
       -->
+  <!--
     </div>
   </section>
+  -->
 
   <section class="section" id="data">
     <div class="container">
@@ -4734,15 +4778,18 @@ action Skills for Scalable Robot Data Generation</title>
   <!-- ===================== Real world ===================== -->
   <section class="section" id="real">
     <div class="container">
-      <h2 class="section-title">Real World Results</h2>
+      <h2 class="section-title">Zero-shot Sim-to-Real Transfer
+        <span class="section-title__sub">All training data collected with SkillWeaver in simulation</span></h2>
 
       <div class="prose">
         <p>
-          The real-world pipeline has two stages: <b>large-scale simulation training</b> (LST) on in-the-wild scenes,
-          followed by <b>post-training</b> (PT) on trajectories collected from a reconstructed digital twin of the
-          specific scene of interest. Neither stage uses a teleoperated episode. We evaluate object, colour and spatial
-          recognition under the original setup and two distribution shifts &mdash; swapped object positions and a
-          changed tablecloth.
+          The real-world pipeline has two stages. <b>Large-scale simulation training</b> (LST) uses demonstrations
+          that SkillWeaver generates across diverse in-the-wild scenes in <b>broad exploration</b> mode.
+          <b>Post-training</b> (PT) then adds task-specific trajectories generated in <b>targeted exploration</b>
+          mode, inside a digital twin reconstructed from the target real-world scene. Both stages train only on
+          SkillWeaver-generated simulation data, <b>with no teleoperated demonstrations</b>. We evaluate object,
+          color, and spatial grounding under the original setup and two distribution shifts &mdash; swapped object
+          positions and a changed tablecloth.
         </p>
       </div>
 

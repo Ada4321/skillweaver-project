@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Generate the hero figure: one MCTS iteration loop, drawn and animated.
 
-The figure shows the actual engine — a search tree on the left being grown by
-four actors on the right (memory, VLM planner, robot skill, VLM verifier) whose
-output lands in the demo dataset. Two iterations play per cycle: the first is
-rejected by the verifier, the second is accepted, glows, and is distilled back
-into memory.
+The figure shows the actual engine, read left to right: the task comes in as a
+simulated scene and a language instruction; a search tree is grown from it by
+four actors (memory, VLM planner, robot skill, VLM verifier) whose output lands
+in the demo dataset; and those verified demos go on to train a visuomotor
+policy. Two iterations play per cycle: the first is rejected by the verifier,
+the second is accepted, glows, and is added back into memory.
 
 Everything animates off ONE shared `animation-duration`, with each element's
 timing baked into its own keyframe percentages. That is why this is generated:
@@ -27,12 +28,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HTML = os.path.join(ROOT, "index.html")
 CSS = os.path.join(ROOT, "css", "style.css")
 
-CYCLE = "15s"
+CYCLE = "16.5s"
 
 # ----------------------------------------------------------------------------
 # Geometry
 # ----------------------------------------------------------------------------
-VB_W, VB_H = 560, 470
+# The viewBox starts left of zero so the input column could be added without
+# moving anything that was already placed.
+VB_X0, VB_W, VB_H = -178, 784, 470
 
 TREE = {
     "root": (40, 235),
@@ -54,23 +57,38 @@ COL_X = CHIP_X + CHIP_W / 2               # 358 — the column's arrow spine
 
 DECK = (326, 372, 58, 44)                 # front card x, y, w, h
 
+# What the search starts from, and where its output goes.
+IN_X, IN_W, IN_H = -170, 146, 36
+INPUTS = [                                 # (id, y, label, glyph)
+    ("scene", 172, "SIM SCENE", "cube"),
+    ("instr", 262, "INSTRUCTION", "say"),
+]
+IN_ACCENT = "#E6EAF2"
+JUNCTION = (12, TREE["root"][1])          # where the two inputs merge
+POLICY = (452, 372, 148, 44)              # x, y, w, h
+
 # ----------------------------------------------------------------------------
 # Phase table — percentages of one cycle. Two MCTS iterations per cycle.
 # ----------------------------------------------------------------------------
 PHASES = {
-    "select":   [(2, 8),   (44, 50)],
-    "retrieve": [(8, 13),  (50, 55)],
-    "expand":   [(13, 19), (55, 61)],
-    "execute":  [(19, 27), (61, 69)],
-    "verify":   [(27, 33), (69, 75)],
-    "backprop": [(33, 38), (75, 80)],
-    "accept":   [(80, 85)],
+    "select":   [(6, 11.9),    (47.1, 53)],
+    "retrieve": [(11.9, 16.8), (53, 57.8)],
+    "expand":   [(16.8, 22.6), (57.8, 63.7)],
+    "execute":  [(22.6, 30.4), (63.7, 71.5)],
+    "verify":   [(30.4, 36.3), (71.5, 77.4)],
+    "backprop": [(36.3, 41.2), (77.4, 82.3)],
+    "accept":   [(82.3, 87.1)],
     # Both outcomes are distilled: the paper writes a memory after EVERY
     # trajectory — a failure lesson for the rejected branch, a success strategy
     # for the accepted one — so the first iteration gets a distill too.
-    "distill":  [(38, 44), (85, 92)],
+    "distill":  [(41.2, 47.1), (87.1, 94)],
 }
-RESET = 94          # everything added during the cycle fades out here
+RESET = 96          # everything added during the cycle fades out here
+
+# Not MCTS phases, so they get no caption: the task is handed over once, before
+# the first iteration, and training happens downstream of the dataset.
+INPUT = (1.5, 6)
+TRAIN = (88.5, 95)
 
 
 def ph(name, i=None):
@@ -299,7 +317,34 @@ GLYPH = {
            '<ellipse cx="0" cy="-6" rx="7.5" ry="3" />'
            '<path d="M-7.5,-6 L-7.5,3 A7.5,3 0 0 0 7.5,3 L7.5,-6" />'
            '<path d="M-7.5,-1.5 A7.5,3 0 0 0 7.5,-1.5" /></g>'),
+    # a simulated scene: an isometric box
+    "cube": ('<path class="sw-glyph-s" d="M0,-8 L7,-4 L7,4 L0,8 L-7,4 L-7,-4 Z '
+             'M-7,-4 L0,0 L7,-4 M0,0 L0,8" />'),
+    # a language instruction: a speech bubble holding two lines of text
+    "say": ('<path class="sw-glyph-s" d="M-7.5,-6.5 L7.5,-6.5 L7.5,3.5 L-1.5,3.5 '
+            'L-5,7 L-5,3.5 L-7.5,3.5 Z M-4.5,-3 L4.5,-3 M-4.5,0.3 L2,0.3" />'),
+    # a learned policy: a small network
+    "net": ('<path class="sw-glyph-s" d="M-4.4,-4.6 L4.1,-0.9 M-4.4,4.6 L4.1,0.9 '
+            'M-6.5,-3.1 L-6.5,3.1" />'
+            '<circle class="sw-glyph-s" cx="-6.5" cy="-5.5" r="2.1" />'
+            '<circle class="sw-glyph-s" cx="-6.5" cy="5.5" r="2.1" />'
+            '<circle class="sw-glyph-s" cx="6.5" cy="0" r="2.4" />'),
 }
+
+
+def chip(cid, x, y, w, h, lines, glyph, accent, windows):
+    """One actor box. Everything inside inherits the chip's animated color."""
+    nm = kf_chip(f"chip-{cid}", accent, sorted(windows))
+    add(f'<g {anim("sw-chip", nm)}>')
+    add(f'  <rect class="sw-chip__glow" x="{x}" y="{y}" width="{w}" height="{h}" rx="11" />')
+    add(f'  <rect class="sw-chip__box" x="{x}" y="{y}" width="{w}" height="{h}" rx="11" />')
+    add(f'  <g transform="translate({x + 23},{y + h / 2:g})">{GLYPH[glyph]}</g>')
+    mid = y + h / 2
+    for k, line in enumerate(lines):
+        ty = mid + (k - (len(lines) - 1) / 2) * 15
+        add(f'  <text class="sw-chip__t" x="{x + 45}" y="{ty:g}" '
+            f'dominant-baseline="central">{line}</text>')
+    add('</g>')
 CHIP_WIN = {
     "memory":  ph("retrieve") + ph("distill"),
     "planner": ph("expand"),
@@ -309,16 +354,37 @@ CHIP_WIN = {
 add('<!-- Who does what. Two VLM roles share the sparkle mark because they are')
 add('     the same model; the robot carries a parallel-jaw gripper. -->')
 for cid, y, label, glyph, accent in CHIPS:
-    nm = kf_chip(f"chip-{cid}", accent, sorted(CHIP_WIN[cid]))
-    add(f'<g {anim("sw-chip", nm)}>')
-    add(f'  <rect class="sw-chip__glow" x="{CHIP_X}" y="{y}" width="{CHIP_W}" '
-        f'height="{CHIP_H}" rx="11" />')
-    add(f'  <rect class="sw-chip__box" x="{CHIP_X}" y="{y}" width="{CHIP_W}" '
-        f'height="{CHIP_H}" rx="11" />')
-    add(f'  <g transform="translate({CHIP_X + 23},{y + CHIP_H / 2:g})">{GLYPH[glyph]}</g>')
-    add(f'  <text class="sw-chip__t" x="{CHIP_X + 45}" y="{y + CHIP_H / 2:g}" '
-        f'dominant-baseline="central">{label}</text>')
-    add('</g>')
+    chip(cid, CHIP_X, y, CHIP_W, CHIP_H, [label], glyph, accent, CHIP_WIN[cid])
+add()
+
+# --- inputs ------------------------------------------------------------------
+add('<!-- The task: a simulated scene and a language instruction, handed to the')
+add('     search once, before its first iteration. They meet at the root. -->')
+add(f'<text class="sw-label" x="{IN_X + IN_W / 2:g}" y="{INPUTS[0][1] - 14}" '
+    f'text-anchor="middle">input</text>')
+for cid, y, label, glyph in INPUTS:
+    chip(cid, IN_X, y, IN_W, IN_H, [label], glyph, IN_ACCENT, [INPUT])
+jx, jy = JUNCTION
+root_x = TREE["root"][0]
+in_a, in_b = INPUT
+for cid, y, _label, _glyph in INPUTS:
+    p0, p3 = (IN_X + IN_W + 4, y + IN_H / 2), (jx, jy)
+    mx = (p0[0] + p3[0]) / 2
+    p1, p2 = (mx, p0[1]), (mx, p3[1])
+    pts = bez(p0, p1, p2, p3)
+    L = length(pts)
+    nm = kf_flow(f"in-{cid}", L, [(in_a + 0.5, in_a + 3)], dash=12)
+    add(f'<path class="sw-arrow" d="{bez_d(p0, p1, p2, p3)}" />')
+    add(f'<path class="sw-token sw-token--arrow sw-token--in" '
+        f'style="animation-name: {nm}; stroke-dasharray: 12 {L:.1f};" '
+        f'd="{bez_d(p0, p1, p2, p3)}" />')
+stub = [JUNCTION, (root_x - 9, jy)]
+L = length(stub)
+nm = kf_flow("in-root", L, [(in_a + 3, in_b)], dash=10)
+add(f'<path class="sw-arrow" d="{poly(stub)}" />')
+add(f'<path class="sw-head" d="{head(stub[-2], stub[-1])}" />')
+add(f'<path class="sw-token sw-token--arrow sw-token--in" '
+    f'style="animation-name: {nm}; stroke-dasharray: 10 {L:.1f};" d="{poly(stub)}" />')
 add()
 
 # --- arrows ------------------------------------------------------------------
@@ -375,7 +441,7 @@ for cid, kind, it in [("distill-fail", "fail", 0), ("distill-ok", "ok", 1)]:
 add('<text class="sw-label" x="368" y="102" text-anchor="start">retrieve</text>')
 add('<text class="sw-label" x="368" y="354" text-anchor="start">accept</text>')
 add('<text class="sw-label" x="212" y="178" text-anchor="middle">propose</text>')
-add('<text class="sw-label" x="486" y="176" text-anchor="middle">distill</text>')
+add('<text class="sw-label" x="486" y="176" text-anchor="middle">add</text>')
 for cid, kind, word, it in [("out-fail", "fail", "lesson", 0),
                             ("out-ok", "ok", "strategy", 1)]:
     nm = kf_show(cid, [ph("distill", it)], fade=0.6)
@@ -398,10 +464,25 @@ add(f'  <rect {anim("sw-card sw-card--new", n_deck)} x="{dx-5}" y="{dy-5}" '
     f'width="{dw}" height="{dh}" rx="7" />')
 add('</g>')
 add(f'<text class="sw-label" x="{dx + dw/2:g}" y="448" text-anchor="middle">verified demos</text>')
+add()
+
+# --- policy --------------------------------------------------------------------
+px, py, pw, ph_ = POLICY
+add('<!-- Downstream of the engine: the verified demos train a visuomotor policy. -->')
+chip("policy", px, py, pw, ph_, ["VISUOMOTOR", "POLICY"], "net", "var(--teal)", [TRAIN])
+tr = [(dx + dw + 16, dy + dh / 2), (px - 6, dy + dh / 2)]
+L = length(tr)
+nm = kf_flow("train", L, [(TRAIN[0], TRAIN[0] + 3)], dash=12)
+add(f'<path class="sw-arrow" d="{poly(tr)}" />')
+add(f'<path class="sw-head" d="{head(tr[-2], tr[-1])}" />')
+add(f'<path class="sw-token sw-token--arrow" '
+    f'style="animation-name: {nm}; stroke-dasharray: 12 {L:.1f};" d="{poly(tr)}" />')
+add(f'<text class="sw-label" x="{(tr[0][0] + tr[1][0]) / 2:g}" y="{dy + dh / 2 - 10:g}" '
+    f'text-anchor="middle">train</text>')
 
 SVG_BODY = "\n".join(S)
-SVG = f'''<svg class="field" viewBox="0 0 {VB_W} {VB_H}" role="img"
-            aria-label="The SkillWeaver engine: a Monte Carlo tree search grows a tree of interaction skills. Memory feeds a VLM planner, which proposes a skill; a learned robot skill executes it; a VLM verifier scores the result, sending it back up the tree, into the verified-demonstration dataset, and back into memory.">
+SVG = f'''<svg class="field" viewBox="{VB_X0} 0 {VB_W} {VB_H}" role="img"
+            aria-label="The SkillWeaver engine: given a simulated scene and a language instruction, a Monte Carlo tree search grows a tree of interaction skills. Memory feeds a VLM planner, which proposes a skill; a learned robot skill executes it; a VLM verifier scores the result, sending it back up the tree, into the verified-demonstration dataset, and back into memory. The verified demonstrations then train a visuomotor policy.">
 {SVG_BODY}
           </svg>'''
 
@@ -497,6 +578,7 @@ CSS_BLOCK = """/* >>> HERO FIGURE — generated by tools/make_hero.py, do not ed
 
 /* What a distilled trajectory contributes depends on its verdict. */
 .field .sw-token--fail { color: var(--rose); }
+.field .sw-token--in { color: #E6EAF2; }
 .field .sw-token--ok { color: var(--teal); }
 
 /* ---- verifier verdicts ---- */
