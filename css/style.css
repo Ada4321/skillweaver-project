@@ -1590,7 +1590,6 @@ body::before {
 .table-note + .figure {
   margin-top: 40px;
 }
-
 .media img {
   width: 100%;
   display: block;
@@ -2219,6 +2218,84 @@ body::before {
 .carousel__arrow:focus-visible {
   outline: 2px solid var(--indigo);
   outline-offset: 2px;
+}
+
+/* ---------- Build-up figure ----------
+   One figure revealed a block at a time. Every frame is the same canvas, so
+   they are stacked and cross-faded: the box never changes height and nothing
+   below it moves while the figure plays. */
+.buildup__stage {
+  position: relative;
+  aspect-ratio: 2002 / 1125;
+}
+
+/* The frames are opaque, so the incoming one fades in ON TOP of the outgoing
+   one, which holds until that fade is over. Fading both at once would let the
+   page show through and wash the figure out mid-step. */
+.buildup__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.buildup__frame.is-on {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* The step just left, held under the incoming frame for the length of the
+   fade (the script takes this class off again). */
+.buildup__frame.is-out {
+  opacity: 1;
+  transition: none;
+}
+
+/* The step's caption. It sits where a figure's caption sits, and reserves
+   three lines so the page below does not shift as the steps change. */
+.carousel__desc {
+  min-height: 4.6em;
+}
+
+/* Jumping straight to a step. The dots carry the step names for screen
+   readers; sighted viewers get the name from the bar above the figure. */
+.buildup__dots {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.buildup__dot {
+  width: 11px;
+  height: 11px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.buildup__dot:hover {
+  border-color: var(--indigo);
+}
+
+.buildup__dot.is-on {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--teal), var(--amber));
+  transform: scale(1.2);
+}
+
+.buildup__dot:focus-visible {
+  outline: 2px solid var(--indigo);
+  outline-offset: 3px;
 }
 
 /* Button rows that follow a heading get their space from the heading. The ones

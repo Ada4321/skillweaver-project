@@ -183,27 +183,116 @@
      Slides ship visible (all of them show with JS off); this collapses them to
      one and wires the arrows, plus left/right while focus is inside. Wraps. */
   document.querySelectorAll('[data-carousel]').forEach((car) => {
-    const slides = [...car.querySelectorAll(':scope > .carousel__slide')];
+    // The slides are direct children, unless the markup wraps them (a stacked
+    // carousel keeps every frame in one box so the figure cannot jump).
+    const host = car.querySelector('[data-slides]') || car;
+    const slides = [...host.querySelectorAll(':scope > .carousel__slide')];
+    if (!slides.length) return;
     const name = car.querySelector('.carousel__name');
     const count = car.querySelector('.carousel__count');
+    const desc = car.querySelector('[data-carousel-desc]');
+    const dots = [...car.querySelectorAll('[data-goto]')];
+    // A section title that follows the slides: a slide may name its own
+    // heading, and the rest fall back to the title's data-carousel-heading.
+    const section = car.closest('.section');
+    const heading = section && section.querySelector('[data-carousel-heading]');
+    // Stacked slides cross-fade in place, so they stay laid out and are hidden
+    // from assistive tech by aria-hidden rather than by `hidden`.
+    const stacked = car.hasAttribute('data-stack');
+    const fades = new Map();
     let at = 0;
     const show = (k) => {
+      const from = at;
       at = (k + slides.length) % slides.length;
-      slides.forEach((s, j) => { s.hidden = j !== at; });
+      slides.forEach((s, j) => {
+        if (stacked) {
+          s.classList.toggle('is-on', j === at);
+          s.setAttribute('aria-hidden', j === at ? 'false' : 'true');
+        } else {
+          s.hidden = j !== at;
+        }
+      });
+      // The frames are opaque and stacked, so the outgoing one is held at full
+      // strength underneath while the incoming one fades in over it. Fading
+      // both at once would let the page show through and wash the figure out.
+      if (stacked && from !== at) {
+        const out = slides[from];
+        out.classList.add('is-out');
+        clearTimeout(fades.get(out));
+        fades.set(out, setTimeout(() => out.classList.remove('is-out'), 500));
+      }
+      dots.forEach((d, j) => {
+        d.classList.toggle('is-on', j === at);
+        if (j === at) d.setAttribute('aria-current', 'true');
+        else d.removeAttribute('aria-current');
+      });
+      if (heading) {
+        heading.textContent = slides[at].dataset.heading || heading.dataset.carouselHeading;
+      }
       if (name) name.textContent = slides[at].dataset.title || '';
       if (count) count.textContent = `${at + 1} / ${slides.length}`;
+      // The step's own caption, in the page's caption idiom: the step named in
+      // bold, then what happens in it. Built as nodes, not markup.
+      if (desc) {
+        desc.textContent = '';
+        const lead = document.createElement('b');
+        lead.textContent = `${slides[at].dataset.title}.`;
+        desc.append(lead, ` ${slides[at].dataset.desc || ''}`);
+      }
     };
+
+    /* ---- self-advancing carousels ----
+       Only while the figure is on screen and nobody is pointing at it, never
+       for a visitor who asked for less motion, and never again once they have
+       taken the controls themselves. */
+    const step = Number(car.dataset.autoplay) || 0;
+    let timer = null;
+    let taken = false;
+    let onScreen = true;
+    let hovered = false;
+    const wants = () => step && !taken && onScreen && !hovered
+      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stop = () => { clearTimeout(timer); timer = null; };
+    const tick = () => {
+      stop();
+      if (!wants()) return;
+      // The finished figure is the one worth reading, so it holds twice as long;
+      // any other slide can set its own time in ms with data-hold.
+      const hold = Number(slides[at].dataset.hold)
+        || (at === slides.length - 1 ? step * 2 : step);
+      timer = setTimeout(() => { show(at + 1); tick(); }, hold);
+    };
+    const takeOver = () => { taken = true; stop(); };
+
+    if (step) {
+      ['pointerenter', 'focusin'].forEach((e) =>
+        car.addEventListener(e, () => { hovered = true; stop(); }));
+      ['pointerleave', 'focusout'].forEach((e) =>
+        car.addEventListener(e, () => { hovered = false; tick(); }));
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+          onScreen = entries[0].isIntersecting;
+          tick();
+        }, { threshold: 0.25 }).observe(car);
+      }
+    }
+
     car.querySelectorAll('[data-dir]').forEach((b) => {
-      b.addEventListener('click', () => show(at + Number(b.dataset.dir)));
+      b.addEventListener('click', () => { takeOver(); show(at + Number(b.dataset.dir)); });
+    });
+    dots.forEach((d, j) => {
+      d.addEventListener('click', () => { takeOver(); show(j); });
     });
     car.addEventListener('keydown', (e) => {
       if (e.target.closest('input, textarea, [role="tab"]')) return;
       const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
       if (!d) return;
       e.preventDefault();
+      takeOver();
       show(at + d);
     });
     show(0);
+    tick();
   });
 
   /* ---------- Copy BibTeX ---------- */

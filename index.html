@@ -60,7 +60,7 @@ action Skills for Scalable Robot Data Generation</title>
       }, 30000);
     }
   </script>
-  <link href="css/style.css?v=c0aa84aa9f" rel="stylesheet" />
+  <link href="css/style.css?v=8419a184bc" rel="stylesheet" />
 </head>
 
 <body>
@@ -400,18 +400,96 @@ action Skills for Scalable Robot Data Generation</title>
   <!-- ===================== Method ===================== -->
   <section class="section" id="method">
     <div class="container">
-      <h2 class="section-title">SkillWeaver Agent</h2>
+      <!-- The title follows the carousel: the first frame names its own, the
+           build-up frames after it fall back to data-carousel-heading. -->
+      <h2 class="section-title" data-carousel-heading="SkillWeaver Agent">Overall Pipeline</h2>
 
-      <div class="figure media media--pad">
-        <img loading="lazy" decoding="async" src="assets/images/pipeline.jpg?v=c61ee7b2c1" width="1900" height="1060"
-          alt="SkillWeaver pipeline: RL pick, place, open, and close skills, an MCTS search tree with failed and successful branches feeding memory and distillation, a VLM planner producing a structured skill proposal with axis alignment, skill execution frames, and a VLM verifier scoring subgoal completion and branch progress." />
+            <div class="figure carousel buildup" data-carousel data-stack data-autoplay="1700">
+        <div class="carousel__bar">
+          <button class="carousel__arrow" type="button" data-dir="-1" aria-label="Previous step">&larr;</button>
+          <p class="carousel__head" aria-live="polite"><span class="carousel__name">Overall Pipeline</span><span class="carousel__count">1 / 9</span></p>
+          <button class="carousel__arrow" type="button" data-dir="1" aria-label="Next step">&rarr;</button>
+        </div>
+        <div class="media media--pad">
+          <div class="buildup__stage" data-slides>
+          <img class="carousel__slide buildup__frame is-on" aria-hidden="false"
+            data-title="Overall Pipeline" data-heading="Overall Pipeline" data-hold="5000"
+            data-desc="Simulated scenes and task instructions go into the SkillWeaver agent, which searches over neural interaction skills, verifies each outcome and distills what it learns into memory. The successful trajectories it collects are distilled into visuomotor policies."
+            loading="eager" decoding="async" width="2003" height="1126"
+            src="assets/images/overall_pipeline.jpg?v=350b7cc882"
+            alt="The overall SkillWeaver pipeline: simulated scenes and task instructions feed the SkillWeaver agent, whose VLM planner searches over Pick, Place, Open and Close skills with MCTS, proposes and executes structured skills, verifies subgoals and progress, and distills memory; successful trajectories are distilled into visuomotor policies." />
+          <img class="carousel__slide buildup__frame" aria-hidden="true"
+            data-title="Overview"
+            data-desc="SkillWeaver generates robot experience through agentic exploration over Neural Interaction Skills: a VLM agent selects and parameterizes a skill, executes it, and observes the resulting state, while a hierarchical verifier and a semantic memory steer where the search goes next."
+            loading="eager" decoding="async" width="1600" height="899"
+            src="assets/images/webpage_method/webpage_method_7.jpg?v=350a5e94fd"
+            alt="Step 1 of the SkillWeaver pipeline figure, showing the whole SkillWeaver pipeline: the four learned skills, a search tree over them, the VLM planner and its alignment module, a strip of skill execution frames, the two verifiers, and memory feeding back into the search." />
+          <img class="carousel__slide buildup__frame" aria-hidden="true"
+            data-title="Neural Interaction Skills"
+            data-desc="Pick, Place, Open and Close are closed-loop policies trained with PPO in IsaacLab. The agent specifies what interaction to perform and its parameters; the learned policy determines how to realize it under contact."
+            loading="lazy" decoding="async" width="1600" height="899"
+            src="assets/images/webpage_method/webpage_method_1.jpg?v=0bc8488e4c"
+            alt="Step 2 of the SkillWeaver pipeline figure, showing the four reinforcement-learned skills the agent acts through: pick, place, open and close." />
+          <img class="carousel__slide buildup__frame" aria-hidden="true"
+            data-title="Embodied Tool Search"
+            data-desc="Interactions are organized into a search tree: each node is a simulator state with its history, verifier feedback and retrieved memory; each edge is an executed skill &mdash; an actual physical experiment. MCTS steers exploration toward promising branches while keeping alternatives alive."
+            loading="lazy" decoding="async" width="1600" height="899"
+            src="assets/images/webpage_method/webpage_method_2.jpg?v=7e6e149e7e"
+            alt="Step 3 of the SkillWeaver pipeline figure, showing a search tree over those skills, its branches ending in failed and successful nodes." />
+          <img class="carousel__slide buildup__frame" aria-hidden="true"
+            data-title="Tool Selection and Grounding"
+            data-desc="The agent predicts a structured action: a semantic subgoal, the skill to invoke, its target object or part, and the geometric parameters. Orientation is parameterized as semantic axis alignment, from which the target rotation is computed analytically."
+            loading="lazy" decoding="async" width="1600" height="899"
+            src="assets/images/webpage_method/webpage_method_3.jpg?v=73119dd20a"
+            alt="Step 4 of the SkillWeaver pipeline figure, showing the planner reading the instruction and the simulator state and emitting a structured skill proposal, with an alignment module predicting the goal orientation." />
+          <img class="carousel__slide buildup__frame" aria-hidden="true"
+            data-title="Skill Execution"
+            data-desc="A motion planner brings the robot to a local pre-interaction configuration, and the selected skill executes the contact-rich portion. The resulting state and observations return to the agent, closing the loop between reasoning and physical interaction."
+            loading="lazy" decoding="async" width="1600" height="899"
+            src="assets/images/webpage_method/webpage_method_4.jpg?v=0766b957ee"
+            alt="Step 5 of the SkillWeaver pipeline figure, showing the proposed skill running in simulation, shown as a strip of rollout frames." />
+          <img class="carousel__slide buildup__frame" aria-hidden="true"
+            data-title="Outcome Verification and Reflection"
+            data-desc="A subgoal verifier checks whether the latest skill met its local objective; a progress verifier aggregates preceding outcomes into a score in [0, 100] and a natural-language reflection. Both read privileged simulator state &mdash; poses, contacts, spatial relations &mdash; alongside the rendered views."
+            loading="lazy" decoding="async" width="1600" height="899"
+            src="assets/images/webpage_method/webpage_method_5.jpg?v=3ef3037034"
+            alt="Step 6 of the SkillWeaver pipeline figure, showing an edge-completion verifier judging each executed skill and a branch-progress verifier scoring the whole branch." />
+          <img class="carousel__slide buildup__frame" aria-hidden="true"
+            data-title="Experience Memory"
+            data-desc="Completed searches are distilled into compact semantic memories, each tying a scenario or interaction pattern to a reusable strategy, failure explanation or verification rule. A selector retrieves the top-K before the next invocation is proposed."
+            loading="lazy" decoding="async" width="1600" height="899"
+            src="assets/images/webpage_method/webpage_method_6.jpg?v=0a9dfb6728"
+            alt="Step 7 of the SkillWeaver pipeline figure, showing failed and successful trajectories compared and summarised into memory, which a selector reads back into later searches." />
+          <img class="carousel__slide buildup__frame" aria-hidden="true"
+            data-title="From Exploration to Robot Training Data"
+            data-desc="Successful trajectories become training examples with synchronized RGB, depth, masks, robot and object state, contacts and language, and no human labeling. The dataset distills them into a visuomotor policy that needs no search, privileged state or skill library at deployment."
+            loading="lazy" decoding="async" width="1600" height="899"
+            src="assets/images/webpage_method/webpage_method_7.jpg?v=350a5e94fd"
+            alt="Step 8 of the SkillWeaver pipeline figure, showing successful trajectories distilled into the multimodal demonstration dataset, which trains the deployed policy." />
+          </div>
+        </div>
+        <ol class="buildup__dots">
+          <li><button class="buildup__dot is-on" type="button" data-goto="0" aria-current="true"
+            aria-label="Overall Pipeline"></button></li>
+          <li><button class="buildup__dot" type="button" data-goto="1"
+            aria-label="Step 1: Overview"></button></li>
+          <li><button class="buildup__dot" type="button" data-goto="2"
+            aria-label="Step 2: Neural Interaction Skills"></button></li>
+          <li><button class="buildup__dot" type="button" data-goto="3"
+            aria-label="Step 3: Embodied Tool Search"></button></li>
+          <li><button class="buildup__dot" type="button" data-goto="4"
+            aria-label="Step 4: Tool Selection and Grounding"></button></li>
+          <li><button class="buildup__dot" type="button" data-goto="5"
+            aria-label="Step 5: Skill Execution"></button></li>
+          <li><button class="buildup__dot" type="button" data-goto="6"
+            aria-label="Step 6: Outcome Verification and Reflection"></button></li>
+          <li><button class="buildup__dot" type="button" data-goto="7"
+            aria-label="Step 7: Experience Memory"></button></li>
+          <li><button class="buildup__dot" type="button" data-goto="8"
+            aria-label="Step 8: From Exploration to Robot Training Data"></button></li>
+        </ol>
+        <p class="caption carousel__desc" data-carousel-desc aria-live="polite"><b>Overall Pipeline.</b> Simulated scenes and task instructions go into the SkillWeaver agent, which searches over neural interaction skills, verifies each outcome and distills what it learns into memory. The successful trajectories it collects are distilled into visuomotor policies.</p>
       </div>
-      <p class="caption"><b>Overview of SkillWeaver.</b> SkillWeaver generates robot experience through agentic
-        exploration over Neural Interaction Skills (NIS). Given a task and an interactive simulated environment, a VLM
-        agent selects and parameterizes an NIS, executes it in the environment, and observes the resulting state. A
-        hierarchical verifier evaluates the physical outcome and provides progress rewards and reflection, while
-        semantic memory transfers experience across search episodes. Verifier-guided tree search explores alternative
-        interaction strategies, and successful trajectories are retained as multimodal robot training data.</p>
 
       <!--
       <div class="prose">
@@ -6051,7 +6129,7 @@ action Skills for Scalable Robot Data Generation</title>
     </div>
   </footer>
 
-  <script src="js/nav.js?v=221b710512"></script>
+  <script src="js/nav.js?v=a31eaf1932"></script>
 </body>
 
 </html>
